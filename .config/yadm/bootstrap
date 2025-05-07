@@ -1,0 +1,14 @@
+#!/bin/bash
+set -e
+
+echo "开始执行 bootstrap 脚本..."
+
+# 遍历 bootstrap.d 目录中的所有 .sh 文件
+for script in $HOME/.config/yadm/bootstrap.d/*.sh; do
+    if [ -f "$script" ]; then
+        echo "正在执行: $script"
+        bash "$script"
+    fi
+done
+
+echo "所有 bootstrap 脚本执行完成！"
