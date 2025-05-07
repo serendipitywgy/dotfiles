@@ -4,7 +4,8 @@ local M = {}
 function M.setup()
     if vim.g.neovide then
         -- 字体设置
-        vim.o.guifont = "JetBrainsMonoNL Nerd Font Mono:h11.75" -- 替换为你喜欢的字体和大小
+        -- vim.o.guifont = "JetBrainsMonoNL Nerd Font Mono:h11.75" -- 替换为你喜欢的字体和大小
+        vim.o.guifont = "JetBrainsMonoNL Nerd Font:h11.75" -- 替换为你喜欢的字体和大小
 
         -- 启用光标动画
         vim.g.neovide_cursor_animation_length = 0.13
