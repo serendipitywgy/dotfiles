@@ -1,0 +1,55 @@
+# 崩溃日志保存路径
+backtraces_path = "~/.local/share/neovide/backtraces.log"  # 默认日志路径
+
+# 是否以分离进程方式启动
+fork = true  # false: 终端会被占用; true: 终端可继续使用
+
+# 窗口边框样式
+frame = "full"  # "full": 完整边框; "none": 无边框
+
+# 空闲时是否降低资源占用
+idle = true  # 启用可降低空闲时的资源占用
+
+# 启动时是否最大化窗口
+maximized = false  # true: 启动时自动最大化
+
+# 鼠标光标样式
+mouse-cursor-icon = "arrow"  # "arrow": 箭头; "beam": 竖线
+
+# Neovim 可执行文件路径
+# neovim-bin = ""  # 留空则自动从 PATH 中查找
+
+# 是否禁用多网格功能
+no-multigrid = false  # 多网格用于浮动窗口和弹出菜单
+
+# 是否使用 sRGB 颜色空间
+srgb = false  # 影响颜色渲染精确度
+
+# 是否显示标签页
+tabs = true  # false: 隐藏标签栏
+
+# 主题设置
+theme = "auto"  # "auto": 跟随系统; "light"; "dark"
+
+# 是否隐藏窗口标题
+title-hidden = true  # true: 隐藏窗口顶部标题栏
+
+# 是否启用垂直同步
+vsync = true  # 启用可减少画面撕裂，但可能增加输入延迟
+
+# 是否在 WSL 模式下运行
+wsl = false  # 在 Windows 的 WSL 环境中使用时可能需要设为 true
+
+# 字体设置
+# [font]
+# normal = []  # 空数组使用默认的 Fira Code Nerd Font
+# size = 14.0  # 字体大小，单位为点
+
+# 方框绘制设置
+[box-drawing]
+# 方框绘制模式
+mode = "font-glyph"  # "font-glyph": 使用字体字形; "native": 使用 Neovide 渲染
+
+# 方框线条粗细
+[box-drawing.sizes]
+default = [2, 4]  # [细线宽度, 粗线宽度]
