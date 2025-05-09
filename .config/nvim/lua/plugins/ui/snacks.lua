@@ -83,6 +83,7 @@ return {
                 },
             },
             notifier = {},
+            words = {},
             picker = {
                 win = {
                     input = {
