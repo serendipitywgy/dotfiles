@@ -14,9 +14,9 @@ return {
             { "<leader>s", group = "<Snacks>" },
             { "<leader>t", group = "<Snacks> Toggle" },
         },
-        -- expand = function(node)
-        --     return not node.desc
-        -- end,
+        expand = function(node)
+            return not node.desc
+        end,
     },
     keys = {
         {
