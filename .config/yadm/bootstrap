@@ -10,5 +10,5 @@ for script in $HOME/.config/yadm/bootstrap.d/*.sh; do
         bash "$script"
     fi
 done
-
+yadm submodule update --init --recursive
 echo "所有 bootstrap 脚本执行完成！"
