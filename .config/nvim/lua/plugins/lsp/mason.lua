@@ -2,8 +2,9 @@ return {
     "williamboman/mason.nvim",
     event = "VeryLazy",
     dependencies = {
-        "neovim/nvim-lspconfig",
-        "williamboman/mason-lspconfig.nvim",
+        {"neovim/nvim-lspconfig"},
+        {"williamboman/mason-lspconfig.nvim"},
+        { "MysticalDevil/inlay-hints.nvim", event = "LspAttach" },
     },
     opts = {},
     config = function(_, opts)
@@ -20,10 +21,13 @@ return {
             require("lspconfig")[nvim_lsp].setup(config)
         end
 
+        require("inlay-hints").setup()
+
         local servers = {
             ["lua-language-server"] = {
                 settings = {
                     Lua = {
+                        hint = { enabled = true},
                         diagnostics = {
                             globals = { "vim" }
                         }
@@ -31,7 +35,15 @@ return {
                 }
             },
             pyright = {},
-            clangd = {},
+            clangd = {
+                InlayHints = {
+                    Designators = true,
+                    Enabled = true,
+                    ParameterNames = true,
+                    DeducedTypes = true,
+                },
+                fallbackFlags = { "-std=c++20" },
+            },
             ["cmake-language-server"] = {},
             -- stylua = {},
             -- shfmt = {},
