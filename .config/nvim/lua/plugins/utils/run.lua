@@ -90,7 +90,7 @@ function M.setup()
 	end
 
 	-- 设置键映射
-	set_keymap_multi_mode({ "n", "i", "t" }, "<F5>", "<cmd>lua smart_build()<CR>", { noremap = true, silent = true })
+	set_keymap_multi_mode({ "n", "i", "t" }, "<F4>", "<cmd>lua smart_build()<CR>", { noremap = true, silent = true })
 end
 -- 在模块加载时自动调用 setup 函数
 M.setup()

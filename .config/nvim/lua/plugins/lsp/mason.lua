@@ -16,7 +16,8 @@ return {
             if success and not package:is_installed() then
                 package:install()
             end
-            local nvim_lsp = require("mason-lspconfig.mappings.server").package_to_lspconfig[name]
+            local server_mapping = require("mason-lspconfig.mappings").get_mason_map()
+            local nvim_lsp = server_mapping.package_to_lspconfig[name]
             config.capabilities = require("blink.cmp").get_lsp_capabilities()
             require("lspconfig")[nvim_lsp].setup(config)
         end

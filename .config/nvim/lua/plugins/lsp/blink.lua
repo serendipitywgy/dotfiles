@@ -5,6 +5,7 @@ return {
         "rafamadriz/friendly-snippets"
     },
     event = "VeryLazy",
+    -- event = {'BufReadPost', 'BufNewFile'},
     opts = {
         completion = {
             documentation = {
@@ -14,6 +15,13 @@ return {
         keymap = {
             -- preset = "super-tab",
             preset = "super-tab",
+
+            -- 默认键- '<C-f>' '<C-b>'
+            -- ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
+            -- ['<C-b>'] = { 'scroll_documentation_down', 'fallback' },
+        },
+        signature = {
+            enabled = true
         },
         sources = {
             default = { "lazydev", "path", "snippets", "buffer", "lsp" },
@@ -22,7 +30,7 @@ return {
                     name = "LazyDev",
                     module = "lazydev.integrations.blink",
                     -- make lazydev completions top priority (see `:h blink.cmp`)
-                    score_offset = 100,
+                    -- score_offset = 100,
                 },
             },
         },

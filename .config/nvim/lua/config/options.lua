@@ -1,9 +1,6 @@
 vim.g.mapleader = " "
 vim.g.autoformat = true
 
--- Options are automatically loaded before lazy.nvim startup
--- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
--- Add any additional options here
 local opt = vim.opt
 
 vim.opt.clipboard = "unnamedplus" -- 设置剪贴板选项
@@ -39,17 +36,6 @@ opt.splitright = true -- 新窗口在右边
 
 opt.undofile = true --启用了 Neovim 的持久化撤销历史功能
 
--- ' 清空背景色，支持透明背景
--- autocmd ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
--- vim.filetype.add({
---   extension = {
---     qss = "css",
---     ts = "xml",
---     ui = "xml",
---     qrc = "xml",
---   },
--- })
---
 -- vim.g.autoformat = false  -- 这一行是全局禁止格式化
 -- 为cpp文件设置禁止自动格式化
 vim.api.nvim_create_autocmd("FileType", {
