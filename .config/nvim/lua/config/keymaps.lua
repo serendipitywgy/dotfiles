@@ -61,7 +61,11 @@ set_keymaps("t", {"<C-/>"}, "<cmd>close<cr>", { desc = "Hide Terminal" })
 set_keymaps("n", {"<leader>-"}, "<C-W>s", { desc = "Split Window Below", remap = true })
 set_keymaps("n", {"<leader>|"}, "<C-W>v", { desc = "Split Window Right", remap = true })
 set_keymaps("n", {"<leader>wd"}, "<C-W>c", { desc = "Delete Window", remap = true })
-
+-- Resize window using <ctrl> arrow keys
+set_keymaps("n", {"<C-Up>"}, "<cmd>resize +2<cr>", { desc = "Increase Window Height" })
+set_keymaps("n", {"<C-Down>"}, "<cmd>resize -2<cr>", { desc = "Decrease Window Height" })
+set_keymaps("n", {"<C-Left>"}, "<cmd>vertical resize -2<cr>", { desc = "Decrease Window Width" })
+set_keymaps("n", {"<C-Right>"}, "<cmd>vertical resize +2<cr>", { desc = "Increase Window Width" })
 --头文件/源文件切换
 set_keymaps({"v", "n"}, {"<leader>ch"}, "<cmd>ClangdSwitchSourceHeader<CR>", { silent = true })
 
