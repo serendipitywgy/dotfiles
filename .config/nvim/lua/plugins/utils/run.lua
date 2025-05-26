@@ -22,7 +22,7 @@ function M.setup()
 	end
 
 	-- Conan 构建终端
-	local conan_build = create_build_terminal("conan build . -pr:h=debug -pr:b=debug", "float", {
+	local conan_build = create_build_terminal("conan build . -pr:h=debug -pr:b=debug", "horizontal", {
 		border = "double",
 		width = 110,
 	})
