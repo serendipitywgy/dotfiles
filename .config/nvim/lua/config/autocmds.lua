@@ -136,3 +136,10 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     -- 可以添加更多高亮组...
   end,
 })
+-- 为cpp文件设置禁止自动格式化
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "cpp",
+  callback = function()
+    vim.b.autoformat = false
+  end,
+})
