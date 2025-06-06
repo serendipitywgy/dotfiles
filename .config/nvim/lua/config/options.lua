@@ -16,7 +16,6 @@ local config = {
         ignorecase = true,   -- 搜索时忽略大小写
         smartcase = true,    -- 如果搜索包含大写字母，则变为大小写敏感
         foldlevel = 99,      -- 设置折叠级别
-        foldenable = false,  -- 默认不启用代码折叠
         expandtab = true,    -- 将制表符展开为空格
         softtabstop = 4,     -- 软制表符宽度为4
         shiftwidth = 4,      -- 自动缩进宽度为4
