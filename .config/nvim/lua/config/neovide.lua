@@ -14,7 +14,7 @@ function M.setup()
         vim.g.neovide_cursor_vfx_mode = "railgun" -- 光标粒子
 
         -- 透明度设置
-        vim.g.neovide_opacity = 0.9
+        -- vim.g.neovide_opacity = 0.9
 
         -- 记住窗口大小
         vim.g.neovide_remember_window_size = true

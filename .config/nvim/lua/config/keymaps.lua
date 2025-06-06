@@ -5,20 +5,20 @@ local function set_keymaps(mode, keymaps, target, opts)
 	end
 end
 
--- 定义诊断提示状态变量
-local diagnostics_enabled = true
-
--- 绑定快捷键（例如 <leader>dt）
-set_keymaps("n", { "<leader>cd" }, function()
-  if diagnostics_enabled then
-    vim.diagnostic.enable(false) -- 更新：禁用诊断
-    print("Diagnostics disabled")
-  else
-    vim.diagnostic.enable(true)  -- 更新：启用诊断 (或者直接用 vim.diagnostic.enable())
-    print("Diagnostics enabled")
-  end
-  diagnostics_enabled = not diagnostics_enabled
-end, { desc = "是否开启诊断显示" })
+-- -- 定义诊断提示状态变量
+-- local diagnostics_enabled = true
+--
+-- -- 绑定快捷键（例如 <leader>dt）
+-- set_keymaps("n", { "<leader>cd" }, function()
+--   if diagnostics_enabled then
+--     vim.diagnostic.enable(false) -- 更新：禁用诊断
+--     print("Diagnostics disabled")
+--   else
+--     vim.diagnostic.enable(true)  -- 更新：启用诊断 (或者直接用 vim.diagnostic.enable())
+--     print("Diagnostics enabled")
+--   end
+--   diagnostics_enabled = not diagnostics_enabled
+-- end, { desc = "是否开启诊断显示" })
 
 -- 基础导航增强,目的：在长行自动换行时可以按视觉行而不是实际行移动
 set_keymaps({ "n", "x" }, { "j" }, "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
