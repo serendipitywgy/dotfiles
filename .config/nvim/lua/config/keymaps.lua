@@ -67,7 +67,7 @@ set_keymaps("n", {"<C-Down>"}, "<cmd>resize -2<cr>", { desc = "Decrease Window H
 set_keymaps("n", {"<C-Left>"}, "<cmd>vertical resize -2<cr>", { desc = "Decrease Window Width" })
 set_keymaps("n", {"<C-Right>"}, "<cmd>vertical resize +2<cr>", { desc = "Increase Window Width" })
 --头文件/源文件切换
-set_keymaps({"v", "n"}, {"<leader>ch"}, "<cmd>ClangdSwitchSourceHeader<CR>", { silent = true })
+set_keymaps({"v", "n"}, {"<leader>ch"}, "<cmd>LspClangdSwitchSourceHeader<CR>", { silent = true })
 
 --清除搜索高亮
 set_keymaps("n", {"<Esc>"}, "<cmd>nohlsearch<CR>", { silent = true })
