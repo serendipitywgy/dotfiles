@@ -3,6 +3,32 @@ local function augroup(name)
     return vim.api.nvim_create_augroup("my_" .. name, { clear = true })
 end
 
+-- lsp重命名
+vim.api.nvim_create_autocmd("LspAttach", {
+    callback = function(args)
+        local bufnr = args.buf
+        vim.keymap.set("n", "<leader>rn", function()
+            -- 弹出输入框，输入新名字
+            local curr_word = vim.fn.expand("<cword>")
+            vim.ui.input({ prompt = "Rename to: ", default = curr_word }, function(new_name)
+                if new_name and #new_name > 0 then
+                    vim.lsp.buf.rename(new_name)
+                end
+            end)
+        end, { buffer = bufnr, desc = "LSP Rename" })
+    end,
+})
+-- 全文件匹配重命名
+vim.keymap.set("n", "<leader>rf", function()
+    local curr_word = vim.fn.expand("<cword>")
+    vim.ui.input({ prompt = "Rename all in file: ", default = curr_word }, function(new_name)
+        if new_name and #new_name > 0 then
+            -- 构造替换命令，%s 表示全文件，\V 精确匹配
+            local cmd = string.format("%%s/\\V%s/%s/g", curr_word, new_name)
+            vim.cmd(cmd)
+        end
+    end)
+end, { desc = "Rename in file" })
 -- 在这里可以添加其他自动命令
 -- Check if we need to reload the file when it changed
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
@@ -136,14 +162,31 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         -- 可以添加更多高亮组...
     end,
 })
--- 为cpp文件设置禁止自动格式化
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = "cpp",
-    callback = function()
-        vim.b.autoformat = false
+-- -- 为cpp文件设置禁止自动格式化
+-- vim.api.nvim_create_autocmd("FileType", {
+--     pattern = "cpp",
+--     callback = function()
+--         vim.b.autoformat = false
+--     end,
+-- })
+-- 保存时自动格式化
+local group = vim.api.nvim_create_augroup('lsp_format', { clear = true })
+vim.api.nvim_create_autocmd('BufWritePre', {
+    group = group,
+    pattern = '*', -- 监听全部文件
+    callback = function(args)
+        -- 排除 C/C++ 的常见后缀（大小写都防一手）
+        local ext = vim.fn.fnamemodify(args.match, ':e'):lower()
+        if ext == 'cpp' or ext == 'cxx' or ext == 'cc' or ext == 'c' or ext == 'h' or ext == 'hpp' then
+            return -- 直接跳出，不格式化
+        end
+
+        -- 其余文件：只要该缓冲区有 LSP 客户端就格式化
+        if #vim.lsp.get_active_clients({ bufnr = args.buf }) > 0 then
+            vim.lsp.buf.format({ async = false, bufnr = args.buf })
+        end
     end,
 })
-
 --lsp的一些自动命令
 
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -173,7 +216,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 
         local client = vim.lsp.get_client_by_id(event.data.client_id)
-        if client and client.supports_method 'textDocument/foldingRange' then
+        if client and client:supports_method 'textDocument/foldingRange' then
             vim.o.foldmethod = 'expr'
             -- Default to treesitter folding
             vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
@@ -182,12 +225,11 @@ vim.api.nvim_create_autocmd('LspAttach', {
         end
 
         -- Inlay hint
-        if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+        if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
             -- vim.lsp.inlay_hint.enable()
             vim.keymap.set('n', '<leader>th', function()
                 vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
             end, { buffer = event.buf, desc = 'LSP: Toggle Inlay Hints' })
         end
-
     end
 })

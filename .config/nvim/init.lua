@@ -1,7 +1,30 @@
-local plugins = require("config")
+-- vim.env.HTTPS_PROXY = "http://127.0.0.1:7890"   -- 改成你的代理端口
+-- vim.env.HTTP_PROXY  = "http://127.0.0.1:7890"
+require("config.options")
+require("config.keymaps")
+require("config.autocmds")
 
-require("plugins.utils.root").setup()
-require("plugins.utils.run").setup()
--- require("config.neovide").setup() #  屏蔽neovide
-_G.Root = require("plugins.utils.root")
-_G.Pick = require("plugins.utils.pick")
+
+-- core plugins
+require("plugins.theme")
+require("plugins.heirline")
+require("plugins.mini")
+require("plugins.vim-tmux-navigator")
+require("plugins.snacks")
+require("config.lsp")
+require("plugins.blink")
+require("plugins.flash")
+require("plugins.treesitter")
+require("plugins.noice")
+require("plugins.which-key")
+require("plugins.autopairs")
+require("plugins.bufferline")
+require("plugins.oil")
+require("plugins.codecompanion")
+-- require("plugins.inc-rename")
+require("plugins.debug")
+require("plugins.static-scroll")
+require("plugins.git")
+require("plugins.windsurf")
+require("plugins.avante")
+require("plugins.leetcode")
