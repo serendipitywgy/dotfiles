@@ -1,7 +1,7 @@
 vim.pack.add({
     {
         src = "https://github.com/olimorris/codecompanion.nvim",
-        version = vim.version.range('v17.33.0'),
+        -- version = vim.version.range('v17.33.0'),
     },
     { src = "https://github.com/nvim-lua/plenary.nvim" },
     { src = "https://github.com/zbirenbaum/copilot.lua" },

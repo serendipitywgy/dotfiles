@@ -1,3 +1,14 @@
+local function safe_hl_fg_hex(name, fallback_hex)
+    if not name or name == '' then
+        return fallback_hex
+    end
+    local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = name, link = false })
+    if ok and hl and type(hl.fg) == 'number' then
+        return string.format('#%06x', hl.fg)
+    end
+    return fallback_hex
+end
+
 local palette = require('catppuccin.palettes').get_palette 'mocha'
 local utils = require 'heirline.utils'
 local conditions = require 'heirline.conditions'
@@ -371,7 +382,7 @@ M.FileIcon = {
             icon = ''
         end
         self.icon = icon
-        self.icon_color = string.format('#%06x', vim.api.nvim_get_hl(0, { name = hl })['fg'])
+        self.icon_color = safe_hl_fg_hex(hl, palette.text)
     end,
     provider = function(self)
         return self.icon and (self.icon .. ' ')
@@ -387,7 +398,7 @@ M.FileName = {
         local filename = self.filename
         local extension = vim.fn.fnamemodify(filename, ':e')
         local _, hl, _ = MiniIcons.get('file', 'file.' .. extension)
-        self.icon_color = string.format('#%06x', vim.api.nvim_get_hl(0, { name = hl })['fg'])
+        self.icon_color = safe_hl_fg_hex(hl, dim_color)
     end,
     provider = function(self)
         -- self.filename will be defined later, just keep looking at the example!
@@ -439,7 +450,7 @@ M.FileFlags = {
             local filename = self.filename
             local extension = vim.fn.fnamemodify(filename, ':e')
             local _, hl, _ = MiniIcons.get('file', 'file.' .. extension)
-            self.icon_color = string.format('#%06x', vim.api.nvim_get_hl(0, { name = hl })['fg'])
+            self.icon_color = safe_hl_fg_hex(hl, palette.text)
         end,
         condition = function(self)
             local ignored_filetypes = {
