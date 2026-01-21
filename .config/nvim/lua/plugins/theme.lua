@@ -1,10 +1,3 @@
--- vim.pack.add({
---     { src = "https://github.com/catppuccin/nvim" },
--- })
---
--- require("catppuccin").setup()
--- vim.cmd("colorscheme catppuccin")
--- vim.cmd.hi("statusline guibg=NONE")
 vim.pack.add({
     { src = "https://github.com/ibhagwan/fzf-lua" },
     { src = "https://github.com/catppuccin/nvim" },
@@ -13,10 +6,9 @@ vim.pack.add({
     { src = "https://github.com/folke/tokyonight.nvim" },
     { src = "https://github.com/ellisonleao/gruvbox.nvim" },
     { src = "https://github.com/rebelot/kanagawa.nvim" },
-    { src = "https://github.com/EdenEast/nightfox.nvim" },
     { src = "https://github.com/rose-pine/neovim" },
-    { src = "https://github.com/neanias/everforest-nvim" },
     { src = "https://github.com/navarasu/onedark.nvim" },
+    { src = "https://github.com/sainnhe/everforest" },
 })
 -- 建议开启真彩
 vim.opt.termguicolors = true
@@ -52,7 +44,15 @@ if ok_fzf then
     })
     -- 主题弹窗（默认带预览）
     vim.keymap.set("n", "<leader>ut", function()
-        fzf.colorschemes()
+        fzf.colorschemes({
+            ignore_patterns = {
+                "blue", "darkblue", "delek", "desert", "elflord",
+                "evening", "habamax", "industry", "koehler", "lunaperche",
+                "morning", "murphy", "pelf", "quiet", "ron", "shine",
+                "slate", "torte", "zellner", "vim", "pablo", "peachpuff", "retrobox",
+                "sorbet", "unokai", "wildcharm", "zaibatsu"
+            }
+        })
     end, { desc = "选择主题（fzf-lua）" })
 end
 
