@@ -20,7 +20,7 @@ vim.lsp.config('lua_ls', {
     },
 })
 
-for _, server in ipairs({ "clangd", "pyright", "cmake", "bashls", "jsonls", "lua_ls" }) do
+for _, server in ipairs({ "clangd", "pyright", "cmake", "bashls", "jsonls", "lua_ls", "qmlls" }) do
     -- vim.lsp.config(server, {})
     vim.lsp.enable(server, {})
 end

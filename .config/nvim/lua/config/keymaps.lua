@@ -42,8 +42,29 @@ set_keymaps("n", { "<leader>bD" }, "<cmd>:bd<cr>", { desc = "Delete Buffer and W
 -- set_keymaps("n", { "<leader>l" }, "<cmd>Lazy<cr>", { desc = "Lazy" })
 
 --lsp formatting
-set_keymaps({ "n" }, { "<leader>lf" }, function() vim.lsp.buf.format() end, { desc = "lsp格式化" })
+-- set_keymaps({ "n" }, { "<leader>lf" }, function() vim.lsp.buf.format() end, { desc = "lsp格式化" })
 
+set_keymaps({ "n", "v" }, { "<leader>lf" }, function()
+    -- 获取当前模式
+    local mode = vim.api.nvim_get_mode().mode
+    if mode == "v" or mode == "V" or mode == " " then
+        -- 如果是可视模式，获取选中的起始和结束位置
+        local start_pos = vim.fn.getpos("v")
+        local end_pos = vim.fn.getpos(".")
+
+        vim.lsp.buf.format({
+            range = {
+                ["start"] = { start_pos[2], start_pos[3] - 1 },
+                ["end"] = { end_pos[2], end_pos[3] - 1 },
+            }
+        })
+        -- 格式化后跳回普通模式
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
+    else
+        -- 普通模式下默认格式化整个文件
+        vim.lsp.buf.format({ async = true })
+    end
+end, { desc = "LSP格式化 (支持范围)" })
 -- quit
 set_keymaps("n", { "<leader>qq" }, "<cmd>wqa<cr>", { desc = "Quit All" })
 set_keymaps("n", { "<leader>w" }, "<cmd>w<cr>", { desc = "保存当前Buffer", nowait = true })
@@ -172,7 +193,15 @@ set_keymaps("t", { "]]" }, function() Snacks.words.jump(vim.v.count1) end, { des
 set_keymaps("t", { "[[" }, function() Snacks.words.jump(-vim.v.count1) end, { desc = "Prev Reference" })
 
 --flash
-set_keymaps({ "n", "x", "o" }, { "s" }, function() require("flash").jump() end, { desc = "Flash" })
+-- set_keymaps({ "n", "x", "o" }, { "s" }, function() require("flash").jump() end, { desc = "Flash" })
+set_keymaps({ "n", "x", "o" }, { "ss" }, function()
+    -- 只在第一次用到时加载 flash.nvim
+    if not package.loaded["flash"] then
+        require("flash").setup({})
+    end
+    require("flash").jump()
+end, { desc = "Flash" })
+
 set_keymaps({ "n", "x", "o" }, { "S" }, function() require("which-key").show({ global = false }) end,
     { desc = "Buffer Local Keymaps (which-key)" })
 
