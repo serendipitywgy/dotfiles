@@ -1,5 +1,3 @@
--- vim.env.HTTPS_PROXY = "http://127.0.0.1:7890"   -- 改成你的代理端口
--- vim.env.HTTP_PROXY  = "http://127.0.0.1:7890"
 require("config.options")
 require("config.keymaps")
 require("config.autocmds")
@@ -21,11 +19,9 @@ require("plugins.autopairs")
 require("plugins.bufferline")
 require("plugins.oil")
 require("plugins.codecompanion")
--- require("plugins.inc-rename")
 require("plugins.debug")
 require("plugins.static-scroll")
 require("plugins.git")
 require("plugins.windsurf")
-require("plugins.avante")
 require("plugins.leetcode")
 require("plugins.render-markdown")
