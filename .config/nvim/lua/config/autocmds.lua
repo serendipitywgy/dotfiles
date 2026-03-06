@@ -182,7 +182,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
         end
 
         -- 其余文件：只要该缓冲区有 LSP 客户端就格式化
-        if #vim.lsp.get_active_clients({ bufnr = args.buf }) > 0 then
+        if #vim.lsp.get_clients({ bufnr = args.buf }) > 0 then
             vim.lsp.buf.format({ async = false, bufnr = args.buf })
         end
     end,

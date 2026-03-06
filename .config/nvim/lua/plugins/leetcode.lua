@@ -1,5 +1,6 @@
 vim.pack.add({
     { src = "https://github.com/kawre/leetcode.nvim" },
+    { src = "https://github.com/nvim-lua/plenary.nvim" },
 })
 
 require("leetcode").setup({

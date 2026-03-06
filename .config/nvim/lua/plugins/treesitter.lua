@@ -7,7 +7,7 @@ vim.api.nvim_create_autocmd('BufReadPre', {
     once = true,
     callback = function()
         ---@diagnostic disable-next-line: missing-fields
-        require('nvim-treesitter.configs').setup {
+        require('nvim-treesitter').setup {
             ensure_installed = {
                 'diff',
                 'snakemake',

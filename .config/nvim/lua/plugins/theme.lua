@@ -1,6 +1,7 @@
 vim.pack.add({
     { src = "https://github.com/ibhagwan/fzf-lua" },
     { src = "https://github.com/catppuccin/nvim" },
+    { src = "https://github.com/AstroNvim/astrotheme" },
 
     -- 主题集合（可增删）
     { src = "https://github.com/folke/tokyonight.nvim" },
