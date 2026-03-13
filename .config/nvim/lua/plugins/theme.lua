@@ -51,7 +51,8 @@ if ok_fzf then
                 "evening", "habamax", "industry", "koehler", "lunaperche",
                 "morning", "murphy", "pelf", "quiet", "ron", "shine",
                 "slate", "torte", "zellner", "vim", "pablo", "peachpuff", "retrobox",
-                "sorbet", "unokai", "wildcharm", "zaibatsu"
+                "sorbet", "unokai", "wildcharm", "zaibatsu",
+                "astro"
             }
         })
     end, { desc = "选择主题（fzf-lua）" })

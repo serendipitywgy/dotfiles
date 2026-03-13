@@ -148,6 +148,12 @@ local function blink_cmp2()
         sources = {
             default = { "path", "snippets", "buffer", "lsp" },
             providers = {
+                buffer = {
+                    opts = {
+                        max_async_buffer_size = 1000000,
+                        max_total_buffer_size = 2000000,
+                    },
+                },
             },
         },
         cmdline = {
