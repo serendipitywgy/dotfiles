@@ -69,7 +69,7 @@ vim.list_extend(dap.configurations.cpp, {
     },
     {
         name = "Launch (gdb)",
-        type = "cppdbg",
+        type = "gdb",
         MIMode = "gdb",
         request = "launch",
         miDebuggerPath = "/usr/bin/gdb",
