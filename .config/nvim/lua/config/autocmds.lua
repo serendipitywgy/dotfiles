@@ -177,7 +177,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
     callback = function(args)
         -- 排除 C/C++ 的常见后缀（大小写都防一手）
         local ext = vim.fn.fnamemodify(args.match, ':e'):lower()
-        if ext == 'cpp' or ext == 'cxx' or ext == 'cc' or ext == 'c' or ext == 'h' or ext == 'hpp' then
+        if ext == 'cpp' or ext == 'cxx' or ext == 'cc' or ext == 'c' or ext == 'h' or ext == 'hpp' or ext == 'qml' then
             return -- 直接跳出，不格式化
         end
 

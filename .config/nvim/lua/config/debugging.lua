@@ -3,7 +3,8 @@ local dap = require("dap")
 -- NOTE: configure adapters
 dap.adapters.codelldb = {
     type = "executable",
-    command = "codelldb", -- or if not in $PATH: "/absolute/path/to/codelldb"
+    -- command = "codelldb", -- or if not in $PATH: "/absolute/path/to/codelldb"
+    command = "/home/aoi/.local/bin/codelldb", -- 这里是软链接到了vscode插件目录下的codelldb,这个只能vscode插件能用"
 }
 dap.adapters.cppdbg = {
     id = "cppdbg",
