@@ -1,11 +1,23 @@
+-- Mason: LSP 包管理器，负责下载和安装 LSP 服务器
 vim.pack.add({
     { src = "https://github.com/mason-org/mason.nvim" },
+    -- mason-lspconfig: 自动安装 LSP，连接 mason 和 lspconfig
+    { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
+    -- nvim-lspconfig: LSP 配置预设
     { src = "https://github.com/neovim/nvim-lspconfig" },
 })
 
+-- 初始化 Mason
 require("mason").setup()
 
+-- 配置 mason-lspconfig：自动安装以下 LSP 服务器
+-- 每次启动 nvim 会自动检查并安装未安装的服务器
+require("mason-lspconfig").setup({
+    ensure_installed = { "clangd", "pyright", "cmake", "bashls", "jsonls", "lua_ls", "qmlls" },
+})
+
 -- Lua LSP 配置 (lua_ls)
+-- 自定义 lua_ls 的配置，因为 nvim-lspconfig 的默认配置可能不够完善
 vim.lsp.config('lua_ls', {
     settings = {
         Lua = {
@@ -20,12 +32,15 @@ vim.lsp.config('lua_ls', {
     },
 })
 
+-- 启用 LSP 服务器
+-- vim.lsp.enable 会根据文件类型自动启动对应的 LSP
 for _, server in ipairs({ "clangd", "pyright", "cmake", "bashls", "jsonls", "lua_ls", "qmlls" }) do
     -- vim.lsp.config(server, {})
     vim.lsp.enable(server, {})
 end
 
--- 配置lsp报警图标
+-- 配置 LSP 诊断信息的显示样式
+-- 包括虚拟文本、浮动窗口、严重程度排序和图标
 local icons = require("config/icons")
 vim.diagnostic.config {
     virtual_text = { current_line = true },
@@ -41,26 +56,33 @@ vim.diagnostic.config {
     },
 }
 
+-- LSP Attach 自动配置
+-- 当 LSP 客户端附加到缓冲区时自动执行以下配置
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("SetupLSP", {}),
     callback = function(event)
         local client = assert(vim.lsp.get_client_by_id(event.data.client_id))
 
-        -- [inlay hint]
+        -- [Inlay Hint] 内联提示
+        -- 启用/禁用代码中的类型提示（如参数类型、返回值类型）
         if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
             vim.keymap.set('n', '<leader>th', function()
                 vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
             end, { buffer = event.buf, desc = 'LSP: Toggle Inlay Hints' })
         end
 
-        -- [folding]
+        -- [Folding] 代码折叠
+        -- 使用 LSP 提供的信息来折叠代码（如函数、类、注释块）
         if client and client:supports_method 'textDocument/foldingRange' then
-            local win = vim.api.nvim_get_current_win()
-            vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
+            local win = vim.fn.win_getid()
+            vim.wo[win].foldexpr = 'v:lua.vim.lsp.foldexpr()'
         end
 
-        -- [keymaps]
+        -- [Keymaps] LSP 相关快捷键
+        -- 格式化代码
         vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format)
+-- 跳转到定义 (gd)
+        -- 使用 snacks picker 显示所有定义位置
         vim.keymap.set("n", "gd", function()
             local params = vim.lsp.util.make_position_params(0, "utf-8")
             vim.lsp.buf_request(0, "textDocument/definition", params, function(_, result, _, _)
@@ -71,8 +93,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
                 end
             end)
         end, { buffer = event.buf, desc = "LSP: Goto Definition" })
+
+        -- 带有智能分屏的跳转到定义 (gD)
+        -- 根据窗口大小自动选择横向或纵向分屏
         vim.keymap.set("n", "gD", function()
-            local win = vim.api.nvim_get_current_win()
+            local win = vim.api.nvim_get_current_window()
             local width = vim.api.nvim_win_get_width(win)
             local height = vim.api.nvim_win_get_height(win)
 
@@ -87,6 +112,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
             vim.lsp.buf.definition()
         end, { buffer = event.buf, desc = "LSP: Goto Definition (split)" })
 
+        -- [f] 跳转到当前函数的开始位置
         local function jump_to_current_function_start()
             local params = { textDocument = vim.lsp.util.make_text_document_params() }
             local responses = vim.lsp.buf_request_sync(0, "textDocument/documentSymbol", params, 1000)
@@ -117,6 +143,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
             end
         end
         vim.keymap.set("n", "[f", jump_to_current_function_start, { desc = "Jump to start of current function" })
+
+        -- ]f] 跳转到当前函数的结束位置
         local function jump_to_current_function_end()
             local params = { textDocument = vim.lsp.util.make_text_document_params() }
             local responses = vim.lsp.buf_request_sync(0, "textDocument/documentSymbol", params, 1000)
