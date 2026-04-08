@@ -563,8 +563,9 @@ M.SearchOccurrence = {
     hl = { fg = palette.sky },
     provider = function()
         local sinfo = vim.fn.searchcount { maxcount = 0 }
-        local search_stat = sinfo.incomplete > 0 and ' [?/?]' or
-            sinfo.total > 0 and (' [%s/%s]'):format(sinfo.current, sinfo.total) or ''
+        if vim.tbl_isempty(sinfo) then return '' end
+        local search_stat = sinfo.incomplete > 0 and ' [?/?]' or
+            sinfo.total > 0 and (' [%s/%s]'):format(sinfo.current, sinfo.total) or ''
         return search_stat
     end,
 }
