@@ -59,7 +59,26 @@ require("snacks").setup({
         timeout = 3000,
         style = "notification",
     },
-    picker = { enabled = true },
+    picker = {
+        enabled = true,
+        win = {
+            input = {
+                keys = {
+                    ["<c-e>"] = { "open_results_in_buffer", mode = { "n", "i" } },
+                },
+            },
+        },
+        actions = {
+            open_results_in_buffer = function(picker)
+                picker:close()
+                local items = picker:selected()
+                if #items == 0 then
+                    items = picker:items()
+                end
+                require("config.utils").open_grep_results(items)
+            end,
+        },
+    },
     quickfile = { enabled = true },
     scope = { enabled = true },
     scroll = { enabled = true },
