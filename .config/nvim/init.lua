@@ -1,28 +1,8 @@
+vim.g.mapleader = " "
+
+-- PackUtils 引擎 + 集中插件下载 + 自动加载所有插件配置
+require("pack")
+
 require("config.options")
 require("config.keymaps")
 require("config.autocmds")
-
-
--- core plugins
-require("plugins.theme")
-require("plugins.heirline")
-require("plugins.mini")
-require("plugins.vim-tmux-navigator")
-require("plugins.snacks")
-require("config.lsp")
-require("plugins.blink")
-require("plugins.flash")
-require("plugins.treesitter")
-require("plugins.noice")
-require("plugins.which-key")
-require("plugins.autopairs")
-require("plugins.bufferline")
-require("plugins.oil")
-require("plugins.debug")
-require("plugins.static-scroll")
-require("plugins.git")
-require("plugins.windsurf")
-require("plugins.leetcode")
-require("plugins.render-markdown")
-require("plugins.auto-session")
-require("plugins.cmake")

@@ -1,7 +1,3 @@
-vim.pack.add({
-    { src = "https://github.com/folke/noice.nvim" },
-    { src = "https://github.com/MunifTanjim/nui.nvim" },
-})
 -- require("nui").setup()
 -- nui只是noice依赖的插件，所以不需要setup
 require("noice").setup({

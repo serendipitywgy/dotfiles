@@ -1,8 +1,3 @@
--- 声明主插件 + 依赖
-vim.pack.add({
-    { src = "https://github.com/akinsho/bufferline.nvim" },
-    { src = "https://github.com/nvim-tree/nvim-web-devicons" },
-})
 -- 等插件加载完再执行
 vim.api.nvim_create_autocmd({ 'BufReadPre', 'BufReadPost' }, {
     once     = true,

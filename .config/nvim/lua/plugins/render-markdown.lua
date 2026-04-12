@@ -1,9 +1,4 @@
--- 1. 启动 Neovim 运行到 require("plugins.render-markdown") 时，
---    这一步会确保插件被下载并加入 runtimepath，但不会自动运行插件逻辑。
-vim.pack.add({
-    { src = "https://github.com/MeanderingProgrammer/render-markdown.nvim" },
-    { src = "https://github.com/3rd/image.nvim" },
-})
+-- render-markdown.nvim + image.nvim
 
 local M = {}
 

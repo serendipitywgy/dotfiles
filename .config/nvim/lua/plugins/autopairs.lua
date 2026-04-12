@@ -1,13 +1,5 @@
 ------------------------------------------------
--- 1. 拉取插件（与 blink 同一层级即可）
-------------------------------------------------
-vim.pack.add({
-    { src = "https://github.com/windwp/nvim-autopairs" },
-    { src = "https://github.com/kylechui/nvim-surround" },
-})
-
-------------------------------------------------
--- 2. autopairs：第一次进入插入模式时初始化
+-- 1. autopairs：第一次进入插入模式时初始化
 ------------------------------------------------
 vim.api.nvim_create_autocmd("InsertEnter", {
     group = vim.api.nvim_create_augroup("SetupAutoPairs", { clear = true }),

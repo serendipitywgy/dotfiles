@@ -1,12 +1,3 @@
--- Mason: LSP 包管理器，负责下载和安装 LSP 服务器
-vim.pack.add({
-    { src = "https://github.com/mason-org/mason.nvim" },
-    -- mason-lspconfig: 自动安装 LSP，连接 mason 和 lspconfig
-    { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
-    -- nvim-lspconfig: LSP 配置预设
-    { src = "https://github.com/neovim/nvim-lspconfig" },
-})
-
 -- 初始化 Mason
 require("mason").setup()
 

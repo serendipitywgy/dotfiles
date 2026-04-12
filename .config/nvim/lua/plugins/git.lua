@@ -1,11 +1,4 @@
-vim.pack.add({
-    { src = "https://github.com/lewis6991/gitsigns.nvim" },
-    { src = "https://github.com/echasnovski/mini.diff",  version = vim.version.range("*") },
-    -- 如需 git-blame.nvim，可取消注释
-    -- { src = "https://github.com/f-person/git-blame.nvim" },
-})
-
--- 2. 懒加载和配置 gitsigns.nvim
+-- 懒加载和配置 gitsigns.nvim
 vim.api.nvim_create_autocmd("BufReadPost", {
     callback = function()
         vim.cmd.packadd("gitsigns.nvim")
@@ -79,7 +72,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
     end,
 })
 
--- 3. 懒加载和配置 mini.diff
+-- 懒加载和配置 mini.diff
 vim.api.nvim_create_autocmd("BufReadPost", {
     callback = function()
         vim.cmd.packadd("mini.diff")

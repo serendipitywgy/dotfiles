@@ -1,7 +1,3 @@
-vim.pack.add({
-    { src = "https://github.com/smjonas/inc-rename.nvim" },
-})
-
 vim.api.nvim_create_autocmd("LspAttach", {
     once = true, -- 第一次触发后即可，不必重复 load
     callback = function()

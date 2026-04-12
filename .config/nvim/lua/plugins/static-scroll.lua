@@ -1,10 +1,3 @@
-vim.pack.add({
-    {
-        src = 'https://github.com/nvim-treesitter/nvim-treesitter-context',
-        name = 'nvim-treesitter-context',
-    },
-})
-
 -- 加载并配置 nvim-treesitter-context（推荐全局加载，随时可用）
 vim.cmd.packadd('nvim-treesitter-context')
 require("treesitter-context").setup({

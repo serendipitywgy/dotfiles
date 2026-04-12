@@ -1,7 +1,3 @@
-vim.pack.add({
-    { src = "https://github.com/Civitasv/cmake-tools.nvim" },
-})
-
 require("cmake-tools").setup({
     cmake_command = "cmake",
     cmake_build_directory = "build",

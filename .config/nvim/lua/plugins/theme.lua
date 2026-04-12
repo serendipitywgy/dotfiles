@@ -1,16 +1,3 @@
-vim.pack.add({
-    { src = "https://github.com/ibhagwan/fzf-lua" },
-    { src = "https://github.com/catppuccin/nvim" },
-    { src = "https://github.com/AstroNvim/astrotheme" },
-
-    -- 主题集合（可增删）
-    { src = "https://github.com/folke/tokyonight.nvim" },
-    { src = "https://github.com/ellisonleao/gruvbox.nvim" },
-    { src = "https://github.com/rebelot/kanagawa.nvim" },
-    { src = "https://github.com/rose-pine/neovim" },
-    { src = "https://github.com/navarasu/onedark.nvim" },
-    { src = "https://github.com/sainnhe/everforest" },
-})
 -- 建议开启真彩
 vim.opt.termguicolors = true
 

@@ -1,7 +1,4 @@
 if vim.env.TMUX ~= nil and vim.env.TMUX ~= "" then
-    vim.pack.add({
-        "https://github.com/christoomey/vim-tmux-navigator",
-    })
     vim.keymap.set("n", "<C-h>", "<cmd><C-U>TmuxNavigateLeft<cr>")
     vim.keymap.set("n", "<C-j>", "<cmd><C-U>TmuxNavigateDown<cr>")
     vim.keymap.set("n", "<C-k>", "<cmd><C-U>TmuxNavigateUp<cr>")

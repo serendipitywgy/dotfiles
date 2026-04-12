@@ -1,8 +1,3 @@
-vim.pack.add({
-    { src = "https://github.com/archie-judd/blink-cmp-words" },
-    { src = "https://github.com/saghen/blink.cmp",           version = "v1.7.0" },
-})
-
 local function blink_cmp1()
     require("blink.cmp").setup({
         completion = {

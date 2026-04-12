@@ -1,7 +1,3 @@
-vim.pack.add({
-    { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
-})
-
 -- nvim-treesitter 1.0: setup 只接受 install_dir 一个选项
 require('nvim-treesitter').setup()
 
