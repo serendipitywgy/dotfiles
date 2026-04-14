@@ -74,10 +74,6 @@ local specs = {
     -- git
     { src = "https://github.com/lewis6991/gitsigns.nvim" },
 
-    -- leetcode
-    { src = "https://github.com/kawre/leetcode.nvim" },
-    { src = "https://github.com/nvim-lua/plenary.nvim" },
-
     -- Markdown 渲染
     { src = "https://github.com/MeanderingProgrammer/render-markdown.nvim" },
     { src = "https://github.com/3rd/image.nvim" },
