@@ -1,10 +1,4 @@
--- Mini
-require("mini.ai").setup({
-    mappings = {
-        goto_left = "[",
-        got_right = "]",
-    },
-})
+-- mini.icons 需要在启动时立即加载（被 bufferline、heirline 等依赖）
 require("mini.icons").setup({
     style = "glyph",
     file = {
@@ -17,17 +11,29 @@ require("mini.icons").setup({
         toml = { glyph = "󱄽", hl = "MiniIconsOrange" },
     },
 })
-require("mini.surround").setup({
-    mappings = {
-        add = "sa",      -- Add surrounding in Normal and Visual modes
-        delete = "sd",   -- Delete surrounding
-        find = "sf",     -- Find surrounding (to the right)
-        find_left = "sF", -- Find surrounding (to the left)
-        highlight = "sh", -- Highlight surrounding
-        replace = "sr",  -- Replace surrounding
-        update_n_lines = "sn", -- Update `n_lines`
 
-        suffix_last = "l", -- Suffix to search with "prev" method
-        suffix_next = "n", -- Suffix to search with "next" method
-    },
+-- mini.ai / mini.surround 首次进入 buffer 时才需要
+vim.api.nvim_create_autocmd("BufReadPost", {
+    once = true,
+    callback = function()
+        require("mini.ai").setup({
+            mappings = {
+                goto_left = "[",
+                got_right = "]",
+            },
+        })
+        require("mini.surround").setup({
+            mappings = {
+                add = "sa",
+                delete = "sd",
+                find = "sf",
+                find_left = "sF",
+                highlight = "sh",
+                replace = "sr",
+                update_n_lines = "sn",
+                suffix_last = "l",
+                suffix_next = "n",
+            },
+        })
+    end,
 })
