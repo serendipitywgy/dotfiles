@@ -40,7 +40,6 @@
         ├── flash.lua
         ├── autopairs.lua
         ├── cmake.lua
-        ├── leetcode.lua
         ├── render-markdown.lua
         ├── auto-session.lua
         ├── vim-tmux-navigator.lua
@@ -494,7 +493,6 @@ init.lua          ← 极简入口，仅做 leader 设置 + 4 个 require
 |------|------|
 | **auto-session** | 自动保存/恢复 session，`<leader>ws` 保存，`<leader>wr` 搜索 |
 | **cmake-tools.nvim** | CMake 工作流集成，`<leader>c` 前缀快捷键 |
-| **leetcode.nvim** | 在 nvim 中刷 LeetCode，默认语言 C++，中文站 |
 | **render-markdown.nvim** | Markdown 美化渲染，懒加载于 FileType markdown |
 | **image.nvim** | Markdown 中内嵌图片渲染（kitty 后端） |
 | **windsurf.vim** | Codeium/Windsurf AI 代码补全（`<C-g>` 接受） |
