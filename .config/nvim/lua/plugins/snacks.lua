@@ -2,36 +2,105 @@
 require("snacks").setup({
     bigfile = { enabled = true },
     zen = { enabled = true },
-    -- dashboard = {
-    --     sections = {
-    --         { section = "header" },
-    --         {
-    --             pane = 2,
-    --             section = "terminal",
-    --             cmd = "colorscript -e square",
-    --             height = 5,
-    --             padding = 1,
-    --         },
-    --         { section = "keys",  gap = 1,    padding = 1 },
-    --         { pane = 2,          icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
-    --         { pane = 2,          icon = " ", title = "Projects",     section = "projects",     indent = 2, padding = 1 },
-    --         {
-    --             pane = 2,
-    --             icon = " ",
-    --             title = "Git Status",
-    --             section = "terminal",
-    --             enabled = function()
-    --                 return Snacks.git.get_root() ~= nil
-    --             end,
-    --             cmd = "git status --short --branch --renames",
-    --             height = 5,
-    --             padding = 1,
-    --             ttl = 5 * 60,
-    --             indent = 3,
-    --         },
-    --         { section = "startup" },
-    --     },
-    -- },
+    dashboard = {
+        sections = {
+            -- 左栏：logo + 快捷键
+            {
+                pane = 1,
+                section = "header",
+            },
+            {
+                pane = 1,
+                section = "keys",
+                gap = 1,
+                padding = 1,
+            },
+            -- 右栏：git log
+            {
+                pane = 2,
+                icon = " ",
+                title = "Git Log",
+                section = "terminal",
+                cmd = "git log --oneline --graph --color=always -10 2>/dev/null || echo '  (no git repo)'",
+                height = 10,
+                padding = 1,
+                ttl = 60,
+                indent = 2,
+            },
+            -- 右栏：项目列表
+            {
+                pane = 2,
+                icon = " ",
+                title = "Projects",
+                section = "projects",
+                indent = 2,
+                padding = 1,
+                limit = 5,
+                session = false,
+                action = function(dir)
+                    vim.fn.chdir(dir)
+                    local ok, auto_session = pcall(require, "auto-session")
+                    if ok and auto_session.session_exists_for_cwd() then
+                        auto_session.restore_session()
+                    else
+                        Snacks.picker.files({ cwd = dir })
+                    end
+                end,
+            },
+            -- 右栏：最近文件
+            {
+                pane = 2,
+                icon = " ",
+                title = "Recent Files",
+                section = "recent_files",
+                indent = 2,
+                padding = 1,
+                limit = 5,
+            },
+        },
+
+        -- "                                   ",
+        -- "         ║    ║    ║               ",
+        -- "         ║    ║    ║               ",
+        -- "    ══════╩════╩════╩══════         ",
+        -- "         ╔══════════╗              ",
+        -- "         ║          ║              ",
+        -- "         ╠══════════╣              ",
+        -- "         ║          ║              ",
+        -- "         ╚══════════╝              ",
+        -- "           ╲      ╱                ",
+        -- "            ╲    ╱                 ",
+        -- "                                   ",
+        -- "        「 覔 · 寻觅 」             ",
+        -- "                                   ",
+        preset = {
+            header = table.concat({
+                "                                   ",
+                "         ║    ║    ║               ",
+                "         ║    ║    ║               ",
+                "    ══════╩════╩════╩══════         ",
+                "         ╔══════════╗              ",
+                "         ║          ║              ",
+                "         ╠══════════╣              ",
+                "         ║          ║              ",
+                "         ╚══════════╝              ",
+                "           ╲      ╱                ",
+                "            ╲    ╱                 ",
+                "                                   ",
+                "        「 古法编程 」             ",
+                "                                   ",
+            }, "\n"),
+            keys = {
+                { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.picker.files()" },
+                { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
+                { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.picker.recent()" },
+                { icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.picker.grep()" },
+                { icon = " ", key = "s", desc = "Sessions", action = ":AutoSession search" },
+                { icon = "󰒲 ", key = "u", desc = "Update Plugins", action = ":PackUpdate" },
+                { icon = " ", key = "q", desc = "Quit", action = ":qa" },
+            },
+        },
+    },
     explorer = { enabled = false, replace_netrw = true },
     indent = {
         enabled = true,
