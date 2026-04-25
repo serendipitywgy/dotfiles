@@ -37,6 +37,29 @@ require("snacks").setup({
                 padding = 1,
                 limit = 5,
                 session = false,
+                dirs = function()
+                    local sessions_dir = vim.fn.stdpath("data") .. "/sessions"
+                    local dirs = {}
+                    local seen = {}
+                    local files = vim.fn.glob(sessions_dir .. "/*.vim", false, true)
+                    table.sort(files, function(a, b)
+                        return vim.fn.getftime(a) > vim.fn.getftime(b)
+                    end)
+                    for _, f in ipairs(files) do
+                        local name = vim.fn.fnamemodify(f, ":t:r")
+                        -- percent decode
+                        local decoded = name:gsub("%%(%x%x)", function(h)
+                            return string.char(tonumber(h, 16))
+                        end)
+                        -- strip branch suffix (|branch-name)
+                        local dir = decoded:match("^([^|]+)") or decoded
+                        if not seen[dir] and vim.fn.isdirectory(dir) == 1 then
+                            seen[dir] = true
+                            table.insert(dirs, dir)
+                        end
+                    end
+                    return dirs
+                end,
                 action = function(dir)
                     vim.fn.chdir(dir)
                     local ok, auto_session = pcall(require, "auto-session")
