@@ -4,7 +4,9 @@ require("mason").setup()
 -- 配置 mason-lspconfig：自动安装以下 LSP 服务器
 -- 每次启动 nvim 会自动检查并安装未安装的服务器
 require("mason-lspconfig").setup({
-    ensure_installed = { "clangd", "pyright", "cmake", "bashls", "jsonls", "lua_ls", "qmlls" },
+    -- ensure_installed = { "clangd", "pyright", "cmake", "bashls", "jsonls", "lua_ls", "qmlls" },
+
+    ensure_installed = { "clangd", "pyright", "bashls", "jsonls", "lua_ls", "qmlls" },
 })
 
 -- Lua LSP 配置 (lua_ls)
@@ -25,10 +27,22 @@ vim.lsp.config('lua_ls', {
 
 -- 启用 LSP 服务器
 -- vim.lsp.enable 会根据文件类型自动启动对应的 LSP
-for _, server in ipairs({ "clangd", "pyright", "cmake", "bashls", "jsonls", "lua_ls", "qmlls" }) do
-    -- vim.lsp.config(server, {})
-    vim.lsp.enable(server, {})
+for _, server in ipairs({ "clangd", "pyright", "bashls", "jsonls", "lua_ls", "qmlls" }) do
+    vim.lsp.enable(server)
 end
+
+-- 配置 neocmakelsp (替代 cmake-language-server，无 Python 版本问题)
+vim.lsp.config('neocmake', {
+    cmd = { vim.fn.stdpath('data') .. '/mason/bin/neocmakelsp', 'stdio' },
+    filetypes = { 'cmake' },
+    root_markers = { '.git', 'build' },
+    init_options = {
+        format = { enable = true },
+        lint = { enable = true },
+    },
+})
+
+vim.lsp.enable('neocmake')
 
 -- 配置 LSP 诊断信息的显示样式
 -- 包括虚拟文本、浮动窗口、严重程度排序和图标
@@ -72,7 +86,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         -- [Keymaps] LSP 相关快捷键
         -- 格式化代码
         vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format)
--- 跳转到定义 (gd)
+        -- 跳转到定义 (gd)
         -- 使用 snacks picker 显示所有定义位置
         vim.keymap.set("n", "gd", function()
             local params = vim.lsp.util.make_position_params(0, "utf-8")
