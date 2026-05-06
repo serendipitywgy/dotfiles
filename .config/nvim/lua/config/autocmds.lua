@@ -236,6 +236,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 
 
+-- 禁止自动延续注释（回车或 o/O 换行后不自动插入注释符）
+vim.api.nvim_create_autocmd("BufEnter", {
+    group = augroup("no_auto_comment"),
+    callback = function()
+        vim.opt_local.formatoptions:remove({ "r", "o" })
+    end,
+})
+
 -- markdown的懒加载
 
 vim.api.nvim_create_autocmd("FileType", {
