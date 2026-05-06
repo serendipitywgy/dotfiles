@@ -153,7 +153,10 @@ require("snacks").setup({
         win = {
             input = {
                 keys = {
+                    -- 将搜索结果打开到 buffer（grep 结果用）
                     ["<c-e>"] = { "open_results_in_buffer", mode = { "n", "i" } },
+                    -- 在 buffer 列表中删除选中（或当前）buffer，支持 Tab 多选后批量删除
+                    ["<c-d>"] = { "delete_buffers", mode = { "n", "i" } },
                 },
             },
         },
@@ -165,6 +168,17 @@ require("snacks").setup({
                     items = picker:items()
                 end
                 require("config.utils").open_grep_results(items)
+            end,
+            -- 批量删除 buffer：Tab 多选后 <C-d> 一次性关闭，无多选则只关闭当前条目
+            delete_buffers = function(picker)
+                local items = picker:selected()
+                if #items == 0 then
+                    items = { picker:current() }
+                end
+                for _, item in ipairs(items) do
+                    Snacks.bufdelete(item.buf)
+                end
+                picker:find()
             end,
         },
     },
