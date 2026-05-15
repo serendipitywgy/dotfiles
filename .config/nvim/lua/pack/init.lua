@@ -30,7 +30,7 @@ vim.api.nvim_create_user_command("PackUpdate", function(opts)
 end, {
 	nargs = "*",                -- 支持 0 到多个参数
 	complete = get_plugin_names, -- 绑定补全函数
-	desc = "Update specified or all plugins",
+	desc = "更新指定或全部插件",
 })
 
 -- :PackStatus 命令查看插件当前状态和版本
@@ -40,7 +40,7 @@ vim.api.nvim_create_user_command("PackStatus", function(opts)
 end, {
 	nargs = "*",
 	complete = get_plugin_names,
-	desc = "Check plugin status without downloading",
+	desc = "离线查看插件状态",
 })
 
 -- ==============================================================

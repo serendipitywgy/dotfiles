@@ -46,7 +46,7 @@ vim.api.nvim_create_autocmd({ 'BufReadPre', 'BufReadPost' }, {
 
         -- 3. 注册按键
         local set = vim.keymap.set
-        set("n", "<leader>bp", ":BufferLinePick<CR>", { silent = true, desc = "Pick buffer" })
-        set("n", "<leader>bc", ":BufferLinePickClose<CR>", { silent = true, desc = "Pick close" })
+        set("n", "<leader>bp", ":BufferLinePick<CR>", { silent = true, desc = "选择缓冲区" })
+        set("n", "<leader>bc", ":BufferLinePickClose<CR>", { silent = true, desc = "选择关闭" })
     end,
 })

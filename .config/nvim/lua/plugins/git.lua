@@ -18,30 +18,30 @@ vim.api.nvim_create_autocmd("BufReadPost", {
                 -- 按键映射（与原配置一致）
                 map("n", "]h",
                     function() if vim.wo.diff then vim.cmd.normal({ "]h", bang = true }) else gitsigns.nav_hunk("next") end end,
-                    { desc = "[Git] Next hunk" })
+                    { desc = "[Git] 下一个块" })
                 map("n", "]H",
                     function() if vim.wo.diff then vim.cmd.normal({ "]H", bang = true }) else gitsigns.nav_hunk("last") end end,
-                    { desc = "[Git] Last hunk" })
+                    { desc = "[Git] 最后一个块" })
                 map("n", "[h",
                     function() if vim.wo.diff then vim.cmd.normal({ "[h", bang = true }) else gitsigns.nav_hunk("prev") end end,
-                    { desc = "[Git] Prev hunk" })
+                    { desc = "[Git] 上一个块" })
                 map("n", "[H",
                     function() if vim.wo.diff then vim.cmd.normal({ "[H", bang = true }) else gitsigns.nav_hunk("first") end end,
-                    { desc = "[Git] First hunk" })
-                map("n", "<leader>ggs", gitsigns.stage_hunk, { desc = "[Git] Stage hunk" })
+                    { desc = "[Git] 第一个块" })
+                map("n", "<leader>ggs", gitsigns.stage_hunk, { desc = "[Git] 暂存块" })
                 map("v", "<leader>ggs", function() gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") }) end,
-                    { desc = "[Git] Stage hunk (Visual)" })
-                map("n", "<leader>ggr", gitsigns.reset_hunk, { desc = "[Git] Reset hunk" })
+                    { desc = "[Git] 暂存块 (可视)" })
+                map("n", "<leader>ggr", gitsigns.reset_hunk, { desc = "[Git] 重置块" })
                 map("v", "<leader>ggr", function() gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") }) end,
-                    { desc = "[Git] Reset hunk (Visual)" })
-                map("n", "<leader>ggS", gitsigns.stage_buffer, { desc = "[Git] Stage buffer" })
-                map("n", "<leader>ggR", gitsigns.reset_buffer, { desc = "[Git] Reset buffer" })
-                map("n", "<leader>ggp", gitsigns.preview_hunk, { desc = "[Git] Preview hunk" })
-                map("n", "<leader>ggP", gitsigns.preview_hunk_inline, { desc = "[Git] Preview hunk inline" })
+                    { desc = "[Git] 重置块 (可视)" })
+                map("n", "<leader>ggS", gitsigns.stage_buffer, { desc = "[Git] 暂存缓冲区" })
+                map("n", "<leader>ggR", gitsigns.reset_buffer, { desc = "[Git] 重置缓冲区" })
+                map("n", "<leader>ggp", gitsigns.preview_hunk, { desc = "[Git] 预览块" })
+                map("n", "<leader>ggP", gitsigns.preview_hunk_inline, { desc = "[Git] 内联预览块" })
                 map("n", "<leader>ggQ", function() gitsigns.setqflist("all") end,
-                    { desc = "[Git] Show diffs (ALL) in qflist" })
-                map("n", "<leader>ggq", gitsigns.setqflist, { desc = "[Git] Show diffs in qflist" })
-                map({ "o", "x" }, "ih", gitsigns.select_hunk, { desc = "[Git] Current hunk" })
+                    { desc = "[Git] 显示所有差异" })
+                map("n", "<leader>ggq", gitsigns.setqflist, { desc = "[Git] 显示差异" })
+                map({ "o", "x" }, "ih", gitsigns.select_hunk, { desc = "[Git] 当前块" })
                 -- snacks 插件相关 toggle
                 require("snacks")
                     .toggle({
@@ -90,7 +90,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
         -- 按键映射
         vim.keymap.set("n", "<leader>to", function()
             require("mini.diff").toggle_overlay(vim.api.nvim_get_current_buf())
-        end, { desc = "[Mini.Diff] Toggle diff overlay" })
+        end, { desc = "[Mini.Diff] 切换差异覆盖" })
     end,
 })
 

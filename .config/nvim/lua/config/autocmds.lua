@@ -15,7 +15,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
                     vim.lsp.buf.rename(new_name)
                 end
             end)
-        end, { buffer = bufnr, desc = "LSP Rename" })
+        end, { buffer = bufnr, desc = "LSP 重命名" })
     end,
 })
 -- 全文件匹配重命名
@@ -28,7 +28,7 @@ vim.keymap.set("n", "<leader>rf", function()
             vim.cmd(cmd)
         end
     end)
-end, { desc = "Rename in file" })
+end, { desc = "文件内重命名" })
 -- 在这里可以添加其他自动命令
 -- Check if we need to reload the file when it changed
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
@@ -105,7 +105,7 @@ vim.api.nvim_create_autocmd("FileType", {
             end, {
                 buffer = event.buf,
                 silent = true,
-                desc = "Quit buffer",
+                desc = "关闭缓冲区",
             })
         end)
     end,
@@ -194,7 +194,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(event)
         vim.keymap.set('n', '<leader>sd', function()
             vim.diagnostic.open_float { source = true }
-        end, { buffer = event.buf, desc = 'LSP: Show Diagnostic' })
+        end, { buffer = event.buf, desc = 'LSP: 显示诊断' })
 
         vim.keymap.set(
             'n',
@@ -211,7 +211,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
                     end
                 end
             end)(),
-            { buffer = event.buf, desc = 'LSP: Toggle diagnostics display' }
+            { buffer = event.buf, desc = 'LSP: 切换诊断显示' }
         )
 
 
@@ -229,7 +229,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
             -- vim.lsp.inlay_hint.enable()
             vim.keymap.set('n', '<leader>th', function()
                 vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
-            end, { buffer = event.buf, desc = 'LSP: Toggle Inlay Hints' })
+            end, { buffer = event.buf, desc = 'LSP: 切换内联提示' })
         end
     end
 })

@@ -59,7 +59,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
             vim.keymap.set('n', '<leader>th', function()
                 vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
-            end, { buffer = event.buf, desc = 'LSP: Toggle Inlay Hints' })
+            end, { buffer = event.buf, desc = 'LSP: 切换内联提示' })
         end
 
         -- [Folding] 代码折叠
@@ -83,7 +83,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
                     require("snacks").picker.lsp_definitions()
                 end
             end)
-        end, { buffer = event.buf, desc = "LSP: Goto Definition" })
+        end, { buffer = event.buf, desc = "LSP: 跳转到定义" })
 
         -- 带有智能分屏的跳转到定义 (gD)
         -- 根据窗口大小自动选择横向或纵向分屏
@@ -101,7 +101,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
             end
 
             vim.lsp.buf.definition()
-        end, { buffer = event.buf, desc = "LSP: Goto Definition (split)" })
+        end, { buffer = event.buf, desc = "LSP: 跳转到定义 (分屏)" })
 
         -- [f] 跳转到当前函数的开始位置
         local function jump_to_current_function_start()
@@ -133,7 +133,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
                 end
             end
         end
-        vim.keymap.set("n", "[f", jump_to_current_function_start, { desc = "Jump to start of current function" })
+        vim.keymap.set("n", "[f", jump_to_current_function_start, { desc = "跳转到当前函数开头" })
 
         -- ]f] 跳转到当前函数的结束位置
         local function jump_to_current_function_end()
@@ -166,7 +166,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
                 end
             end
         end
-        vim.keymap.set("n", "]f", jump_to_current_function_end, { desc = "Jump to end of current function" })
+        vim.keymap.set("n", "]f", jump_to_current_function_end, { desc = "跳转到当前函数结尾" })
     end,
 })
 

@@ -27,7 +27,7 @@ require("oil").setup({
         -- ["<leader>e"] = "actions.close",
         -- ["<BS>"] = "actions.parent",
         ["gd"] = {
-            desc = "Toggle file detail view",
+            desc = "切换文件详情视图",
             callback = function()
                 detail = not detail
                 if detail then

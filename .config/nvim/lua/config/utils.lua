@@ -92,11 +92,11 @@ M.open_grep_results = function(items)
         -- open file in a new tab, keeping result tab intact
         vim.cmd.edit(filepath)
         vim.api.nvim_win_set_cursor(0, { lnum, col })
-    end, { buffer = buf, desc = "Jump to result" })
+    end, { buffer = buf, desc = "跳转到结果" })
 
     vim.keymap.set("n", "q", function()
         vim.cmd("close")
-    end, { buffer = buf, desc = "Close results" })
+    end, { buffer = buf, desc = "关闭结果" })
 end
 
 M.reset_overseerlist_width = function()

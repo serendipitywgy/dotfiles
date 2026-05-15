@@ -13,29 +13,29 @@ end
 vim.keymap.set("n", "<leader>xx", function()
     if not ensure_setup() then return end
     trouble.toggle("diagnostics")
-end, { desc = "Diagnostics (Trouble)" })
+end, { desc = "诊断列表 (Trouble)" })
 
 vim.keymap.set("n", "<leader>xX", function()
     if not ensure_setup() then return end
     trouble.toggle("diagnostics", { filter = { buf = 0 } })
-end, { desc = "Buffer Diagnostics (Trouble)" })
+end, { desc = "缓冲区诊断 (Trouble)" })
 
 vim.keymap.set("n", "<leader>cs", function()
     if not ensure_setup() then return end
     trouble.toggle("symbols", { focus = false })
-end, { desc = "Symbols (Trouble)" })
+end, { desc = "符号列表 (Trouble)" })
 
 vim.keymap.set("n", "<leader>cl", function()
     if not ensure_setup() then return end
     trouble.toggle("lsp", { focus = false, win = { position = "right" } })
-end, { desc = "LSP (Trouble)" })
+end, { desc = "LSP 参考 (Trouble)" })
 
 vim.keymap.set("n", "<leader>xL", function()
     if not ensure_setup() then return end
     trouble.toggle("loclist")
-end, { desc = "Location List (Trouble)" })
+end, { desc = "位置列表 (Trouble)" })
 
 vim.keymap.set("n", "<leader>xQ", function()
     if not ensure_setup() then return end
     trouble.toggle("qflist")
-end, { desc = "Quickfix List (Trouble)" })
+end, { desc = "Quickfix 列表 (Trouble)" })

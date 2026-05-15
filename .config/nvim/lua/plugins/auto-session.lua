@@ -1,5 +1,5 @@
-vim.keymap.set("n", "<leader>ws", "<cmd>AutoSession save<CR>", { desc = "Save session" })
-vim.keymap.set("n", "<leader>wr", "<cmd>AutoSession search<CR>", { desc = "Search session" })
+vim.keymap.set("n", "<leader>ws", "<cmd>AutoSession save<CR>", { desc = "保存会话" })
+vim.keymap.set("n", "<leader>wr", "<cmd>AutoSession search<CR>", { desc = "搜索会话" })
 
 vim.api.nvim_create_autocmd("VimEnter", {
     once = true,

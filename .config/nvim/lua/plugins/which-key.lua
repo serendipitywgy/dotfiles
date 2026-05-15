@@ -20,4 +20,4 @@ require("which-key").setup({
 -- 查看当前 buffer 的本地快捷键
 vim.keymap.set({ "n", "x", "o" }, "S", function()
     require("which-key").show({ global = false })
-end, { desc = "Buffer Local Keymaps (which-key)" })
+end, { desc = "缓冲区本地快捷键" })
