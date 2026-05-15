@@ -52,6 +52,7 @@ local specs = {
 
     -- which-key
     { src = "https://github.com/folke/which-key.nvim" },
+    { src = "https://github.com/folke/trouble.nvim" },
 
     -- autopairs / surround
     { src = "https://github.com/windwp/nvim-autopairs" },
