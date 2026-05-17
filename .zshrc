@@ -142,14 +142,8 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-# 检查 neovide 是否可用
-if command -v neovide >/dev/null 2>&1; then
-  alias v='neovide'
-  alias V='neovide'
-else
-  alias v='nvim'
-  alias V='nvim'
-fi
+alias v='nvim'
+alias V='nvim'
 # alias vim=nvim
 source ~/.env
 export DEEPSEEK_KEY=$DEEPSEEK_TOKEN
