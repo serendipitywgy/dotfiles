@@ -134,10 +134,6 @@
       "rev": "21f5324",
       "src": "https://github.com/nvim-neotest/nvim-nio"
     },
-    "nvim-surround": {
-      "rev": "9291040de8cd8a4439eb64c441e8d5d2bf884a5a",
-      "src": "https://github.com/kylechui/nvim-surround"
-    },
     "nvim-treesitter": {
       "rev": "4916d6592ede8c07973490d9322f187e07dfefac",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
