@@ -28,7 +28,6 @@ ask "安装 Neovim"                 && bash "$HOME/.config/yadm/bootstrap.d/03-n
 ask "安装 zsh + p10k + zim"       && bash "$HOME/.config/yadm/bootstrap.d/04-zsh.sh"
 ask "安装 tmux + TPM"             && bash "$HOME/.config/yadm/bootstrap.d/05-tmux.sh"
 ask "安装 kitty"                  && bash "$HOME/.config/yadm/bootstrap.d/06-kitty.sh"
-ask "安装 shell-color-scripts"    && bash "$HOME/.config/yadm/bootstrap.d/07-shell-tools.sh"
 
 echo ""
 echo "所有 bootstrap 脚本执行完成！"
