@@ -3,7 +3,6 @@
 -- ==============================================================
 local specs = {
     -- 主题 / 图标
-    { src = "https://github.com/ibhagwan/fzf-lua" },
     { src = "https://github.com/catppuccin/nvim" },
     { src = "https://github.com/AstroNvim/astrotheme" },
     { src = "https://github.com/folke/tokyonight.nvim" },
