@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 
+if fc-list | grep -qi "JetBrainsMono\|JetBrains.*Mono" &>/dev/null; then
+    echo "JetBrains Mono 字体已安装，跳过。"
+    exit 0
+fi
+
 echo "下载并安装 JetBrains Mono 字体..."
 FONT_DIR="/usr/local/share/fonts/JetBrainsMono"
 FONT_ZIP="JetBrainsMono.zip"
