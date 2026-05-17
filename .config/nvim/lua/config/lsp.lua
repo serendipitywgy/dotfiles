@@ -69,23 +69,37 @@ vim.api.nvim_create_autocmd("LspAttach", {
         local client = assert(vim.lsp.get_client_by_id(event.data.client_id))
 
         -- [Inlay Hint] 内联提示
-        -- 启用/禁用代码中的类型提示（如参数类型、返回值类型）
         if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
             vim.keymap.set('n', '<leader>th', function()
                 vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
             end, { buffer = event.buf, desc = 'LSP: 切换内联提示' })
         end
 
-        -- [Folding] 代码折叠
-        -- 使用 LSP 提供的信息来折叠代码（如函数、类、注释块）
+        -- [Diagnostics Toggle] 切换诊断显示
+        do
+            local diag_status = 1
+            vim.keymap.set('n', '<leader>cd', function()
+                if diag_status == 1 then
+                    diag_status = 0
+                    vim.diagnostic.config { underline = false, virtual_text = false, signs = false, update_in_insert = false }
+                else
+                    diag_status = 1
+                    vim.diagnostic.config { underline = true, virtual_text = true, signs = true, update_in_insert = true }
+                end
+            end, { buffer = event.buf, desc = 'LSP: 切换诊断显示' })
+        end
+
+        -- [Folding] 代码折叠（优先 LSP，回退 Treesitter）
         if client and client:supports_method 'textDocument/foldingRange' then
-            local win = vim.fn.win_getid()
-            vim.wo[win].foldexpr = 'v:lua.vim.lsp.foldexpr()'
+            vim.o.foldmethod = 'expr'
+            vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+            local win = vim.api.nvim_get_current_win()
+            vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
         end
 
         -- [Keymaps] LSP 相关快捷键
-        -- 格式化代码
-        vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format)
+        -- 格式化代码 (keymap中已经实现)
+
         -- 跳转到定义 (gd)
         -- 使用 snacks picker 显示所有定义位置
         vim.keymap.set("n", "gd", function()

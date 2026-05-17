@@ -187,54 +187,6 @@ vim.api.nvim_create_autocmd('BufWritePre', {
         end
     end,
 })
---lsp的一些自动命令
-
-vim.api.nvim_create_autocmd('LspAttach', {
-    group = vim.api.nvim_create_augroup('lsp-attach', { clear = true }),
-    callback = function(event)
-        vim.keymap.set('n', '<leader>sd', function()
-            vim.diagnostic.open_float { source = true }
-        end, { buffer = event.buf, desc = 'LSP: 显示诊断' })
-
-        vim.keymap.set(
-            'n',
-            '<leader>cd',
-            (function()
-                local diag_status = 1 -- 1 is show; 0 is hide
-                return function()
-                    if diag_status == 1 then
-                        diag_status = 0
-                        vim.diagnostic.config { underline = false, virtual_text = false, signs = false, update_in_insert = false }
-                    else
-                        diag_status = 1
-                        vim.diagnostic.config { underline = true, virtual_text = true, signs = true, update_in_insert = true }
-                    end
-                end
-            end)(),
-            { buffer = event.buf, desc = 'LSP: 切换诊断显示' }
-        )
-
-
-        local client = vim.lsp.get_client_by_id(event.data.client_id)
-        if client and client:supports_method 'textDocument/foldingRange' then
-            vim.o.foldmethod = 'expr'
-            -- Default to treesitter folding
-            vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-            local win = vim.api.nvim_get_current_win()
-            vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
-        end
-
-        -- Inlay hint
-        if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
-            -- vim.lsp.inlay_hint.enable()
-            vim.keymap.set('n', '<leader>th', function()
-                vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
-            end, { buffer = event.buf, desc = 'LSP: 切换内联提示' })
-        end
-    end
-})
-
-
 
 -- 禁止自动延续注释（回车或 o/O 换行后不自动插入注释符）
 vim.api.nvim_create_autocmd("BufEnter", {

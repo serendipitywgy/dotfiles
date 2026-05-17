@@ -30,7 +30,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
         set_keymaps("n", { "<leader>cg" }, "<cmd>CMakeGenerate<cr>", { desc = "CMake: 配置" })
         set_keymaps("n", { "<leader>cb" }, "<cmd>CMakeBuild<cr>", { desc = "CMake: 构建" })
         set_keymaps("n", { "<leader>cr" }, "<cmd>CMakeRun<cr>", { desc = "CMake: 构建并运行" })
-        set_keymaps("n", { "<leader>cd" }, "<cmd>CMakeQuickRun<cr>", { desc = "CMake: 构建并调试" })
+        set_keymaps("n", { "<leader>cD" }, "<cmd>CMakeQuickRun<cr>", { desc = "CMake: 构建并调试" })
         set_keymaps("n", { "<leader>ct" }, "<cmd>CMakeSelectBuildType<cr>", { desc = "CMake: 选择构建类型" })
         set_keymaps("n", { "<leader>cx" }, "<cmd>CMakeSelectLaunchTarget<cr>", { desc = "CMake: 选择启动目标" })
         set_keymaps("n", { "<leader>cv" }, "<cmd>CMakeSelectBuildPreset<cr>", { desc = "CMake: 选择变体" })

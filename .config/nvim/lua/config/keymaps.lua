@@ -38,11 +38,8 @@ set_keymaps("n", { "<S-h>" }, "<cmd>bprevious<cr>", { desc = "上一个缓冲区
 set_keymaps("n", { "<S-l>" }, "<cmd>bnext<cr>", { desc = "下一个缓冲区" })
 set_keymaps("n", { "<leader>bD" }, "<cmd>:bd<cr>", { desc = "删除缓冲区和窗口" })
 
--- lazy
--- set_keymaps("n", { "<leader>l" }, "<cmd>Lazy<cr>", { desc = "Lazy" })
 
 --lsp formatting
--- set_keymaps({ "n" }, { "<leader>lf" }, function() vim.lsp.buf.format() end, { desc = "lsp格式化" })
 
 set_keymaps({ "n", "v" }, { "<leader>lf" }, function()
     -- 获取当前模式
@@ -97,4 +94,3 @@ set_keymaps({ "v", "n" }, { "<leader>ch" }, "<cmd>LspClangdSwitchSourceHeader<CR
 set_keymaps("n", { "<Esc>" }, "<cmd>nohlsearch<CR>", { silent = true })
 
 --snacks的快捷键 → 已迁移到 lua/plugins/snacks.lua
-
