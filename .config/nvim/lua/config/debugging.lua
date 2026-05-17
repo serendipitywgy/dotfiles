@@ -224,7 +224,7 @@ end
 
 local custom_utils = require 'config.utils'
 -- UI responsiveness
-local dap, dapui = require 'dap', require 'dapui'
+local dapui = require 'dapui'
 dap.listeners.before.attach.dapui_config = function()
     dapui.open({ reset = true })
     custom_utils.reset_overseerlist_width()

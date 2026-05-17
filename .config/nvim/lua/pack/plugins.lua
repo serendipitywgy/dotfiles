@@ -56,7 +56,7 @@ local specs = {
 
     -- autopairs / surround
     { src = "https://github.com/windwp/nvim-autopairs" },
-    { src = "https://github.com/kylechui/nvim-surround" },
+
 
     -- bufferline
     { src = "https://github.com/akinsho/bufferline.nvim" },
