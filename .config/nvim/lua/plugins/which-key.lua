@@ -8,8 +8,15 @@ require("which-key").setup({
         separator = "│",
     },
     spec = {
-        { "<leader>s", group = "<Snacks>" },
-        { "<leader>t", group = "<Snacks> Toggle" },
+        { "<leader>b", group = "buffer" },
+        { "<leader>c", group = "cmake" },
+        { "<leader>f", group = "find" },
+        { "<leader>g", group = "git" },
+        { "<leader>l", group = "lsp" },
+        { "<leader>s", group = "search" },
+        { "<leader>t", group = "toggle" },
+        { "<leader>u", group = "ui" },
+        { "<leader>x", group = "diagnostics" },
     },
     expand = function(node)
         return not node.desc
