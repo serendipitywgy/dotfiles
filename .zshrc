@@ -145,7 +145,7 @@ source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 alias v='nvim'
 alias V='nvim'
 # alias vim=nvim
-source ~/.env
+[[ -f ~/.env ]] && source ~/.env
 export DEEPSEEK_KEY=$DEEPSEEK_TOKEN
 export LLM_KEY=$GLM_TOKEN
 
@@ -162,9 +162,9 @@ function dv() {
     ddgr --unsafe -x --np $argv | v + "syntax on | set ft=rst wrap"
 }
 # Created by `pipx` on 2025-04-29 16:43:33
-export PATH="$PATH:/home/dreamer/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"
 
 
 # opencode
-export PATH=/home/dreamer/.opencode/bin:$PATH
+export PATH=$HOME/.opencode/bin:$PATH
 export EDITOR=nvim
