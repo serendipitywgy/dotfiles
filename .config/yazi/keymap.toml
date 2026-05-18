@@ -1,0 +1,23 @@
+#:schema https://yazi-rs.github.io/schemas/keymap.json
+
+[mgr]
+
+prepend_keymap = [
+	# 用 nvim 打开文件
+	{ on = "e", run = "open", desc = "用 $EDITOR 打开" },
+
+	# 快速跳转常用目录
+	{ on = [ "g", "p" ], run = "cd ~/projects",    desc = "跳转到 ~/projects" },
+	{ on = [ "g", "D" ], run = "cd ~/Downloads",   desc = "跳转到 ~/Downloads" },
+	{ on = [ "g", "C" ], run = "cd ~/.config",     desc = "跳转到 ~/.config" },
+
+	# 复制文件路径到剪贴板（wl-clipboard / xclip 自动适配）
+	{ on = [ "c", "p" ], run = "copy path",     desc = "复制文件完整路径" },
+	{ on = [ "c", "n" ], run = "copy filename", desc = "复制文件名" },
+
+	# 显示/隐藏隐藏文件（补充默认 . 键）
+	{ on = "<C-h>", run = "hidden toggle", desc = "切换隐藏文件显示" },
+
+	# 批量选择后解压
+	{ on = [ "e", "x" ], run = "plugin extract", desc = "解压选中文件" },
+]

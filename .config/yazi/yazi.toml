@@ -1,0 +1,66 @@
+#:schema https://yazi-rs.github.io/schemas/yazi.json
+
+[mgr]
+ratio          = [ 1, 4, 3 ]
+sort_by        = "alphabetical"
+sort_sensitive = false
+sort_reverse   = false
+sort_dir_first = true
+linemode       = "size"
+show_hidden    = false
+show_symlink   = true
+scrolloff      = 8
+
+[preview]
+wrap        = "no"
+tab_size    = 2
+max_width   = 600
+max_height  = 900
+image_delay = 30
+
+[opener]
+edit = [
+	{ run = "${EDITOR:-nvim} %s", desc = "$EDITOR", for = "unix", block = true },
+]
+play = [
+	{ run = "xdg-open %s1", desc = "Play", for = "linux", orphan = true },
+	{ run = "mediainfo %s1; echo 'Press enter to exit'; read _", block = true, desc = "Show media info", for = "unix" },
+]
+open = [
+	{ run = "xdg-open %s1", desc = "Open", for = "linux" },
+]
+reveal = [
+	{ run = "xdg-open %d1", desc = "Reveal", for = "linux" },
+	{ run = "clear; exiftool %s1; echo 'Press enter to exit'; read _", desc = "Show EXIF", for = "unix", block = true },
+]
+extract = [
+	{ run = "ya pub extract --list %s", desc = "Extract here" },
+]
+
+[open]
+rules = [
+	{ url = "*/", use = [ "edit", "open", "reveal" ] },
+	{ mime = "text/*", use = [ "edit", "reveal" ] },
+	{ mime = "image/*", use = [ "open", "reveal" ] },
+	{ mime = "{audio,video}/*", use = [ "play", "reveal" ] },
+	{ mime = "application/{json,ndjson,javascript,wine-extension-ini}", use = [ "edit", "reveal" ] },
+	{ mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", use = [ "extract", "reveal" ] },
+	{ mime = "inode/empty", use = [ "edit", "reveal" ] },
+	{ mime = "vfs/{absent,stale}", use = "download" },
+	{ url = "*", use = [ "open", "reveal" ] },
+]
+
+[tasks]
+file_workers    = 3
+plugin_workers  = 5
+fetch_workers   = 5
+preload_workers = 2
+process_workers = 5
+
+[input]
+cursor_blink = false
+
+[which]
+sort_by        = "none"
+sort_sensitive = false
+sort_reverse   = false
