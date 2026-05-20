@@ -95,3 +95,6 @@ function _G.custom_foldtext()
 end
 
 vim.opt.foldtext = 'v:lua.custom_foldtext()'
+
+-- quickfix/buffer 跳转优先复用已有窗口，避免意外新开 split
+vim.opt.switchbuf = "useopen,usetab"

@@ -21,7 +21,7 @@ local specs = {
     { src = "https://github.com/nvim-mini/mini.ai" },
     { src = "https://github.com/nvim-mini/mini.icons" },
     { src = "https://github.com/nvim-mini/mini.surround" },
-    { src = "https://github.com/echasnovski/mini.diff", version = vim.version.range("*") },
+    { src = "https://github.com/echasnovski/mini.diff",         version = vim.version.range("*") },
 
     -- tmux 导航（条件加载，此处统一下载）
     "https://github.com/christoomey/vim-tmux-navigator",
@@ -36,13 +36,13 @@ local specs = {
 
     -- 补全
     { src = "https://github.com/archie-judd/blink-cmp-words" },
-    { src = "https://github.com/saghen/blink.cmp", version = "v1.7.0" },
+    { src = "https://github.com/saghen/blink.cmp",                         version = "v1.7.0" },
 
     -- 快速跳转
     { src = "https://github.com/folke/flash.nvim" },
 
     -- Treesitter
-    { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter",          version = "main" },
     { src = "https://github.com/nvim-treesitter/nvim-treesitter-context" },
 
     -- noice
@@ -92,10 +92,16 @@ local specs = {
 
     -- 重命名增量预览
     { src = "https://github.com/smjonas/inc-rename.nvim" },
+
+    -- conan
+    { src = "https://github.com/serendipitywgy/nvim-conan" },
 }
 
 -- 禁用插件：不会加载，不会下载（新添加时），已在硬盘上不会被删除
-local disabled = {}
+-- nvim-conan 是本地开发软链接，由 plugins/conan.lua 手动加载，不走 vim.pack 管理
+local disabled = {
+    { src = "https://github.com/serendipitywgy/nvim-conan" },
+}
 
 -- 同步清理孤儿插件并注册禁用名单
 PackUtils.sync(specs, disabled)
