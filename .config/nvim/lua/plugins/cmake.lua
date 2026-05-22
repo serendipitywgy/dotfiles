@@ -13,7 +13,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
                     on_new_task = function(task)
                         task:subscribe("on_complete", function(t, status)
                             if status == "SUCCESS" then
-                                vim.schedule(function() t:dispose() end)
+                                vim.schedule(function() t:dispose(true) end)
                             end
                         end)
                         require("overseer").open({ enter = false, direction = "bottom" })
