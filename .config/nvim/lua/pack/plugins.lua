@@ -87,6 +87,9 @@ local specs = {
     -- CMake
     { src = "https://github.com/Civitasv/cmake-tools.nvim" },
 
+    -- 任务管理
+    { src = "https://github.com/stevearc/overseer.nvim" },
+
     -- AI 补全
     { src = "https://github.com/Exafunction/windsurf.vim" },
 
