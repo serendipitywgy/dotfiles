@@ -6,7 +6,7 @@ require("mason").setup()
 require("mason-lspconfig").setup({
     -- ensure_installed = { "clangd", "pyright", "cmake", "bashls", "jsonls", "lua_ls", "qmlls" },
 
-    ensure_installed = { "clangd", "pyright", "bashls", "jsonls", "lua_ls", "qmlls" },
+    ensure_installed = { "clangd", "pyright", "bashls", "jsonls", "lua_ls", "qmlls", "copilot" },
 })
 
 -- Lua LSP 配置 (lua_ls)
@@ -27,7 +27,7 @@ vim.lsp.config('lua_ls', {
 
 -- 启用 LSP 服务器
 -- vim.lsp.enable 会根据文件类型自动启动对应的 LSP
-for _, server in ipairs({ "clangd", "pyright", "bashls", "jsonls", "lua_ls", "qmlls" }) do
+for _, server in ipairs({ "clangd", "pyright", "bashls", "jsonls", "lua_ls", "qmlls", "copilot" }) do
     vim.lsp.enable(server)
 end
 

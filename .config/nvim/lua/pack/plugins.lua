@@ -90,8 +90,9 @@ local specs = {
     -- 任务管理
     { src = "https://github.com/stevearc/overseer.nvim" },
 
-    -- AI 补全
+    -- AI 补全 / Sidekick
     { src = "https://github.com/Exafunction/windsurf.vim" },
+    { src = "https://github.com/folke/sidekick.nvim" },
 
     -- 重命名增量预览
     { src = "https://github.com/smjonas/inc-rename.nvim" },

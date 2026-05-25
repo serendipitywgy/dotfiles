@@ -25,8 +25,15 @@ local function blink_cmp2()
             },
         },
         keymap = {
-            -- preset = "super-tab",
             preset = "super-tab",
+            ['<Tab>'] = {
+                "snippet_forward",
+                function()
+                    return require("sidekick").nes_jump_or_apply()
+                end,
+                "select_and_accept",
+                "fallback",
+            },
             ['<A-1>'] = { function(cmp) cmp.accept({ index = 1 }) end },
             ['<A-2>'] = { function(cmp) cmp.accept({ index = 2 }) end },
             ['<A-3>'] = { function(cmp) cmp.accept({ index = 3 }) end },
@@ -37,9 +44,6 @@ local function blink_cmp2()
             ['<A-8>'] = { function(cmp) cmp.accept({ index = 8 }) end },
             ['<A-9>'] = { function(cmp) cmp.accept({ index = 9 }) end },
             ['<A-0>'] = { function(cmp) cmp.accept({ index = 10 }) end },
-            -- 默认键- '<C-f>' '<C-b>'
-            -- ['<C-u>'] = { 'scroll_documentation_up', 'fallback' },
-            -- ['<C-b>'] = { 'scroll_documentation_down', 'fallback' },
         },
         signature = {
             enabled = true
