@@ -7,8 +7,14 @@ local function ensure_setup()
             sidekick.setup({
                 cli = {
                     mux = { backend = "tmux", enabled = true },
+                    win = {
+                        layout = "right",
+                        split = { width = 80 },
+                    },
                     tools = {
-                        claude = {},
+                        claude = {
+                            env = { TERM = "xterm-kitty" },
+                        },
                         opencode = {},
                     },
                 },
