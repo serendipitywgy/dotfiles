@@ -14,6 +14,7 @@ local function ensure_setup()
                     tools = {
                         claude = {
                             env = { TERM = "xterm-kitty" },
+                            native_scroll = true,
                         },
                         opencode = {},
                     },
