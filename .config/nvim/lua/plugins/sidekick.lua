@@ -16,7 +16,9 @@ local function ensure_setup()
                             env = { TERM = "xterm-kitty" },
                             native_scroll = true,
                         },
-                        opencode = {},
+                        opencode = {
+                            native_scroll = true,
+                        },
                     },
                 },
             })

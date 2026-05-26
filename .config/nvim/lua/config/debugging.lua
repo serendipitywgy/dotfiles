@@ -217,10 +217,6 @@ vim.list_extend(dap.configurations.python, {
 dap.configurations.qmt = dap.configurations.python
 
 require("nvim-dap-virtual-text").setup()
-local ok, noice = pcall(require, "noice")
-if ok then
-    noice.setup()
-end
 
 local custom_utils = require 'config.utils'
 -- UI responsiveness
