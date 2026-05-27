@@ -64,8 +64,8 @@ set_keymaps({ "n", "v" }, { "<leader>lf" }, function()
 end, { desc = "LSP格式化 (支持范围)" })
 -- quit
 set_keymaps("n", { "<leader>qq" }, "<cmd>wqa<cr>", { desc = "全部退出" })
-set_keymaps("n", { "<leader>w" }, "<cmd>w<cr>", { desc = "保存当前Buffer", nowait = true })
-set_keymaps("n", { "<leader>q" }, "<cmd>q<cr>", { desc = "退出当前Buffer", nowait = true }) -- nowait: 不延迟
+set_keymaps("n", { "<leader>w" }, "<cmd>w<cr>", { desc = "保存当前Buffer" })
+set_keymaps("n", { "<leader>q" }, "<cmd>q<cr>", { desc = "退出当前Buffer" })
 
 -- highlights under cursor
 set_keymaps("n", { "<leader>ui" }, vim.show_pos, { desc = "检查位置" })

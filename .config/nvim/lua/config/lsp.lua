@@ -25,6 +25,16 @@ vim.lsp.config('lua_ls', {
     },
 })
 
+-- Clangd 配置
+vim.lsp.config('clangd', {
+    cmd = {
+        'clangd',
+        '--background-index',
+        '--clang-tidy',
+        '--header-insertion=iwyu',
+    },
+})
+
 -- 启用 LSP 服务器
 -- vim.lsp.enable 会根据文件类型自动启动对应的 LSP
 for _, server in ipairs({ "clangd", "pyright", "bashls", "jsonls", "lua_ls", "qmlls", "copilot" }) do
@@ -77,15 +87,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
         -- [Diagnostics Toggle] 切换诊断显示
         do
-            local diag_status = 1
+            local diag_enabled = true
             vim.keymap.set('n', '<leader>cd', function()
-                if diag_status == 1 then
-                    diag_status = 0
-                    vim.diagnostic.config { underline = false, virtual_text = false, signs = false, update_in_insert = false }
-                else
-                    diag_status = 1
-                    vim.diagnostic.config { underline = true, virtual_text = true, signs = true, update_in_insert = true }
-                end
+                diag_enabled = not diag_enabled
+                vim.diagnostic.enable(diag_enabled)
             end, { buffer = event.buf, desc = 'LSP: 切换诊断显示' })
         end
 
@@ -134,9 +139,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
         -- [f] 跳转到当前函数的开始位置
         local function jump_to_current_function_start()
             local params = { textDocument = vim.lsp.util.make_text_document_params() }
-            local responses = vim.lsp.buf_request_sync(0, "textDocument/documentSymbol", params, 1000)
-            if not responses then return end
-
             local pos = vim.api.nvim_win_get_cursor(0)
             local line = pos[1] - 1
 
@@ -153,22 +155,21 @@ vim.api.nvim_create_autocmd("LspAttach", {
                 end
             end
 
-            for _, resp in pairs(responses) do
-                local sym = find_symbol(resp.result or {})
+            vim.lsp.buf_request(0, "textDocument/documentSymbol", params, function(_, result)
+                if not result then return end
+                local sym = find_symbol(result)
                 if sym and sym.range then
-                    vim.api.nvim_win_set_cursor(0, { sym.range.start.line + 1, 0 })
-                    return
+                    vim.schedule(function()
+                        vim.api.nvim_win_set_cursor(0, { sym.range.start.line + 1, 0 })
+                    end)
                 end
-            end
+            end)
         end
         vim.keymap.set("n", "[f", jump_to_current_function_start, { desc = "跳转到当前函数开头" })
 
         -- ]f] 跳转到当前函数的结束位置
         local function jump_to_current_function_end()
             local params = { textDocument = vim.lsp.util.make_text_document_params() }
-            local responses = vim.lsp.buf_request_sync(0, "textDocument/documentSymbol", params, 1000)
-            if not responses then return end
-
             local pos = vim.api.nvim_win_get_cursor(0)
             local line = pos[1] - 1
 
@@ -185,14 +186,15 @@ vim.api.nvim_create_autocmd("LspAttach", {
                 end
             end
 
-            for _, resp in pairs(responses) do
-                local sym = find_symbol(resp.result or {})
+            vim.lsp.buf_request(0, "textDocument/documentSymbol", params, function(_, result)
+                if not result then return end
+                local sym = find_symbol(result)
                 if sym and sym.range then
-                    -- jump to end of the symbol
-                    vim.api.nvim_win_set_cursor(0, { sym.range["end"].line + 1, 0 })
-                    return
+                    vim.schedule(function()
+                        vim.api.nvim_win_set_cursor(0, { sym.range["end"].line + 1, 0 })
+                    end)
                 end
-            end
+            end)
         end
         vim.keymap.set("n", "]f", jump_to_current_function_end, { desc = "跳转到当前函数结尾" })
     end,

@@ -1,7 +1,6 @@
 local P = {
     name = "yazi.nvim",
     module = "yazi",
-    deps = { "plenary.nvim" },
 }
 
 vim.keymap.set({ "n", "v" }, "tt", function()

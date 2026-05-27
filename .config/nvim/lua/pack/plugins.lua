@@ -2,15 +2,15 @@
 -- 插件花名册（集中管理所有插件的下载地址）
 -- ==============================================================
 local specs = {
-    -- 主题 / 图标
-    { src = "https://github.com/catppuccin/nvim" },
-    { src = "https://github.com/AstroNvim/astrotheme" },
-    { src = "https://github.com/folke/tokyonight.nvim" },
-    { src = "https://github.com/ellisonleao/gruvbox.nvim" },
-    { src = "https://github.com/rebelot/kanagawa.nvim" },
-    { src = "https://github.com/rose-pine/neovim" },
-    { src = "https://github.com/navarasu/onedark.nvim" },
-    { src = "https://github.com/sainnhe/everforest" },
+    -- 主题（opt 加载，按需 packadd）
+    { src = "https://github.com/catppuccin/nvim",           opt = true },
+    { src = "https://github.com/AstroNvim/astrotheme",     opt = true },
+    { src = "https://github.com/folke/tokyonight.nvim",    opt = true },
+    { src = "https://github.com/ellisonleao/gruvbox.nvim", opt = true },
+    { src = "https://github.com/rebelot/kanagawa.nvim",    opt = true },
+    { src = "https://github.com/rose-pine/neovim",         opt = true },
+    { src = "https://github.com/navarasu/onedark.nvim",    opt = true },
+    { src = "https://github.com/sainnhe/everforest",       opt = true },
     { src = "https://github.com/nvim-tree/nvim-web-devicons" },
 
     -- 状态栏
@@ -35,6 +35,7 @@ local specs = {
     { src = "https://github.com/neovim/nvim-lspconfig" },
 
     -- 补全
+    { src = "https://github.com/rafamadriz/friendly-snippets" },
     { src = "https://github.com/archie-judd/blink-cmp-words" },
     { src = "https://github.com/saghen/blink.cmp",                         version = "v1.7.0" },
 
@@ -74,8 +75,6 @@ local specs = {
     -- git
     { src = "https://github.com/lewis6991/gitsigns.nvim" },
 
-    -- yazi 依赖
-    { src = "https://github.com/nvim-lua/plenary.nvim" },
 
     -- Markdown 渲染
     { src = "https://github.com/MeanderingProgrammer/render-markdown.nvim" },
@@ -85,6 +84,7 @@ local specs = {
     { src = "https://github.com/rmagatti/auto-session" },
 
     -- CMake
+    { src = "https://github.com/nvim-lua/plenary.nvim" },
     { src = "https://github.com/Civitasv/cmake-tools.nvim" },
 
     -- 任务管理

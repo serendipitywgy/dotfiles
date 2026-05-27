@@ -4,16 +4,41 @@ vim.opt.termguicolors = true
 -- 持久化：记住最后一次选择的主题，并在启动时应用
 local theme_file = vim.fn.stdpath("state") .. "/last_colorscheme"
 
+-- colorscheme 名 → opt 包名（vim.pack 用 repo 末段作名字）
+local scheme_to_pack = {
+    catppuccin = "nvim",
+    tokyonight = "tokyonight.nvim",
+    gruvbox = "gruvbox.nvim",
+    kanagawa = "kanagawa.nvim",
+    ["rose-pine"] = "neovim",
+    onedark = "onedark.nvim",
+    everforest = "everforest",
+    astro = "astrotheme",
+}
+
+local function packadd_for_scheme(name)
+    for prefix, pack in pairs(scheme_to_pack) do
+        if name:find(prefix, 1, true) then
+            pcall(vim.cmd.packadd, pack)
+            return
+        end
+    end
+end
+
 local function apply_last_theme()
     local ok, name = pcall(function()
         return vim.fn.readfile(theme_file)[1]
     end)
-    if ok and name and #name > 0 then
-        pcall(vim.cmd.colorscheme, name)
-    else
-        -- 初次使用时默认主题（可改）
-        pcall(vim.cmd.colorscheme, "catppuccin")
+    if not ok or not name or #name == 0 then
+        name = "catppuccin"
     end
+    packadd_for_scheme(name)
+    if name:find("catppuccin", 1, true) then
+        pcall(function()
+            require("catppuccin").setup({ styles = { comments = {} } })
+        end)
+    end
+    pcall(vim.cmd.colorscheme, name)
 end
 apply_last_theme()
 
@@ -22,6 +47,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     callback = function()
         local name = vim.g.colors_name or ""
         if #name > 0 then
+            packadd_for_scheme(name)
             pcall(vim.fn.writefile, { name }, theme_file)
         end
         -- 透明状态栏 + 注释不斜体
@@ -30,13 +56,6 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     end,
 })
 
--- 可选：catppuccin 的额外设置（不强制应用主题）
-pcall(function()
-    require("catppuccin").setup({
-        -- transparent_background = true, -- 不需要透明背景
-        styles = { comments = {} },
-    })
-end)
 
 vim.g.transparent = false
 
