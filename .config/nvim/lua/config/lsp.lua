@@ -14,13 +14,10 @@ require("mason-lspconfig").setup({
 vim.lsp.config('lua_ls', {
     settings = {
         Lua = {
-            runtime = { version = 'LuaJIT', path = vim.split(package.path, ';') }, -- Lua 运行时
-            diagnostics = { globals = { 'vim' } },                                 -- 忽略全局变量 vim 的警告
-            workspace = {
-                library = vim.api.nvim_get_runtime_file('', true),
-                checkThirdParty = false,
-            },
-            format = { enable = true }, -- 启用格式化
+            runtime = { version = 'LuaJIT' },
+            diagnostics = { globals = { 'vim' } },
+            workspace = { checkThirdParty = false },
+            format = { enable = true },
         },
     },
 })
