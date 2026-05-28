@@ -6,7 +6,10 @@ local function ensure_setup()
         if sidekick_ok then
             sidekick.setup({
                 cli = {
-                    mux = { backend = "tmux", enabled = true },
+                    mux = {
+                        backend = "tmux",
+                        enabled = true,
+                    },
                     win = {
                         layout = "right",
                         split = { width = 80 },
@@ -14,10 +17,6 @@ local function ensure_setup()
                     tools = {
                         claude = {
                             env = { TERM = "xterm-kitty" },
-                            native_scroll = true,
-                        },
-                        opencode = {
-                            native_scroll = true,
                         },
                     },
                 },
