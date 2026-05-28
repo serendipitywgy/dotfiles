@@ -133,6 +133,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
             vim.lsp.buf.definition()
         end, { buffer = event.buf, desc = "LSP: 跳转到定义 (分屏)" })
 
+        -- [code-action] LSP 代码操作
+        vim.keymap.set({"n", "v"}, "<leader>ca", vim.lsp.buf.code_action, { buffer = event.buf, desc = "LSP: code action" })
+
         -- [f] 跳转到当前函数的开始位置
         local function jump_to_current_function_start()
             local params = { textDocument = vim.lsp.util.make_text_document_params() }
