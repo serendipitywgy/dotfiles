@@ -2,20 +2,11 @@
 vim.api.nvim_create_autocmd({ 'BufReadPre', 'BufReadPost' }, {
     once     = true,
     callback = function()
-        -- 1. 先 setup devicons（bufferline 依赖它）
         require("nvim-web-devicons").setup({})
-
-        -- 2. 再 setup bufferline
         require("bufferline").setup({
             options = {
                 -- 侧边栏偏移
                 offsets = {
-                    {
-                        filetype = "neo-tree",
-                        text = "Neo-tree",
-                        highlight = "Directory",
-                        text_align = "left",
-                    },
                     {
                         filetype = "snacks_layout_box",
                     },

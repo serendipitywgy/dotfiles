@@ -17,6 +17,7 @@ require("which-key").setup({
         { "<leader>s", group = "search" },
         { "<leader>t", group = "toggle" },
         { "<leader>a", group = "AI/Sidekick" },
+        { "<leader>o", group = "overseer" },
         { "<leader>d", group = "debug" },
         { "<leader>u", group = "ui" },
         { "<leader>x", group = "diagnostics" },
