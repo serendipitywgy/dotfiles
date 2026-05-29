@@ -128,18 +128,22 @@ require("snacks").setup({
     indent = {
         enabled = true,
         animate = {
-            enabled = false
+            enabled = false,
         },
         indent = {
-            only_scope = true
+            only_scope = true,
+            only_current = true,
+            hl = { "SnacksIndent1", "SnacksIndent2", "SnacksIndent3", "SnacksIndent4",
+                   "SnacksIndent5", "SnacksIndent6", "SnacksIndent7", "SnacksIndent8" },
         },
         scope = {
-            enabled = true,   -- enable highlighting the current scope
-            underline = true, -- underline the start of the scope
+            enabled = true,
+            underline = true,
+            only_current = true,
         },
         chunk = {
-            -- when enabled, scopes will be rendered as chunks, except for the top-level scope which will be rendered as a scope.
             enabled = true,
+            char = { corner_top = "╭", corner_bottom = "╰", arrow = ">" },
         },
     },
     input = { enabled = true },

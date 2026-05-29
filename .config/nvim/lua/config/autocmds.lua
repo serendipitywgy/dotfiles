@@ -159,7 +159,15 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         vim.api.nvim_set_hl(0, "lualine_a_normal", { fg = "#f8f8f2", bg = "NONE", bold = true })
         vim.api.nvim_set_hl(0, "lualine_b_normal", { fg = "#f8f8f2", bg = "NONE" })
         vim.api.nvim_set_hl(0, "lualine_c_normal", { fg = "#f8f8f2", bg = "NONE" })
-        -- 可以添加更多高亮组...
+        -- 彩虹缩进线（不随主题变化）
+        vim.api.nvim_set_hl(0, "SnacksIndent1", { fg = "#cba6f7" })
+        vim.api.nvim_set_hl(0, "SnacksIndent2", { fg = "#89b4fa" })
+        vim.api.nvim_set_hl(0, "SnacksIndent3", { fg = "#a6e3a1" })
+        vim.api.nvim_set_hl(0, "SnacksIndent4", { fg = "#f9e2af" })
+        vim.api.nvim_set_hl(0, "SnacksIndent5", { fg = "#fab387" })
+        vim.api.nvim_set_hl(0, "SnacksIndent6", { fg = "#f38ba8" })
+        vim.api.nvim_set_hl(0, "SnacksIndent7", { fg = "#94e2d5" })
+        vim.api.nvim_set_hl(0, "SnacksIndent8", { fg = "#b4befe" })
     end,
 })
 -- -- 为cpp文件设置禁止自动格式化
