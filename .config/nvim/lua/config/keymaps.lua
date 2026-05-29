@@ -51,11 +51,10 @@ set_keymaps({ "n", "v" }, { "<leader>lf" }, function()
                 start = { start_pos[2], start_pos[3] - 1 },
                 ["end"] = { end_pos[2], end_pos[3] - 1 },
             },
-            lsp_fallback = true,
         })
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
     else
-        require("conform").format({ lsp_fallback = true })
+        require("conform").format()
     end
 end, { desc = "格式化 (支持范围)" })
 -- quit
