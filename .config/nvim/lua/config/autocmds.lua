@@ -3,22 +3,7 @@ local function augroup(name)
     return vim.api.nvim_create_augroup("my_" .. name, { clear = true })
 end
 
--- lsp重命名
-vim.api.nvim_create_autocmd("LspAttach", {
-    callback = function(args)
-        local bufnr = args.buf
-        vim.keymap.set("n", "<leader>rn", function()
-            -- 弹出输入框，输入新名字
-            local curr_word = vim.fn.expand("<cword>")
-            vim.ui.input({ prompt = "Rename to: ", default = curr_word }, function(new_name)
-                if new_name and #new_name > 0 then
-                    vim.lsp.buf.rename(new_name)
-                end
-            end)
-        end, { buffer = bufnr, desc = "LSP 重命名" })
-    end,
-})
--- 全文件匹配重命名
+-- 全文件匹配重命名（LSP 重命名由 inc-rename.lua 接管）
 vim.keymap.set("n", "<leader>rf", function()
     local curr_word = vim.fn.expand("<cword>")
     vim.ui.input({ prompt = "Rename all in file: ", default = curr_word }, function(new_name)

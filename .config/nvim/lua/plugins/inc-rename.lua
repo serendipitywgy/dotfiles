@@ -4,8 +4,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
         require("inc_rename").setup({
             input_buffer_type = "dressing",
         })
-        vim.keymap.set("n", "<leader>yn", function()
+        vim.keymap.set("n", "<leader>rn", function()
             return ":IncRename " .. vim.fn.expand("<cword>")
-        end, { expr = true })
+        end, { expr = true, desc = "LSP 重命名" })
     end,
 })

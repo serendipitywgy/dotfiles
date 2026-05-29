@@ -27,11 +27,6 @@ set_keymaps({ "n", "x" }, { "k" }, "v:count == 0 ? 'gk' : 'k'", { desc = "向上
 -- 插入模式下，按下 kj 或 KJ 不执行任何操作
 set_keymaps("i", { "kj", "KJ" }, "<Esc>", { silent = true })
 
--- 窗口导航
-set_keymaps("n", { "<C-h>" }, "<C-w>h", { desc = "切换到左侧窗口", remap = true })
-set_keymaps("n", { "<C-j>" }, "<C-w>j", { desc = "切换到下方窗口", remap = true })
-set_keymaps("n", { "<C-k>" }, "<C-w>k", { desc = "切换到上方窗口", remap = true })
-set_keymaps("n", { "<C-l>" }, "<C-w>l", { desc = "切换到右侧窗口", remap = true })
 
 -- buffer的更换
 set_keymaps("n", { "<S-h>" }, "<cmd>bprevious<cr>", { desc = "上一个缓冲区" })
@@ -69,9 +64,7 @@ set_keymaps("n", { "<leader>uI" }, function()
     vim.api.nvim_input("I")
 end, { desc = "检查语法树" })
 
--- Terminal Mappings
-set_keymaps("t", { "<C-/>" }, "<cmd>close<cr>", { desc = "隐藏终端" })
--- set_keymaps("t", {"<c-_>"}, "<cmd>close<cr>", { desc = "which_key_ignore" })
+-- Terminal Mappings（由 snacks.lua 处理 toggle）
 
 -- windows
 set_keymaps("n", { "<leader>-" }, "<C-W>s", { desc = "向下拆分窗口", remap = true })

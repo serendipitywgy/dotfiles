@@ -10,6 +10,7 @@ require("which-key").setup({
     spec = {
         { "<leader>b", group = "buffer" },
         { "<leader>c", group = "cmake" },
+        { "<leader>r", group = "rename" },
         { "<leader>f", group = "find" },
         { "<leader>g", group = "git" },
         { "<leader>l", group = "lsp" },
