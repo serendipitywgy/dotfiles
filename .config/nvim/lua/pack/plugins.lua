@@ -100,6 +100,9 @@ local specs = {
 
     -- conan
     { src = "https://github.com/serendipitywgy/nvim-conan" },
+
+    -- 格式化
+    { src = "https://github.com/stevearc/conform.nvim" },
 }
 
 -- 禁用插件：不会加载，不会下载（新添加时），已在硬盘上不会被删除

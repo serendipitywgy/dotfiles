@@ -39,29 +39,25 @@ set_keymaps("n", { "<S-l>" }, "<cmd>bnext<cr>", { desc = "下一个缓冲区" })
 set_keymaps("n", { "<leader>bD" }, "<cmd>:bd<cr>", { desc = "删除缓冲区和窗口" })
 
 
---lsp formatting
+-- conform 格式化（支持范围）
 
 set_keymaps({ "n", "v" }, { "<leader>lf" }, function()
-    -- 获取当前模式
     local mode = vim.api.nvim_get_mode().mode
     if mode == "v" or mode == "V" or mode == " " then
-        -- 如果是可视模式，获取选中的起始和结束位置
         local start_pos = vim.fn.getpos("v")
         local end_pos = vim.fn.getpos(".")
-
-        vim.lsp.buf.format({
+        require("conform").format({
             range = {
-                ["start"] = { start_pos[2], start_pos[3] - 1 },
+                start = { start_pos[2], start_pos[3] - 1 },
                 ["end"] = { end_pos[2], end_pos[3] - 1 },
-            }
+            },
+            lsp_fallback = true,
         })
-        -- 格式化后跳回普通模式
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
     else
-        -- 普通模式下默认格式化整个文件
-        vim.lsp.buf.format({ async = true })
+        require("conform").format({ lsp_fallback = true })
     end
-end, { desc = "LSP格式化 (支持范围)" })
+end, { desc = "格式化 (支持范围)" })
 -- quit
 set_keymaps("n", { "<leader>qq" }, "<cmd>wqa<cr>", { desc = "全部退出" })
 set_keymaps("n", { "<leader>w" }, "<cmd>w<cr>", { desc = "保存当前Buffer" })
