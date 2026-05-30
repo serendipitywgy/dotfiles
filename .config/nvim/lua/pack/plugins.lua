@@ -46,6 +46,10 @@ local specs = {
     { src = "https://github.com/nvim-treesitter/nvim-treesitter",          version = "main" },
     { src = "https://github.com/nvim-treesitter/nvim-treesitter-context" },
 
+    -- noice（仅命令框，通知由 Snacks 接管）
+    { src = "https://github.com/folke/noice.nvim" },
+    { src = "https://github.com/MunifTanjim/nui.nvim" },
+
     -- which-key
     { src = "https://github.com/folke/which-key.nvim" },
     { src = "https://github.com/folke/trouble.nvim" },
