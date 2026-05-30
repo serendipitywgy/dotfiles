@@ -21,7 +21,6 @@ local specs = {
     { src = "https://github.com/nvim-mini/mini.ai" },
     { src = "https://github.com/nvim-mini/mini.icons" },
     { src = "https://github.com/nvim-mini/mini.surround" },
-    { src = "https://github.com/echasnovski/mini.diff",         version = vim.version.range("*") },
 
     -- tmux 导航（条件加载，此处统一下载）
     "https://github.com/christoomey/vim-tmux-navigator",
@@ -46,10 +45,6 @@ local specs = {
     -- Treesitter
     { src = "https://github.com/nvim-treesitter/nvim-treesitter",          version = "main" },
     { src = "https://github.com/nvim-treesitter/nvim-treesitter-context" },
-
-    -- noice
-    { src = "https://github.com/folke/noice.nvim" },
-    { src = "https://github.com/MunifTanjim/nui.nvim" },
 
     -- which-key
     { src = "https://github.com/folke/which-key.nvim" },
