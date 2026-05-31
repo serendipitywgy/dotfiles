@@ -3,7 +3,8 @@ require("noice").setup({
         override = {},
     },
     messages = {
-        enabled = false,
+        enabled = true,
+        view = "notify",
     },
     popupmenu = {
         enabled = false,
