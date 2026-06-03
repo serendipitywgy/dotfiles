@@ -37,7 +37,7 @@ local specs = {
     -- 补全
     { src = "https://github.com/rafamadriz/friendly-snippets" },
     { src = "https://github.com/archie-judd/blink-cmp-words" },
-    { src = "https://github.com/saghen/blink.cmp",                         version = "v1.7.0" },
+    { src = "https://github.com/saghen/blink.cmp", version = "v1.10.2" },
 
     -- 快速跳转
     { src = "https://github.com/folke/flash.nvim" },
