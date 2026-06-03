@@ -87,6 +87,15 @@ local function blink_cmp2()
                 enabled = true,
                 show_with_menu = false
             },
+            list = {
+                selection = {
+                    auto_insert = true,
+                    preselect = true,
+                },
+            },
+            accept = {
+                auto_brackets = { enabled = true },
+            },
             menu = {
                 draw = {
                     treesitter = { 'lsp', },
@@ -126,6 +135,10 @@ local function blink_cmp2()
         },
         signature = {
             enabled = true
+        },
+
+        fuzzy = {
+            frecency = { enabled = true },
         },
 
         sources = {
