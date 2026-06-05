@@ -102,6 +102,9 @@ local specs = {
 
     -- 格式化
     { src = "https://github.com/stevearc/conform.nvim" },
+
+    -- 翻译
+    { src = "https://github.com/uga-rosa/translate.nvim" },
 }
 
 -- 禁用插件：不会加载，不会下载（新添加时），已在硬盘上不会被删除
