@@ -45,5 +45,6 @@ vim.api.nvim_create_autocmd({ 'BufReadPre', 'BufReadPost' }, {
         local set = vim.keymap.set
         set("n", "<leader>bp", ":BufferLinePick<CR>", { silent = true, desc = "选择缓冲区" })
         set("n", "<leader>bc", ":BufferLinePickClose<CR>", { silent = true, desc = "选择关闭" })
+        set("n", "<leader>bO", ":BufferLineCloseOthers<CR>", { silent = true, desc = "关闭其他缓冲区" })
     end,
 })
