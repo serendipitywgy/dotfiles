@@ -5,6 +5,10 @@ vim.api.nvim_create_autocmd({ 'BufReadPre', 'BufReadPost' }, {
         require("nvim-web-devicons").setup({})
         require("bufferline").setup({
             options = {
+                -- 缓冲区编号
+                numbers = "ordinal",
+                -- 按目录分组排序
+                sort_by = "directory",
                 -- 侧边栏偏移
                 offsets = {
                     {
@@ -22,11 +26,13 @@ vim.api.nvim_create_autocmd({ 'BufReadPre', 'BufReadPost' }, {
                     for level, number in pairs(diagnostics_dict) do
                         local symbol
                         if level == "error" then
-                            symbol = " "
+                            symbol = " "
                         elseif level == "warning" then
-                            symbol = " "
+                            symbol = " "
+                        elseif level == "info" then
+                            symbol = " "
                         else
-                            symbol = " "
+                            symbol = " "
                         end
                         indicator = indicator .. number .. symbol
                     end
