@@ -19,24 +19,22 @@ set_keymaps("n", { "<S-l>" }, "<cmd>bnext<cr>", { desc = "下一个缓冲区" })
 set_keymaps("n", { "<leader>bD" }, "<cmd>:bd<cr>", { desc = "删除缓冲区和窗口" })
 
 
--- conform 格式化（支持范围）
+-- conform 格式化
 
-set_keymaps({ "n", "v" }, { "<leader>cf" }, function()
-    local mode = vim.api.nvim_get_mode().mode
-    if mode == "v" or mode == "V" or mode == " " then
-        local start_pos = vim.fn.getpos("v")
-        local end_pos = vim.fn.getpos(".")
-        require("conform").format({
-            range = {
-                start = { start_pos[2], start_pos[3] - 1 },
-                ["end"] = { end_pos[2], end_pos[3] - 1 },
-            },
-        })
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", true)
-    else
-        require("conform").format()
+vim.api.nvim_create_user_command("Format", function(args)
+    local range = nil
+    if args.count ~= -1 then
+        local end_line = vim.api.nvim_buf_get_lines(0, args.line2 - 1, args.line2, true)[1]
+        range = {
+            start = { args.line1, 0 },
+            ["end"] = { args.line2, end_line:len() },
+        }
     end
-end, { desc = "格式化 (支持范围)" })
+    require("conform").format({ range = range })
+end, { range = true })
+
+set_keymaps("n", { "<leader>cf" }, "<cmd>Format<cr>", { desc = "格式化" })
+set_keymaps("v", { "<leader>cf" }, ":Format<cr>", { desc = "格式化 (范围)" })
 -- quit
 set_keymaps("n", { "<leader>qq" }, "<cmd>wqa<cr>", { desc = "全部退出" })
 set_keymaps("n", { "<leader>w" }, "<cmd>w<cr>", { desc = "保存当前Buffer" })
