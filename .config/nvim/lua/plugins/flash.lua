@@ -1,10 +1,16 @@
--- require("flash").setup({})
+local ok, flash = pcall(require, "flash")
+if not ok then return end
 
--- ── Flash 快捷键 ───────────────────────────────────────────────────────────
--- 用到时才 require，避免启动时加载
+flash.setup({})
+
 vim.keymap.set({ "n", "x", "o" }, "ss", function()
-    if not package.loaded["flash"] then
-        require("flash").setup({})
-    end
-    require("flash").jump()
-end, { desc = "快速跳转" })
+  flash.jump()
+end, { desc = "Flash: 快速跳转" })
+
+vim.keymap.set({ "n", "x", "o" }, "sS", function()
+  flash.treesitter()
+end, { desc = "Flash: Treesitter 跳转" })
+
+vim.keymap.set({ "n", "x", "o" }, "sR", function()
+  flash.remote()
+end, { desc = "Flash: 跨窗口跳转" })
