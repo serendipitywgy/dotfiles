@@ -124,7 +124,7 @@ require("snacks").setup({
             },
         },
     },
-    explorer = { enabled = false, replace_netrw = true },
+    explorer = { enabled = true, replace_netrw = false },
     indent = {
         enabled = true,
         animate = {
@@ -213,6 +213,7 @@ require("snacks").setup({
 local map = vim.keymap.set
 
 -- 通用
+map("n", "<leader>e", function() Snacks.explorer.open() end, { desc = "文件浏览器" })
 map("n", "<leader><space>", function() Snacks.picker.smart() end, { desc = "智能查找文件" })
 map("n", "<leader>,", function() Snacks.picker.buffers() end, { desc = "缓冲区列表" })
 map("n", "<leader>/", function() Snacks.picker.grep() end, { desc = "搜索" })

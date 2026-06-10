@@ -17,6 +17,7 @@ require("oil").setup({
         ["<C-l>"] = false,
         ["<C-k>"] = false,
         ["<C-j>"] = false,
+        ["<C-p>"] = "actions.preview",
         ["<C-r>"] = "actions.refresh",
         ["<leader>y"] = "actions.yank_entry",
         ["g."] = false,
@@ -42,5 +43,5 @@ require("oil").setup({
         winbar = "%!v:lua.get_oil_winbar()",
     },
 })
--- vim.keymap.set("n", "-", ":Oil<CR>")
-vim.keymap.set("n", "<leader>e", ":Oil<CR>")
+vim.keymap.set("n", "-", ":Oil<CR>")
+-- vim.keymap.set("n", "<leader>e", ":Oil<CR>")
