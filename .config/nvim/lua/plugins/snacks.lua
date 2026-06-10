@@ -124,7 +124,9 @@ require("snacks").setup({
             },
         },
     },
-    explorer = { enabled = true, replace_netrw = false },
+    explorer = { enabled = true, replace_netrw = false, hidden = true },
+    image = { enabled = true },
+    dim = { enabled = true },
     indent = {
         enabled = true,
         animate = {
@@ -208,6 +210,8 @@ require("snacks").setup({
         }
     },
 })
+
+Snacks.dim.enable()
 
 -- ── Snacks 快捷键 ──────────────────────────────────────────────────────────
 local map = vim.keymap.set
