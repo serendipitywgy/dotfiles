@@ -4,7 +4,7 @@ require('nvim-treesitter').install({
     'lua', 'vim', 'vimdoc', 'query',
     'python', 'javascript', 'typescript', 'c', 'cpp', 'cmake',
     'go', 'rust', 'java',
-    'html', 'css', 'json', 'toml', 'yaml', 'bash',
+    'html', 'css', 'json', 'toml', 'yaml', 'bash', 'xml',
     'markdown', 'markdown_inline',
 })
 
