@@ -203,14 +203,77 @@ local function show_style()
     vim.notify(info)
 end
 
+local function select_theme()
+    local items = {}
+    for i, t in ipairs(themes) do
+        items[i] = { label = t, idx = i }
+    end
+    vim.ui.select(items, {
+        prompt = "Pick theme",
+        format_item = function(item)
+            if item.idx == theme_idx then
+                return "> " .. item.label .. "  (current)"
+            end
+            return "  " .. item.label
+        end,
+    }, function(choice)
+        if not choice then
+            return
+        end
+        theme_idx = choice.idx
+        apply_theme(themes[theme_idx])
+        write_state(theme_file, themes[theme_idx])
+        show_style()
+    end)
+end
+
+local function random_theme()
+    theme_idx = math.random(#themes)
+    apply_theme(themes[theme_idx])
+    write_state(theme_file, themes[theme_idx])
+    show_style()
+end
+
+local function select_font()
+    local items = {}
+    for i, f in ipairs(fonts) do
+        local label = strip_size(f):gsub(",.*$", "")
+        items[i] = { label = label, idx = i }
+    end
+    vim.ui.select(items, {
+        prompt = "Pick font",
+        format_item = function(item)
+            if item.idx == font_idx then
+                return "> " .. item.label .. "  (current)"
+            end
+            return "  " .. item.label
+        end,
+    }, function(choice)
+        if not choice then
+            return
+        end
+        font_idx = choice.idx
+        vim.o.guifont = fonts[font_idx]
+        write_state(font_file, fonts[font_idx])
+        show_style()
+    end)
+end
+
+local function random_font()
+    font_idx = math.random(#fonts)
+    vim.o.guifont = fonts[font_idx]
+    write_state(font_file, fonts[font_idx])
+    show_style()
+end
+
 local function set_style()
     local theme = vim.g.colors_name or ""
     local font = string.gsub(vim.o.guifont or "", "_[%w]+", "")
     local options = {
-        { desc = "switch theme  - " .. theme, value = 1 },
-        { desc = "switch font   - " .. font, value = 2 },
-        { desc = "increase font size", value = 3 },
-        { desc = "decrease font size", value = 4 },
+        { desc = "Theme: " .. theme, action = "theme" },
+        { desc = "Font:  " .. font, action = "font" },
+        { desc = "Increase font size", action = "size_plus" },
+        { desc = "Decrease font size", action = "size_minus" },
     }
     vim.ui.select(options, {
         prompt = "Adjust theme and font",
@@ -221,16 +284,67 @@ local function set_style()
         if not choice then
             return
         end
-        if choice.value == 1 then
-            switch_theme(1)
-        elseif choice.value == 2 then
-            switch_font(1)
-        elseif choice.value == 3 then
+        if choice.action == "size_plus" then
             change_font_size(1)
-        elseif choice.value == 4 then
+            show_style()
+        elseif choice.action == "size_minus" then
             change_font_size(-1)
+            show_style()
+        elseif choice.action == "theme" then
+            vim.ui.select({
+                { desc = "Next theme", action = "next" },
+                { desc = "Previous theme", action = "prev" },
+                { desc = "Pick from list", action = "list" },
+                { desc = "Random theme", action = "random" },
+            }, {
+                prompt = "Theme: " .. theme,
+                format_item = function(item)
+                    return item.desc
+                end,
+            }, function(sub)
+                if not sub then
+                    return
+                end
+                if sub.action == "next" then
+                    switch_theme(1)
+                    show_style()
+                elseif sub.action == "prev" then
+                    switch_theme(-1)
+                    show_style()
+                elseif sub.action == "list" then
+                    select_theme()
+                elseif sub.action == "random" then
+                    random_theme()
+                end
+            end)
+        elseif choice.action == "font" then
+            vim.ui.select({
+                { desc = "Next font", action = "next" },
+                { desc = "Previous font", action = "prev" },
+                { desc = "Pick from list", action = "list" },
+                { desc = "Random font", action = "random" },
+            }, {
+                prompt = "Font: " .. string.gsub(vim.o.guifont or "", ":h%d+$", ""):gsub(",_[%w]+", ""),
+                format_item = function(item)
+                    return item.desc
+                end,
+            }, function(sub)
+                if not sub then
+                    return
+                end
+                if sub.action == "next" then
+                    switch_font(1)
+                    show_style()
+                elseif sub.action == "prev" then
+                    switch_font(-1)
+                    show_style()
+                elseif sub.action == "list" then
+                    select_font()
+                elseif sub.action == "random" then
+                    random_font()
+                end
+            end)
         end
-        show_style()
     end)
 end
 
