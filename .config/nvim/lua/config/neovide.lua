@@ -2,7 +2,6 @@ if not vim.g.neovide then
     return
 end
 
-vim.o.guifont = "JetBrainsMono Nerd Font:h11.75"
 vim.o.linespace = 2
 
 vim.g.neovide_opacity = 1.0
@@ -40,22 +39,3 @@ vim.keymap.set({ "n", "i" }, "<F6>", inc_transparency, { desc = "Increase transp
 vim.keymap.set("n", "<F11>", function()
     vim.g.neovide_fullscreen = not vim.g.neovide_fullscreen
 end, { desc = "Toggle fullscreen" })
-
-local function dec_font_size()
-    local font = vim.o.guifont
-    local name, size = font:match("^(.-):h([%d.]+)$")
-    if name then
-        vim.o.guifont = name .. ":h" .. string.format("%.2f", math.max(4, tonumber(size) - 2))
-    end
-end
-
-local function inc_font_size()
-    local font = vim.o.guifont
-    local name, size = font:match("^(.-):h([%d.]+)$")
-    if name then
-        vim.o.guifont = name .. ":h" .. string.format("%.2f", math.min(40, tonumber(size) + 2))
-    end
-end
-
-vim.keymap.set({ "n", "i" }, "<F9>", dec_font_size, { desc = "Decrease font size" })
-vim.keymap.set({ "n", "i" }, "<F8>", inc_font_size, { desc = "Increase font size" })

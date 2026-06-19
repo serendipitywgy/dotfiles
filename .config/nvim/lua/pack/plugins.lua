@@ -11,6 +11,26 @@ local specs = {
     { src = "https://github.com/rose-pine/neovim",         opt = true },
     { src = "https://github.com/navarasu/onedark.nvim",    opt = true },
     { src = "https://github.com/sainnhe/everforest",       opt = true },
+    -- neovide 主题轮转扩展（对应 temp 配置的 22 款）
+    { src = "https://github.com/rktjmp/lush.nvim",                 opt = true }, -- bluloco 的依赖
+    { src = "https://github.com/uloco/bluloco.nvim",               opt = true },
+    { src = "https://github.com/Mofiqul/dracula.nvim",             opt = true },
+    { src = "https://github.com/projekt0n/github-nvim-theme",      opt = true },
+    { src = "https://github.com/sainnhe/gruvbox-material",         opt = true },
+    { src = "https://github.com/HoNamDuong/hybrid.nvim",       opt = true },
+    { src = "https://github.com/gremble0/yellowbeans.nvim",        opt = true },
+    { src = "https://github.com/savq/melange-nvim",                opt = true },
+    { src = "https://github.com/xero/miasma.nvim",                 opt = true },
+    { src = "https://github.com/loctvl842/monokai-pro.nvim",       opt = true },
+    { src = "https://github.com/EdenEast/nightfox.nvim",           opt = true },
+    { src = "https://github.com/rakr/vim-one",                     opt = true },
+    { src = "https://github.com/rmehri01/onenord.nvim",            opt = true },
+    { src = "https://github.com/JoosepAlviste/palenightfall.nvim", opt = true },
+    { src = "https://github.com/NLKNguyen/papercolor-theme",       opt = true },
+    { src = "https://github.com/ilof2/posterpole.nvim",            opt = true },
+    { src = "https://github.com/sainnhe/sonokai",                  opt = true },
+    { src = "https://github.com/Mofiqul/vscode.nvim",              opt = true },
+    { src = "https://github.com/glepnir/zephyr-nvim",              opt = true },
     { src = "https://github.com/nvim-tree/nvim-web-devicons" },
 
     -- 状态栏
