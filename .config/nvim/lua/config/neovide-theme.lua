@@ -47,6 +47,13 @@ table.sort(scheme_prefixes, function(a, b)
     return #a.prefix > #b.prefix
 end)
 
+-- 主题 → 其 opt 依赖（确保在 colorscheme 之前已 packadd）
+local scheme_deps = {
+    bluloco = { "lush.nvim" },
+    ["monokai-pro"] = { "lush.nvim" },
+    palenightfall = { "lush.nvim" },
+}
+
 local function packadd_for_scheme(name)
     for _, entry in ipairs(scheme_prefixes) do
         if name:find(entry.prefix, 1, true) then
@@ -171,9 +178,16 @@ end
 local theme_idx = find_idx(themes, read_state(theme_file, "")) or 1
 
 local function apply_theme(name)
+    local deps = scheme_deps[name] or {}
+    for _, dep in ipairs(deps) do
+        pcall(vim.cmd.packadd, dep)
+    end
     packadd_for_scheme(name)
     setup_scheme(name)
-    pcall(vim.cmd.colorscheme, name)
+    local ok, err = pcall(vim.cmd.colorscheme, name)
+    if not ok then
+        vim.notify("colorscheme '" .. name .. "' failed: " .. tostring(err), vim.log.levels.WARN)
+    end
 end
 
 local function switch_theme(step)
