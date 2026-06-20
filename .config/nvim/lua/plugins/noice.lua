@@ -1,6 +1,6 @@
-if vim.g.neovide then
-    return
-end
+-- if vim.g.neovide then
+--     return
+-- end
 
 require("noice").setup({
     lsp = {
