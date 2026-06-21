@@ -53,6 +53,11 @@ end
 vim.keymap.set({ "n", "i" }, "<S-C-Left>", dec_transparency, { desc = "Decrease transparency" })
 vim.keymap.set({ "n", "i" }, "<S-C-Right>", inc_transparency, { desc = "Increase transparency" })
 
+vim.keymap.set({ "n", "i", "v", "c", "t" }, "<C-S-v>", function()
+    vim.api.nvim_paste(vim.fn.getreg("+"), true, -1)
+end, { silent = true, desc = "Paste" })
+
 vim.keymap.set({ "n", "i", "v", "t" }, "<F11>", function()
     vim.g.neovide_fullscreen = not vim.g.neovide_fullscreen
 end, { desc = "Toggle fullscreen" })
+
