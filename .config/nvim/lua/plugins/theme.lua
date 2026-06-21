@@ -93,4 +93,4 @@ Snacks.toggle.new({
             for _, grp in ipairs(bufferline_groups) do vim.cmd(("hi! default %s ctermbg=NONE guibg=NONE"):format(grp)) end
         end
     end,
-}):map("<leader>utp", { desc = "Toggle transparent mode" })
+}):map("<leader>ut", { desc = "Toggle transparent mode" })

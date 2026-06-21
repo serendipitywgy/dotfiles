@@ -394,9 +394,9 @@ vim.schedule(function()
     apply_theme(themes[theme_idx])
 end)
 
-vim.keymap.set("n", "<A-f>", set_style, { desc = "Set theme and font (neovide)" })
-vim.keymap.set("n", "<A-F>", show_style, { desc = "Show theme and font (neovide)" })
-vim.keymap.set("n", "<A-S-f>", function()
+vim.keymap.set("n", "<leader>us", set_style, { desc = "Set theme and font (neovide)" })
+vim.keymap.set("n", "<leader>uS", show_style, { desc = "Show theme and font (neovide)" })
+vim.keymap.set("n", "<leader>ur", function()
     if math.random(2) == 1 then
         random_theme()
     else
