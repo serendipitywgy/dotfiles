@@ -38,19 +38,10 @@ local scheme_to_pack = {
     zephyr = "zephyr-nvim",
 }
 
--- 按前缀长度降序排列，确保 "onedark" 优先于 "one" 匹配
-local scheme_prefixes = {}
-for prefix, pack in pairs(scheme_to_pack) do
-    scheme_prefixes[#scheme_prefixes + 1] = { prefix = prefix, pack = pack }
-end
-table.sort(scheme_prefixes, function(a, b)
-    return #a.prefix > #b.prefix
-end)
-
 local function packadd_for_scheme(name)
-    for _, entry in ipairs(scheme_prefixes) do
-        if name:find(entry.prefix, 1, true) then
-            pcall(vim.cmd.packadd, entry.pack)
+    for prefix, pack in pairs(scheme_to_pack) do
+        if name:find(prefix, 1, true) then
+            pcall(vim.cmd.packadd, pack)
             return
         end
     end
