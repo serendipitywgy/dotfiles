@@ -50,8 +50,8 @@ local function inc_transparency()
     vim.notify("Opacity: " .. string.format("%.0f%%", vim.g.neovide_opacity * 100))
 end
 
-vim.keymap.set({ "n", "i" }, "<S-C-Left>", dec_transparency, { desc = "Decrease transparency" })
-vim.keymap.set({ "n", "i" }, "<S-C-Right>", inc_transparency, { desc = "Increase transparency" })
+vim.keymap.set({ "n", "i" }, "<F5>", dec_transparency, { desc = "Decrease transparency" })
+vim.keymap.set({ "n", "i" }, "<F6>", inc_transparency, { desc = "Increase transparency" })
 
 vim.keymap.set("n", "<F11>", function()
     vim.g.neovide_fullscreen = not vim.g.neovide_fullscreen
