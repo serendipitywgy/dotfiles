@@ -2,7 +2,7 @@ if not vim.g.neovide then
     return
 end
 
-vim.o.linespace = 0
+vim.o.linespace = 2
 
 vim.g.neovide_opacity = 1.0
 vim.g.neovide_floating_blur = true
@@ -19,7 +19,7 @@ vim.g.neovide_detect_color_scheme = true
 vim.g.neovide_cursor_hack = false
 vim.g.neovide_hide_mouse_when_typing = true
 vim.g.neovide_confirm_quit = true
-vim.g.neovide_fullscreen = false
+vim.g.neovide_fullscreen = true
 vim.g.neovide_remember_window_size = true
 vim.g.neovide_theme = "auto"
 vim.g.neovide_show_border = false
@@ -31,10 +31,10 @@ vim.g.neovide_font_rendering = "SubpixelAntialiased" -- LCD 次像素抗锯齿�
 vim.g.neovide_font_ligatures = true                 -- 编程连字（-> → ⟶, != → ≠）
 
 -- 窗口内边距：让编辑器内容不贴边框，视觉更舒适
-vim.g.neovide_padding_top = 1
-vim.g.neovide_padding_bottom = 1
-vim.g.neovide_padding_left = 4
-vim.g.neovide_padding_right = 4
+vim.g.neovide_padding_top = 8
+vim.g.neovide_padding_bottom = 4
+vim.g.neovide_padding_left = 8
+vim.g.neovide_padding_right = 8
 
 -- 性能与帧率
 vim.g.neovide_refresh_rate = 60 -- 锁定 60fps，平滑滚动，避免 GPU 空转
@@ -53,6 +53,6 @@ end
 vim.keymap.set({ "n", "i" }, "<S-C-Left>", dec_transparency, { desc = "Decrease transparency" })
 vim.keymap.set({ "n", "i" }, "<S-C-Right>", inc_transparency, { desc = "Increase transparency" })
 
-vim.keymap.set({ "n", "i", "v", "t" }, "<F11>", function()
+vim.keymap.set("n", "<F11>", function()
     vim.g.neovide_fullscreen = not vim.g.neovide_fullscreen
 end, { desc = "Toggle fullscreen" })
