@@ -9,7 +9,6 @@ local config = {
         spell = false,             -- 禁止使用拼写检查
         number = true,
         relativenumber = true,
-        autocomplete = true,
         autoindent = true,
         wrap = true,           -- 启用自动换行
         colorcolumn = "150",   -- 在第150列显示垂直线，用于提示代码宽度
