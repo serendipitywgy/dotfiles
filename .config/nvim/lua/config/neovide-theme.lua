@@ -386,20 +386,10 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     end,
 })
 
--- 启动时应用持久化的字体（同步，轻量）
+-- 启动时应用持久化的主题与字体
 vim.o.guifont = fonts[font_idx]
 write_state(font_file, fonts[font_idx])
--- 主题加载涉及 packadd + colorscheme，延迟到 UI 就绪后避免阻塞启动
-vim.schedule(function()
-    apply_theme(themes[theme_idx])
-end)
+apply_theme(themes[theme_idx])
 
 vim.keymap.set("n", "<A-f>", set_style, { desc = "Set theme and font (neovide)" })
 vim.keymap.set("n", "<A-F>", show_style, { desc = "Show theme and font (neovide)" })
-vim.keymap.set("n", "<A-S-f>", function()
-    if math.random(2) == 1 then
-        random_theme()
-    else
-        random_font()
-    end
-end, { desc = "Random theme or font (neovide)" })
