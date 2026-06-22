@@ -7,9 +7,6 @@ local ime_augroup = vim.api.nvim_create_augroup("ImeAutoSwitch", { clear = true 
 vim.api.nvim_create_autocmd("InsertLeave", {
     group = ime_augroup,
     callback = function()
-        if vim.v.exiting then
-            return
-        end
         local state = vim.fn.system("fcitx5-remote")
         prev_active = vim.trim(state) == "2"
         if prev_active then
