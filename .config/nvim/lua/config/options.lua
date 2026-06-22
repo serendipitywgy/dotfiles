@@ -29,8 +29,7 @@ local config = {
 
         -- 设置窗口标题为当前文件名或项目名
         title = true,
-        titlestring = "%{expand('%:p:h:t')}",
-        shortmess = "IF"
+        titlestring = "%{expand('%:p:h:t')}"
     },
     cmd = {},
 }

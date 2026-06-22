@@ -1,7 +1,3 @@
-if vim.g.neovide then
-    return
-end
-
 require("noice").setup({
     lsp = {
         override = {},
