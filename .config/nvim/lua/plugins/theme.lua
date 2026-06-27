@@ -14,7 +14,6 @@ if not vim.g.neovide then
         ["rose-pine"] = "neovim",
         onedark = "onedark.nvim",
         everforest = "everforest",
-        astro = "astrotheme",
     }
 
     local function packadd_for_scheme(name)

@@ -11,7 +11,6 @@ local font_file = state_dir .. "/last_neovide_font"
 -- colorscheme 名前缀 → vim.pack 的 packadd 名（repo 末段）
 local scheme_to_pack = {
     catppuccin = "nvim",
-    astro = "astrotheme",
     tokyonight = "tokyonight.nvim",
     gruvbox = "gruvbox.nvim",
     kanagawa = "kanagawa.nvim",
@@ -132,7 +131,6 @@ local themes = {
     "tokyonight",
     "vscode",
     "zephyr",
-    "astro",
 }
 
 local function read_state(path, default)

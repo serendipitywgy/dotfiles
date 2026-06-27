@@ -4,7 +4,6 @@
 local specs = {
     -- 主题（opt 加载，按需 packadd）
     { src = "https://github.com/catppuccin/nvim",           opt = true },
-    { src = "https://github.com/AstroNvim/astrotheme",     opt = true },
     { src = "https://github.com/folke/tokyonight.nvim",    opt = true },
     { src = "https://github.com/ellisonleao/gruvbox.nvim", opt = true },
     { src = "https://github.com/rebelot/kanagawa.nvim",    opt = true },
