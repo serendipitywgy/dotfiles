@@ -39,6 +39,19 @@ vim.api.nvim_create_autocmd({ 'BufReadPre', 'BufReadPost' }, {
                     return indicator
                 end,
             },
+            -- 链接到 vim 标准 hl 组，自动跟随 colorscheme
+            highlights = {
+                fill              = { link = "Normal" },
+                background        = { link = "TabLine" },
+                buffer            = { link = "TabLine" },
+                buffer_visible    = { link = "TabLine" },
+                buffer_selected   = { link = "Normal" },
+                separator         = { link = "Normal" },
+                separator_visible = { link = "Normal" },
+                tab               = { link = "TabLine" },
+                tab_selected      = { link = "TabLineSel" },
+                tab_close         = { link = "TabLine" },
+            },
         })
 
         -- 3. 注册按键
@@ -46,5 +59,12 @@ vim.api.nvim_create_autocmd({ 'BufReadPre', 'BufReadPost' }, {
         set("n", "<leader>bp", ":BufferLinePick<CR>", { silent = true, desc = "选择缓冲区" })
         set("n", "<leader>bc", ":BufferLinePickClose<CR>", { silent = true, desc = "选择关闭" })
         set("n", "<leader>bO", ":BufferLineCloseOthers<CR>", { silent = true, desc = "关闭其他缓冲区" })
+    end,
+})
+
+-- 切换 colorscheme 时清图标缓存，使 BufferLine* 图标色跟随 hl 链接更新
+vim.api.nvim_create_autocmd("ColorScheme", {
+    callback = function()
+        pcall(require("bufferline.highlights").reset_icon_hl_cache)
     end,
 })
