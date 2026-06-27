@@ -376,13 +376,13 @@ M.FileIcon = {
         self.is_modified = vim.api.nvim_get_option_value('modified', { buf = self.bufnr })
         local filename = self.filename
         local extension = vim.fn.fnamemodify(filename, ':e')
-        local icon, hl, _ = MiniIcons.get('file', 'file.' .. extension)
+        local icon, color = require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
         local bt = vim.api.nvim_get_option_value('buftype', { buf = self.bufnr }) or nil
         if bt and bt == 'terminal' then
             icon = ''
         end
         self.icon = icon
-        self.icon_color = safe_hl_fg_hex(hl, palette.text)
+        self.icon_color = color or palette.text
     end,
     provider = function(self)
         return self.icon and (self.icon .. ' ')
@@ -397,8 +397,8 @@ M.FileName = {
         self.is_modified = vim.api.nvim_get_option_value('modified', { buf = self.bufnr })
         local filename = self.filename
         local extension = vim.fn.fnamemodify(filename, ':e')
-        local _, hl, _ = MiniIcons.get('file', 'file.' .. extension)
-        self.icon_color = safe_hl_fg_hex(hl, dim_color)
+        local _, color = require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
+        self.icon_color = color or dim_color
     end,
     provider = function(self)
         -- self.filename will be defined later, just keep looking at the example!
@@ -449,8 +449,8 @@ M.FileFlags = {
         init = function(self)
             local filename = self.filename
             local extension = vim.fn.fnamemodify(filename, ':e')
-            local _, hl, _ = MiniIcons.get('file', 'file.' .. extension)
-            self.icon_color = safe_hl_fg_hex(hl, palette.text)
+            local _, color = require("nvim-web-devicons").get_icon_color(filename, extension, { default = true })
+            self.icon_color = color or palette.text
         end,
         condition = function(self)
             local ignored_filetypes = {

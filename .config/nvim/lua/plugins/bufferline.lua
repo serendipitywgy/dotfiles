@@ -39,19 +39,6 @@ vim.api.nvim_create_autocmd({ 'BufReadPre', 'BufReadPost' }, {
                     return indicator
                 end,
             },
-            -- 链接到 vim 标准 hl 组，自动跟随 colorscheme
-            highlights = {
-                fill              = { link = "Normal" },
-                background        = { link = "TabLine" },
-                buffer            = { link = "TabLine" },
-                buffer_visible    = { link = "TabLine" },
-                buffer_selected   = { link = "Normal" },
-                separator         = { link = "Normal" },
-                separator_visible = { link = "Normal" },
-                tab               = { link = "TabLine" },
-                tab_selected      = { link = "TabLineSel" },
-                tab_close         = { link = "TabLine" },
-            },
         })
 
         -- 3. 注册按键

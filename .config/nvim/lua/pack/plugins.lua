@@ -38,7 +38,7 @@ local specs = {
 
     -- mini 系列
     { src = "https://github.com/nvim-mini/mini.ai" },
-    { src = "https://github.com/nvim-mini/mini.icons" },
+
     { src = "https://github.com/nvim-mini/mini.surround" },
 
     -- tmux 导航（条件加载，此处统一下载）
@@ -130,6 +130,7 @@ local specs = {
 -- nvim-conan 是本地开发软链接，由 plugins/conan.lua 手动加载，不走 vim.pack 管理
 local disabled = {
     { src = "https://github.com/serendipitywgy/nvim-conan" },
+    { src = "https://github.com/nvim-mini/mini.icons" },
 }
 
 -- 同步清理孤儿插件并注册禁用名单

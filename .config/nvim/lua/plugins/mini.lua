@@ -1,17 +1,3 @@
--- mini.icons 需要在启动时立即加载（被 bufferline、heirline 等依赖）
-require("mini.icons").setup({
-    style = "glyph",
-    file = {
-        README = { glyph = "󰆈", hl = "MiniIconsYellow" },
-        ["README.md"] = { glyph = "󰆈", hl = "MiniIconsYellow" },
-    },
-    filetype = {
-        bash = { glyph = "󱆃", hl = "MiniIconsGreen" },
-        sh = { glyph = "󱆃", hl = "MiniIconsGrey" },
-        toml = { glyph = "󱄽", hl = "MiniIconsOrange" },
-    },
-})
-
 -- mini.ai / mini.surround 首次进入 buffer 时才需要
 vim.api.nvim_create_autocmd("BufReadPost", {
     once = true,
