@@ -225,27 +225,30 @@ local function show_style()
 end
 
 local function select_theme()
-    local items = {}
-    for i, t in ipairs(themes) do
-        items[i] = { label = t, idx = i }
-    end
-    vim.ui.select(items, {
-        prompt = "Pick theme",
-        format_item = function(item)
-            if item.idx == theme_idx then
-                return "> " .. item.label .. "  (current)"
-            end
-            return "  " .. item.label
+    local theme_set = {}
+    for _, t in ipairs(themes) do theme_set[t] = true end
+    Snacks.picker.colorschemes({
+        transform = function(item)
+            return theme_set[item.text]
         end,
-    }, function(choice)
-        if not choice then
-            return
-        end
-        theme_idx = choice.idx
-        apply_theme(themes[theme_idx])
-        write_state(theme_file, themes[theme_idx])
-        show_style()
-    end)
+        confirm = function(picker, item)
+            if not item then return end
+            local name = item.text
+            local deps = scheme_deps[name] or {}
+            for _, dep in ipairs(deps) do
+                pcall(vim.cmd.packadd, dep)
+            end
+            packadd_for_scheme(name)
+            setup_scheme(name)
+            picker:close()
+            picker.preview.state.colorscheme = nil
+            vim.schedule(function()
+                pcall(vim.cmd.colorscheme, name)
+                vim.o.guifont = fonts[font_idx]
+                show_style()
+            end)
+        end,
+    })
 end
 
 local function random_theme()
