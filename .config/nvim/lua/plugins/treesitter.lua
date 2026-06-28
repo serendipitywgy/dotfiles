@@ -5,7 +5,7 @@ require('nvim-treesitter').install({
     'python', 'javascript', 'typescript', 'c', 'cpp', 'cmake',
     'go', 'rust', 'java',
     'html', 'css', 'json', 'toml', 'yaml', 'bash', 'xml',
-    'markdown', 'markdown_inline',
+        'markdown', 'markdown_inline',
 })
 
 vim.api.nvim_create_autocmd('FileType', {

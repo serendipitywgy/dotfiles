@@ -98,6 +98,7 @@ local specs = {
     -- Markdown 渲染
     { src = "https://github.com/MeanderingProgrammer/render-markdown.nvim" },
     { src = "https://github.com/3rd/image.nvim" },
+    { src = "https://github.com/3rd/diagram.nvim" },
 
     -- 会话管理
     { src = "https://github.com/rmagatti/auto-session" },
