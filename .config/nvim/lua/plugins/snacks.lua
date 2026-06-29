@@ -156,10 +156,11 @@ require("snacks").setup({
     },
     picker = {
         enabled = true,
+        layout = "ivy",
+        -- layout = "telescope",
         sources = {
-            grep = {
-                exclude = { "node_modules/*", "dist/*", "build/*", ".git/*", "__pycache__/*", "*.min.*", "*.map" },
-            },
+            explorer = { layout = "sidebar" },
+            grep = { exclude = { "node_modules/*", "dist/*", "build/*", ".git/*", "__pycache__/*", "*.min.*", "*.map" } },
         },
         win = {
             input = {
