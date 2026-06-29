@@ -262,7 +262,6 @@ map("n", "<leader>sk", function() Snacks.picker.keymaps() end, { desc = "快捷�
 map("n", "<leader>sl", function() Snacks.picker.loclist() end, { desc = "位置列表" })
 map("n", "<leader>sm", function() Snacks.picker.marks() end, { desc = "标记" })
 map("n", "<leader>sM", function() Snacks.picker.man() end, { desc = "手册页" })
-map("n", "<leader>sp", function() Snacks.picker.lazy() end, { desc = "搜索插件配置" })
 map("n", "<leader>sq", function() Snacks.picker.qflist() end, { desc = "Quickfix 列表" })
 map("n", "<leader>sR", function() Snacks.picker.resume() end, { desc = "恢复" })
 map("n", "<leader>su", function() Snacks.picker.undo() end, { desc = "撤销历史" })
