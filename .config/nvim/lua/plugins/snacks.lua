@@ -324,3 +324,6 @@ map("n", "]]", function() Snacks.words.jump(vim.v.count1) end, { desc = "下一�
 map("n", "[[", function() Snacks.words.jump(-vim.v.count1) end, { desc = "上一个引用" })
 map("t", "]]", function() Snacks.words.jump(vim.v.count1) end, { desc = "下一个引用" })
 map("t", "[[", function() Snacks.words.jump(-vim.v.count1) end, { desc = "上一个引用" })
+
+-- picker 快捷键帮助
+map("n", "<leader>?", function() Snacks.picker.help() end, { desc = "Picker 快捷键参考" })
