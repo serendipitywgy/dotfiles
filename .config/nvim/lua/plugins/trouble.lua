@@ -20,12 +20,12 @@ vim.keymap.set("n", "<leader>xX", function()
     trouble.toggle("diagnostics", { filter = { buf = 0 } })
 end, { desc = "缓冲区诊断 (Trouble)" })
 
-vim.keymap.set("n", "<leader>cs", function()
+vim.keymap.set("n", "<leader>xs", function()
     if not ensure_setup() then return end
     trouble.toggle("symbols", { focus = false })
 end, { desc = "符号列表 (Trouble)" })
 
-vim.keymap.set("n", "<leader>cl", function()
+vim.keymap.set("n", "<leader>xl", function()
     if not ensure_setup() then return end
     trouble.toggle("lsp", { focus = false, win = { position = "right" } })
 end, { desc = "LSP 参考 (Trouble)" })
