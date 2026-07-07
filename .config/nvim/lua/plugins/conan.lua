@@ -1,4 +1,4 @@
-local dev_path = "/home/aoi/Music/nvim-conan"
+local dev_path = "/home/aoi/Music/fork-conan/nvim-conan"
 if vim.fn.isdirectory(dev_path) == 1 then
     vim.api.nvim_create_user_command("Conan", function(opts)
         vim.opt.runtimepath:prepend(dev_path)

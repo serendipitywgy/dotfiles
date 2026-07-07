@@ -168,6 +168,9 @@ local fonts = {
     "IntoneMono Nerd Font Mono,LXGW WenKai Mono:h12",
     "Iosevka Nerd Font Mono,LXGW WenKai Mono:h13",
     "JetBrainsMono Nerd Font Mono,Sarasa Fixed SC:h12",
+    "JetBrainsMono Nerd Font Mono:style=Light,Sarasa Fixed SC:h12",
+    "JetBrainsMono Nerd Font Mono:style=Medium,Sarasa Fixed SC:h12",
+    "JetBrainsMono Nerd Font Mono:style=SemiBold,Sarasa Fixed SC:h12",
     "Maple Mono NF CN:h12",
     "MesloLGMDZ Nerd Font Mono,Sarasa Fixed SC:h12",
     "MonaspiceAr Nerd Font Mono,LXGW WenKai Mono:h12",
@@ -306,6 +309,10 @@ function M.show()
     local info = (vim.g.colors_name or "?")
     if vim.g.neovide then
         info = info .. " | " .. string.gsub(vim.o.guifont or "", "_[%w]+", "")
+        local vfx = vim.g.neovide_cursor_vfx_mode
+        if vfx and vfx ~= "" then
+            info = info .. " | VFX: " .. vfx
+        end
     end
     vim.notify(info)
 end
