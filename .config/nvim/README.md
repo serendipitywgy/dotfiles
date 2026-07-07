@@ -496,8 +496,88 @@ init.lua          ← 极简入口，仅做 leader 设置 + 4 个 require
 | **render-markdown.nvim** | Markdown 美化渲染，懒加载于 FileType markdown |
 | **image.nvim** | Markdown 中内嵌图片渲染（kitty 后端） |
 | **windsurf.vim** | Codeium/Windsurf AI 代码补全（`<C-g>` 接受） |
+| **sidekick.nvim** | AI CLI 终端管理器（NES 多行重构建议），`<leader>aa` 切换终端，`<leader>ac` 打开 Claude |
+| **codecompanion.nvim** | 全功能 AI 编程助手，支持 Chat / Inline / Action Palette 多种交互方式（见下方详细说明） |
 | **vim-tmux-navigator** | tmux 环境下 nvim 窗口与 tmux pane 无缝切换 |
 | **plenary.nvim** | Lua 工具库，部分插件的依赖 |
+
+---
+
+### CodeCompanion AI 助手
+
+> 基于 `olimorris/codecompanion.nvim`，通过公司 API 网关调用 DeepSeek / Qwen / GLM 等模型
+
+#### 快捷键
+
+| 快捷键 | 说明 |
+|--------|------|
+| `<leader>cc` | 切换 Chat Buffer（对话界面） |
+| `<leader>ci` | Inline 交互（选中代码后输入 prompt） |
+| `<leader>ca` | 打开 Action Palette（命令面板） |
+
+#### 核心功能
+
+##### Editor Context（`#`）
+
+在 Chat Buffer 中通过 `#` 动态注入上下文：
+
+| 变量 | 说明 |
+|------|------|
+| `#buffer` | 当前文件内容（默认仅发 diff 部分，省 token） |
+| `#diagnostics` | LSP 诊断信息 |
+| `#diff` | Git diff（暂存 + 未暂存） |
+| `#selection` | 当前选中代码 |
+| `#quickfix` | Quickfix 列表 |
+| `#viewport` | 屏幕可见区域 |
+| `#terminal` | 终端最新输出 |
+| `#messages` | Neovim 消息历史 |
+
+##### Slash Commands（`/`）
+
+在 Chat Buffer 中通过 `/` 调用快捷操作：
+
+| 命令 | 说明 |
+|------|------|
+| `/explain` | 解释选中的代码 |
+| `/fix` | 修复选中的代码 |
+| `/tests` | 生成单元测试 |
+| `/commit` | 生成 Commit Message |
+| `/lsp` | 解释 LSP 错误 |
+| `/buffer` | 选择其他 Buffer 加入上下文 |
+| `/file` | 选择文件加入上下文 |
+| `/fetch` | 抓取 URL 内容给 AI 分析 |
+| `/symbols` | 提取文件符号大纲（省 token） |
+| `/compact` | 压缩对话历史（保留摘要） |
+| `/now` | 插入当前时间 |
+
+**常用示例：**
+
+```
+选中代码后 :CodeCompanion /explain       # 解释代码
+选中代码后 :CodeCompanion /fix           # 修复问题
+选中代码后 :CodeCompanion /tests         # 生成测试
+:CodeCompanionChat #diagnostics           # 分析 LSP 错误
+```
+
+##### Prompt Library（自定义模板）
+
+- 支持 Markdown 格式的 prompt 模板，存放在 `.prompts/` 目录下自动加载
+- 支持变量注入：`${context.code}`、`${context.filetype}` 等
+- 支持 Workflow（多步链式 prompt，自动依次执行）
+- 支持条件判断、前后钩子、工具绑定
+
+##### Inline Diff 模式
+
+`：CodeCompanion 你的prompt` 后，AI 的修改以 diff 展示：
+- `gda` — 接受修改
+- `gdr` — 拒绝修改
+
+##### 其他
+
+- **多 Chat**：可同时打开多个 Chat Buffer
+- **Fork**：`/fork` 分支当前对话（换模型重试，不丢原对话）
+- **Rules**：支持 `CLAUDE.md`、`.cursor/rules` 等规则文件
+- **系统 Prompt**：AI 默认用中文回答
 
 ---
 
