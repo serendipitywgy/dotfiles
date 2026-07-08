@@ -43,6 +43,47 @@ PackUtils.load({
                         },
                     })
                 end,
+                opencode = function()
+                    local auth_path = vim.fn.expand("~/.local/share/opencode/auth.json")
+                    local ok, data = pcall(function()
+                        local f = io.open(auth_path, "r")
+                        if not f then
+                            return nil
+                        end
+                        local content = f:read("*a")
+                        f:close()
+                        return vim.json.decode(content)
+                    end)
+                    if ok and data and data.opencode then
+                        vim.env.OPENCODE_API_KEY = data.opencode.key
+                    end
+                    return require("codecompanion.adapters").extend("openai_compatible", {
+                        env = {
+                            url = "https://api.opencode.ai",
+                            api_key = "OPENCODE_API_KEY",
+                        },
+                        formatted_name = "OpenCode",
+                        schema = {
+                            model = {
+                                default = "qwen3-coder-480b",
+                                choices = {
+                                    ["qwen3-coder-480b"] = {
+                                        formatted_name = "Qwen3 Coder 480B",
+                                    },
+                                    ["deepseek-v4-pro"] = {
+                                        formatted_name = "DeepSeek V4 Pro",
+                                    },
+                                    ["claude-sonnet-4-20250514"] = {
+                                        formatted_name = "Claude Sonnet 4",
+                                    },
+                                    ["gpt-5-nano"] = {
+                                        formatted_name = "GPT-5 Nano",
+                                    },
+                                },
+                            },
+                        },
+                    })
+                end,
             },
         },
 
@@ -63,7 +104,7 @@ PackUtils.load({
                         linebreak = true,
                     },
                 },
-                show_settings = true,
+                show_settings = false,
                 show_token_count = true,
                 show_reasoning = true,
                 fold_reasoning = true,
