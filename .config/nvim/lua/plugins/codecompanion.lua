@@ -1,7 +1,7 @@
 PackUtils.load({
     name = "codecompanion.nvim",
     module = "codecompanion",
-    deps = { "plenary.nvim" },
+    deps = { "plenary.nvim", "codecompanion-history.nvim", "codecompanion-spinner.nvim" },
 }, function()
     require("codecompanion").setup({
         adapters = {
@@ -16,7 +16,7 @@ PackUtils.load({
                         opts = {
                             compaction = false,
                             stream = true,
-                            tools = false,
+                            tools = true,
                             vision = false,
                         },
                         schema = {
@@ -40,6 +40,27 @@ PackUtils.load({
                             extended_output = { default = false, enabled = false },
                             extended_thinking = { default = false, enabled = false },
                             thinking_budget = { default = 0, enabled = false },
+                        },
+                        handlers = {
+                            on_exit = function(_, data)
+                                if not data.headers then return end
+                                local parsed = {}
+                                for _, h in ipairs(data.headers) do
+                                    local k, v = h:match("([^:]+):%s*(.+)")
+                                    if k then parsed[k] = v end
+                                end
+                                local mappings = {
+                                    ["X-Ratelimit-Remaining"] = "daily_remain",
+                                    ["X-Ratelimit-Reset"] = "reset",
+                                }
+                                local info = {}
+                                for header, key in pairs(mappings) do
+                                    if parsed[header] then info[key] = parsed[header] end
+                                end
+                                if next(info) then
+                                    _G.CC_QUOTA = info
+                                end
+                            end,
                         },
                     })
                 end,
@@ -65,23 +86,24 @@ PackUtils.load({
                         formatted_name = "OpenCode",
                         schema = {
                             model = {
-                                default = "qwen3-coder-480b",
+                                default = "Big_Pickle",
                                 choices = {
-                                    ["qwen3-coder-480b"] = {
-                                        formatted_name = "Qwen3 Coder 480B",
+                                    ["Big_Pickle"] = {
+                                        formatted_name = "Big Pickle",
                                     },
                                     ["deepseek-v4-pro"] = {
                                         formatted_name = "DeepSeek V4 Pro",
                                     },
-                                    ["claude-sonnet-4-20250514"] = {
-                                        formatted_name = "Claude Sonnet 4",
-                                    },
-                                    ["gpt-5-nano"] = {
-                                        formatted_name = "GPT-5 Nano",
-                                    },
                                 },
                             },
                         },
+                    })
+                end,
+            },
+            acp = {
+                opencode = function()
+                    return require("codecompanion.adapters").extend("opencode", "acp", {
+                        formatted_name = "OpenCode ACP",
                     })
                 end,
             },
@@ -104,6 +126,8 @@ PackUtils.load({
                         linebreak = true,
                     },
                 },
+                show_header_separator = true,
+                separator = "━",
                 show_settings = false,
                 show_token_count = true,
                 show_reasoning = true,
@@ -120,6 +144,16 @@ PackUtils.load({
         opts = {
             log_level = "WARN",
             language = "中文",
+        },
+
+        extensions = {
+            history = {
+                enabled = true,
+                opts = {
+                    keymap = "gh",
+                },
+            },
+            spinner = {},
         },
 
         interactions = {
@@ -152,13 +186,72 @@ PackUtils.load({
                     end,
                 },
             },
+            cli = {
+                agent = "claude",
+                agents = {
+                    claude = {
+                        cmd = "claude",
+                        args = {},
+                        description = "Claude Code CLI",
+                        provider = "terminal",
+                    },
+                    opencode = {
+                        cmd = "opencode",
+                        args = {},
+                        description = "OpenCode CLI",
+                        provider = "terminal",
+                    },
+                },
+            },
         },
     })
 
     vim.keymap.set("n", "<leader>cc", "<cmd>CodeCompanionChat Toggle<CR>",
-        { desc = "CodeCompanion Chat" })
+        { desc = "AI Chat" })
     vim.keymap.set({ "n", "x" }, "<leader>ci", ":CodeCompanion ",
-        { desc = "CodeCompanion Inline" })
+        { desc = "AI Inline" })
     vim.keymap.set("n", "<leader>ca", "<cmd>CodeCompanionActions<CR>",
-        { desc = "CodeCompanion Actions" })
+        { desc = "AI Actions" })
+
+    local function is_vertical_screen()
+        return vim.o.columns < 120
+    end
+
+    local hooks = vim.api.nvim_create_augroup("CodeCompanionHooks", {})
+    vim.api.nvim_create_autocmd("User", {
+        pattern = "CodeCompanionChatOpened",
+        group = hooks,
+        callback = function()
+            if is_vertical_screen() and vim.bo.filetype == "codecompanion" then
+                vim.cmd("wincmd J")
+            end
+        end,
+    })
+
+    vim.keymap.set("n", "<LocalLeader>cc", function()
+        require("codecompanion").toggle_cli()
+    end, { desc = "CLI toggle" })
+    vim.keymap.set({ "n", "v" }, "<LocalLeader>cp", function()
+        require("codecompanion").cli({ prompt = true })
+    end, { desc = "CLI prompt" })
+    vim.keymap.set({ "n", "v" }, "<LocalLeader>ca", function()
+        require("codecompanion").cli("#{this}", { focus = false })
+    end, { desc = "CLI add context" })
+    vim.keymap.set("n", "<LocalLeader>cd", function()
+        require("codecompanion").cli("#{diagnostics} Can you fix these?", { focus = false, submit = true })
+    end, { desc = "CLI diagnostics fix" })
+    vim.keymap.set("n", "<LocalLeader>ct", function()
+        require("codecompanion").cli("#{terminal} Sharing output. Can you fix it?", { focus = false, submit = true })
+    end, { desc = "CLI terminal fix" })
+    vim.keymap.set("n", "<leader>cq", function()
+        if _G.CC_QUOTA then
+            local parts = {}
+            for k, v in pairs(_G.CC_QUOTA) do
+                table.insert(parts, k .. ": " .. v)
+            end
+            vim.notify("API 额度: " .. table.concat(parts, ", "))
+        else
+            vim.notify("暂无额度信息", vim.log.levels.INFO)
+        end
+    end, { desc = "AI quota" })
 end)
