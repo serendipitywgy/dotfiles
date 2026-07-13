@@ -113,9 +113,7 @@ local specs = {
     -- AI 补全 / Sidekick
     { src = "https://github.com/Exafunction/windsurf.vim" },
     { src = "https://github.com/folke/sidekick.nvim" },
-    { src = "https://github.com/olimorris/codecompanion.nvim" },
-    { src = "https://github.com/ravitemer/codecompanion-history.nvim" },
-    { src = "https://github.com/franco-ruggeri/codecompanion-spinner.nvim" },
+
 
     -- 重命名增量预览
     { src = "https://github.com/smjonas/inc-rename.nvim" },

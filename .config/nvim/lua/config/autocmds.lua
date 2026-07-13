@@ -175,7 +175,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
 -- markdown的懒加载
 
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "markdown", "codecompanion" },
+    pattern = { "markdown" },
     callback = function()
         -- 调用 init 运行 setup
         require("plugins.render-markdown").init()
