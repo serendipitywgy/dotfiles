@@ -67,9 +67,6 @@ set_keymaps("n", { "<C-Right>" }, "<cmd>vertical resize +2<cr>", { desc = "增�
 --头文件/源文件切换
 set_keymaps({ "v", "n" }, { "<leader>ch" }, "<cmd>LspClangdSwitchSourceHeader<CR>", { silent = true })
 
--- C++ 构建
-set_keymaps("n", { "<leader>cB" }, "<cmd>Conan build<CR>", { desc = "Conan build", silent = true })
-
 --清除搜索高亮
 set_keymaps("n", { "<Esc>" }, "<cmd>nohlsearch<CR>", { silent = true })
 

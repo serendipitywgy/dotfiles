@@ -23,4 +23,4 @@ vim.api.nvim_create_autocmd("VimEnter", {
 })
 
 vim.keymap.set("n", "<leader>oo", "<cmd>OverseerToggle<cr>", { desc = "Toggle Overseer panel" })
-vim.keymap.set("n", "<leader>or", "<cmd>OverseerRunLast<cr>", { desc = "Re-run last Conan task" })
+vim.keymap.set("n", "<leader>or", "<cmd>OverseerRunLast<cr>", { desc = "重跑上次构建任务" })
