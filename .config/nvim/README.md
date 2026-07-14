@@ -32,6 +32,7 @@
         ├── treesitter.lua
         ├── heirline.lua
         ├── bufferline.lua
+        ├── oil.lua
         ├── yazi.lua
         ├── git.lua
         ├── debug.lua
@@ -219,9 +220,8 @@ init.lua          ← 极简入口，仅做 leader 设置 + 4 个 require
 | `<leader>w` | n | 保存当前 buffer |
 | `<leader>q` | n | 退出当前 buffer |
 | `<leader>qq` | n | 保存全部并退出 |
-| `<leader>e` | n | Snacks 文件浏览器 |
-| `tt` / `-` | n/v | 打开 Yazi |
-| `nvim <目录>` | — | 用 Yazi 打开目录（接管 netrw） |
+| `<leader>e` | n | 打开 Oil 文件管理器 |
+| `tt` | n/v | 打开 Yazi 文件管理器 |
 
 ### Snacks Picker（模糊搜索）
 
@@ -441,8 +441,8 @@ init.lua          ← 极简入口，仅做 leader 设置 + 4 个 require
 
 | 插件 | 说明 |
 |------|------|
-| **yazi.nvim** | 集成 yazi，`tt` / `-` 打开；`open_for_directories` 替代 netrw。Yazi 配置见 `~/.config/yazi/` |
-| **snacks.explorer** | `<leader>e` 侧栏文件树 |
+| **oil.nvim** | 像编辑文本一样编辑目录，替代 netrw，`<leader>e` 打开 |
+| **yazi.nvim** | 集成 yazi 终端文件管理器，`tt` 打开，按需懒加载 |
 
 ### LSP / 补全
 
