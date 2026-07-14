@@ -142,8 +142,9 @@ local function blink_cmp2()
         },
 
         sources = {
-            default = { "path", "snippets", "buffer", "lsp" },
+            default = { "lazydev", "path", "snippets", "buffer", "lsp" },
             providers = {
+                lazydev = { module = "lazydev.integrations.blink", score_offset = 100 },
                 buffer = {
                     opts = {
                         max_async_buffer_size = 1000000,

@@ -9,6 +9,12 @@ end
 set_keymaps({ "n", "x" }, { "j" }, "v:count == 0 ? 'gj' : 'j'", { desc = "向下", expr = true, silent = true })
 set_keymaps({ "n", "x" }, { "k" }, "v:count == 0 ? 'gk' : 'k'", { desc = "向上", expr = true, silent = true })
 
+-- 移动行
+vim.keymap.set("n", "<A-j>", "<cmd>m .+1<cr>==", { desc = "下移行", silent = true })
+vim.keymap.set("n", "<A-k>", "<cmd>m .-2<cr>==", { desc = "上移行", silent = true })
+vim.keymap.set("v", "<A-j>", ":m '>+1<cr>gv=gv", { desc = "下移选区", silent = true })
+vim.keymap.set("v", "<A-k>", ":m '<-2<cr>gv=gv", { desc = "上移选区", silent = true })
+
 -- 插入模式下，按下 kj 或 KJ 不执行任何操作
 set_keymaps("i", { "kj", "KJ" }, "<Esc>", { silent = true })
 

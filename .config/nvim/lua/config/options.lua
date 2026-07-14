@@ -26,6 +26,8 @@ local config = {
         splitright = true,     -- 新窗口在右边
         undofile = true,       --启用了 Neovim 的持久化撤销历史功能
         virtualedit = "block", -- 允许虚拟编辑, 允许在不可见的字符上进行操作
+        scrolloff = 8,         -- 光标距屏幕顶/底至少保留8行
+        inccommand = "split",  -- :s 替换实时预览
 
 
         -- 设置窗口标题为当前文件名或项目名

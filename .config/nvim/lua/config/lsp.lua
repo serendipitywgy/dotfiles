@@ -133,6 +133,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
             vim.lsp.buf.definition()
         end, { buffer = event.buf, desc = "LSP: 跳转到定义 (分屏)" })
 
+        -- [hover] K 悬停文档（markdown 保留 diagram 预览）
+        if vim.bo[event.buf].filetype ~= "markdown" then
+            vim.keymap.set("n", "K", vim.lsp.buf.hover, { buffer = event.buf, desc = "LSP: 悬停文档" })
+        end
+
         -- [code-action] LSP 代码操作
         vim.keymap.set({"n", "v"}, "<leader>ca", vim.lsp.buf.code_action, { buffer = event.buf, desc = "LSP: code action" })
 
