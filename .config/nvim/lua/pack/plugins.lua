@@ -118,9 +118,6 @@ local specs = {
     -- 重命名增量预览
     { src = "https://github.com/smjonas/inc-rename.nvim" },
 
-    -- conan
-    { src = "https://github.com/serendipitywgy/nvim-conan" },
-
     -- 格式化
     { src = "https://github.com/stevearc/conform.nvim" },
 
@@ -129,9 +126,7 @@ local specs = {
 }
 
 -- 禁用插件：不会加载，不会下载（新添加时），已在硬盘上不会被删除
--- nvim-conan 是本地开发软链接，由 plugins/conan.lua 手动加载，不走 vim.pack 管理
 local disabled = {
-    { src = "https://github.com/serendipitywgy/nvim-conan" },
     { src = "https://github.com/nvim-mini/mini.icons" },
 }
 

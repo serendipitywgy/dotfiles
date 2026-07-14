@@ -617,21 +617,6 @@ M.LspProgress = {
     hl = { fg = dim_color, bold = false },
 }
 
-M.ConanStatus = {
-    condition = function()
-        return package.loaded["conan_status"] ~= nil
-    end,
-    provider = function()
-        return require("conan_status").component()
-    end,
-    update = {
-        "User",
-        pattern = "ConanStatusUpdated",
-        callback = vim.schedule_wrap(function()
-            vim.cmd("redrawstatus")
-        end),
-    },
-    hl = { fg = palette.green, bold = false },
-}
+
 
 return M
