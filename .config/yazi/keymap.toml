@@ -3,35 +3,21 @@
 [mgr]
 
 prepend_keymap = [
-	# smart-enter：目录进入 / 文件用 opener 打开
-	{ on = "l",       run = "plugin smart-enter", desc = "进入目录或打开文件" },
-	{ on = "<Enter>", run = "plugin smart-enter", desc = "进入目录或打开文件" },
-
-	# smart-paste：悬停目录则粘进去，否则粘到当前目录
-	{ on = "p", run = "plugin smart-paste", desc = "智能粘贴" },
-
-	# 当前目录开 shell
-	{ on = "!", run = 'shell "$SHELL" --block', desc = "在此打开 shell" },
-
-	# 跳到当前 Git 仓库根目录
-	{ on = [ "g", "r" ], run = 'shell -- ya emit cd "$(git rev-parse --show-toplevel)"', desc = "跳转到 Git 根目录" },
+	# 用 nvim 打开文件
+	{ on = "e", run = "open", desc = "用 $EDITOR 打开" },
 
 	# 快速跳转常用目录
-	{ on = [ "g", "p" ], run = "cd ~/projects",  desc = "跳转到 ~/projects" },
-	{ on = [ "g", "D" ], run = "cd ~/Downloads", desc = "跳转到 ~/Downloads" },
-	{ on = [ "g", "C" ], run = "cd ~/.config",   desc = "跳转到 ~/.config" },
+	{ on = [ "g", "p" ], run = "cd ~/projects",    desc = "跳转到 ~/projects" },
+	{ on = [ "g", "D" ], run = "cd ~/Downloads",   desc = "跳转到 ~/Downloads" },
+	{ on = [ "g", "C" ], run = "cd ~/.config",     desc = "跳转到 ~/.config" },
 
-	# 复制路径（wl-clipboard / xclip）
+	# 复制文件路径到剪贴板（wl-clipboard / xclip 自动适配）
 	{ on = [ "c", "p" ], run = "copy path",     desc = "复制文件完整路径" },
 	{ on = [ "c", "n" ], run = "copy filename", desc = "复制文件名" },
 
-	# 切换隐藏文件
+	# 显示/隐藏隐藏文件（补充默认 . 键）
 	{ on = "<C-h>", run = "hidden toggle", desc = "切换隐藏文件显示" },
 
-	# 解压（走 opener 里的 extract，不再依赖不存在的 extract 插件）
-	{ on = "X", run = "open --hovered", desc = "打开/解压（归档走 extract）" },
-
-	# 强调内置：z = zoxide，Z = fzf（默认已有，写出来方便查阅）
-	{ on = "z", run = "plugin zoxide", desc = "zoxide 跳转" },
-	{ on = "Z", run = "plugin fzf",    desc = "fzf 跳转/定位" },
+	# 批量选择后解压
+	{ on = [ "e", "x" ], run = "plugin extract", desc = "解压选中文件" },
 ]
