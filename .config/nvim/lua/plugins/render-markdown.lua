@@ -19,6 +19,8 @@ function M.init()
         win_options = {
             conceallevel = { default = vim.o.conceallevel, rendered = 2 },
         },
+        -- 支持 Avante 聊天窗口的 markdown 渲染
+        file_types = { 'markdown', 'Avante' },
     })
 
     -- 配置图像支持
