@@ -285,11 +285,16 @@ end
 function M.browse_all()
     local builtin = {}
     for _, dir in ipairs(vim.split(vim.o.runtimepath, ",")) do
-        local ok, files = pcall(vim.fn.readdir, dir .. "/colors")
-        if ok then
-            for _, f in ipairs(files) do
-                local name = f:match("^(.+)%.v[im]$") or f:match("^(.+)%.lua$")
-                if name then builtin[name] = true end
+        local colors_dir = dir .. "/colors"
+        local scan = vim.uv.fs_scandir(colors_dir)
+        if scan then
+            while true do
+                local name_file, typ = vim.uv.fs_scandir_next(scan)
+                if not name_file then break end
+                if typ == "file" then
+                    local name = name_file:match("^(.+)%.v[im]$") or name_file:match("^(.+)%.lua$")
+                    if name then builtin[name] = true end
+                end
             end
         end
     end
