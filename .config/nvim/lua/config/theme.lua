@@ -271,6 +271,11 @@ local function select_theme()
                 if vim.g.neovide then
                     vim.o.guifont = fonts[font_idx]
                 end
+                local idx = find_idx(M.themes, name)
+                if idx then
+                    theme_idx = idx
+                end
+                write_state(theme_file, name)
                 M.show()
             end)
         end,
