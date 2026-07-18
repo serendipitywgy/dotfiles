@@ -136,9 +136,9 @@
 | `<leader>ggP` | 行内预览 hunk |
 | `<leader>ggq` | 当前文件 diff 到 quickfix |
 | `<leader>ggQ` | 所有 diff 到 quickfix |
-| `<leader>tgb` | 切换行 blame 显示 |
-| `<leader>tgw` | 切换 word diff |
-| `<leader>to` | 切换 mini.diff overlay |
+| `<leader>ga` | 行注释 |
+| `<leader>gw` | 逐词高亮 |
+| `<leader>go` | 改动对比 |
 | `ih` | 选中当前 hunk（文本对象） |
 
 ---

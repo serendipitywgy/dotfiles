@@ -46,7 +46,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
                 -- snacks 插件相关 toggle
                 require("snacks")
                     .toggle({
-                        name = "line blame",
+                        name = "行注释",
                         get = function()
                             return require("gitsigns.config").config.current_line_blame
                         end,
@@ -54,10 +54,10 @@ vim.api.nvim_create_autocmd("BufReadPost", {
                             require("gitsigns").toggle_current_line_blame(enabled)
                         end,
                     })
-                    :map("<leader>tgb")
+                    :map("<leader>ga")
                 require("snacks")
                     .toggle({
-                        name = "word diff",
+                        name = "逐词高亮",
                         get = function()
                             return require("gitsigns.config").config.word_diff
                         end,
@@ -65,7 +65,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
                             require("gitsigns").toggle_word_diff(enabled)
                         end,
                     })
-                    :map("<leader>tgw")
+                    :map("<leader>gw")
             end,
         })
         -- 禁用 delete/topdelete 的 linehl 高亮

@@ -25,6 +25,18 @@
       "rev": "f9a3eb2be0b8148df470244e5c25aede3a3a28a5",
       "src": "https://github.com/Civitasv/cmake-tools.nvim"
     },
+    "codecompanion-history.nvim": {
+      "rev": "bc1b4fe06eaaf0aa2399be742e843c22f7f1652a",
+      "src": "https://github.com/ravitemer/codecompanion-history.nvim"
+    },
+    "codecompanion-spinner.nvim": {
+      "rev": "41c22e1fc2666c916b4be329e322368f5f86451e",
+      "src": "https://github.com/franco-ruggeri/codecompanion-spinner.nvim"
+    },
+    "codecompanion.nvim": {
+      "rev": "b0680d12ae1a7fc1b20ab8c78b8c44b34e72e245",
+      "src": "https://github.com/olimorris/codecompanion.nvim"
+    },
     "conform.nvim": {
       "rev": "619363c30309d29ffa631e67c8183f2a72caa373",
       "src": "https://github.com/stevearc/conform.nvim"
@@ -116,6 +128,10 @@
     "mini.ai": {
       "rev": "4ce4c35e411ea329a15d4b15e9c89c2a3089e437",
       "src": "https://github.com/nvim-mini/mini.ai"
+    },
+    "mini.diff": {
+      "rev": "b3d8507929f8df54ab9b08c77564c1afd7d62110",
+      "src": "https://github.com/nvim-mini/mini.diff"
     },
     "mini.icons": {
       "rev": "520995f1d75da0e4cc901ee95080b1ff2bc46b94",

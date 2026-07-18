@@ -297,9 +297,9 @@ init.lua          ← 极简入口，仅做 leader 设置 + 4 个 require
 | `<leader>ggp` | n | Preview hunk |
 | `<leader>ggP` | n | Preview hunk inline |
 | `<leader>ggq` | n | Diffs 到 quickfix |
-| `<leader>tgb` | n | 切换 git blame |
-| `<leader>tgw` | n | 切换 word diff |
-| `<leader>to` | n | 切换 mini.diff overlay |
+| `<leader>ga` | n | 行注释 |
+| `<leader>gw` | n | 逐词高亮 |
+| `<leader>go` | n | 改动对比 |
 
 ### 调试（DAP）
 
@@ -473,7 +473,7 @@ init.lua          ← 极简入口，仅做 leader 设置 + 4 个 require
 | 插件 | 说明 |
 |------|------|
 | **gitsigns.nvim** | 行号列 git 状态、blame、hunk 操作，懒加载于首次读取文件 |
-| **mini.diff** | diff overlay 展示，`<leader>to` 切换，懒加载于首次读取文件 |
+| **mini.diff** | diff overlay 展示，`<leader>go` 切换，懒加载于首次读取文件 |
 
 ### 调试（DAP）
 
