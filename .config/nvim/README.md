@@ -533,16 +533,14 @@ qmlls     → QML（Qt）
 
 ### 终端 nvim（`lua/plugins/theme.lua`）
 
-- 内置 8 套主题：`catppuccin`、`tokyonight`、`gruvbox`、`kanagawa`、`rose-pine`、`onedark`、`everforest`、`astrotheme`
+- 内置 11 套主题：`catppuccin`、`tokyonight`、`gruvbox`、`kanagawa`、`rose-pine`、`everforest`、`nightfox`、`melange`、`zephyr`、`PaperColor`、`flexoki`
 - 默认主题：`catppuccin`
 - 通过 `<leader>uC`（Snacks Picker）选择主题，过滤掉 vim 内置配色
 - 主题选择持久化到 `$XDG_STATE_HOME/nvim/last_colorscheme`，下次启动自动恢复
 
 ### neovide（`lua/config/neovide-theme.lua`）
 
-- 扩展到 25 套主题（在终端 8 套基础上新增 bluloco、dracula、github、gruvbox-material、hybrid、yellowbeans、melange、miasma、monokai-pro、nightfox、one、onenord、palenightfall、PaperColor、posterpole、sonokai、vscode、zephyr）
 - 25 款 Nerd Font 字体轮转（英文 Nerd Font + 中文等宽字体组合），字号可在 8–15 之间调整
-- 主题与字体分别持久化到 `last_neovide_colorscheme` 与 `last_neovide_font`，与终端完全隔离
 - 字体名按 Linux nerd-fonts v3 命名惯例（空格分隔），需提前安装到 `~/.local/share/fonts/`
 
 | 快捷键 | 说明 |

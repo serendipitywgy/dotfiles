@@ -1,5 +1,5 @@
 -- 统一主题引擎：终端与 neovide 共用
--- - 主题：24 款，状态持久化到 last_colorscheme（两端共享）
+-- - 主题：11 款，状态持久化到 last_colorscheme（两端共享）
 -- - 透明 toggle：两端共用
 -- - 字体：仅 neovide，状态持久化到 last_neovide_font
 
@@ -18,26 +18,12 @@ local scheme_to_pack = {
     gruvbox = "gruvbox.nvim",
     kanagawa = "kanagawa.nvim",
     ["rose-pine"] = "neovim",
-    onedark = "onedark.nvim",
     everforest = "everforest",
-    bluloco = "bluloco.nvim",
-    dracula = "dracula.nvim",
-    github = "github-nvim-theme",
-    ["gruvbox-material"] = "gruvbox-material",
-    hybrid = "hybrid.nvim",
-    yellowbeans = "yellowbeans.nvim",
-    melange = "melange-nvim",
-    miasma = "miasma.nvim",
-    ["monokai-pro"] = "monokai-pro.nvim",
     nightfox = "nightfox.nvim",
-    one = "vim-one",
-    onenord = "onenord.nvim",
-    palenightfall = "palenightfall.nvim",
-    PaperColor = "papercolor-theme",
-    posterpole = "posterpole.nvim",
-    sonokai = "sonokai",
-    vscode = "vscode.nvim",
+    melange = "melange-nvim",
     zephyr = "zephyr-nvim",
+    PaperColor = "papercolor-theme",
+    flexoki = "flexoki.nvim",
 }
 
 -- 按前缀长度降序排列，确保 "onedark" 优先于 "one" 匹配
@@ -50,19 +36,12 @@ table.sort(scheme_prefixes, function(a, b)
 end)
 
 -- 主题 → 其 opt 依赖（确保在 colorscheme 之前已 packadd）
-local scheme_deps = {
-    bluloco = { "lush.nvim" },
-    ["monokai-pro"] = { "lush.nvim" },
-    palenightfall = { "lush.nvim" },
-}
+local scheme_deps = {}
 
 M.themes = {
-    "bluloco", "catppuccin", "dracula", "everforest",
-    "github_dark_dimmed", "gruvbox-material", "hybrid", "yellowbeans",
-    "kanagawa", "melange", "miasma", "monokai-pro",
-    "nightfox", "one", "onedark", "onenord",
-    "palenightfall", "PaperColor", "posterpole", "rose-pine",
-    "sonokai", "tokyonight", "vscode", "zephyr",
+    "catppuccin", "everforest", "flexoki", "gruvbox",
+    "kanagawa", "melange", "nightfox", "PaperColor",
+    "rose-pine", "tokyonight", "zephyr",
 }
 
 -- ============================================================
