@@ -284,23 +284,6 @@ map("n", "gr", function() Snacks.picker.lsp_references() end, { nowait = true, d
 map("n", "gI", function() Snacks.picker.lsp_implementations() end, { desc = "跳转到实现" })
 map("n", "gy", function() Snacks.picker.lsp_type_definitions() end, { desc = "跳转到类型定义" })
 
--- ui
-map("n", "<leader>uC", function()
-    local builtin = {
-        "blue", "darkblue", "default", "delek", "desert", "elflord", "evening",
-        "habamax", "industry", "koehler", "lunaperche", "morning", "murphy",
-        "pablo", "peachpuff", "quiet", "retrobox", "ron", "shine", "slate",
-        "sorbet", "torte", "vim", "wildcharm", "zaibatsu", "zellner",
-    }
-    local set = {}
-    for _, name in ipairs(builtin) do set[name] = true end
-    Snacks.picker.colorschemes({
-        transform = function(item)
-            return not set[item.text]
-        end,
-    })
-end, { desc = "配色方案" })
-
 -- zen / scratch
 map("n", "<leader>z", function() Snacks.zen() end, { desc = "切换禅定模式" })
 map("n", "<leader>Z", function() Snacks.zen.zoom() end, { desc = "切换缩放" })

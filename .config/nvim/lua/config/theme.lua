@@ -253,7 +253,7 @@ local function select_theme()
     for _, t in ipairs(M.themes) do theme_set[t] = true end
     Snacks.picker.colorschemes({
         transform = function(item)
-            return theme_set[item.text]
+            if not theme_set[item.text] then return false end
         end,
         confirm = function(picker, item)
             if not item then return end
@@ -278,6 +278,24 @@ local function select_theme()
                 write_state(theme_file, name)
                 M.show()
             end)
+        end,
+    })
+end
+
+function M.browse_all()
+    local builtin = {}
+    for _, dir in ipairs(vim.split(vim.o.runtimepath, ",")) do
+        local ok, files = pcall(vim.fn.readdir, dir .. "/colors")
+        if ok then
+            for _, f in ipairs(files) do
+                local name = f:match("^(.+)%.v[im]$") or f:match("^(.+)%.lua$")
+                if name then builtin[name] = true end
+            end
+        end
+    end
+    Snacks.picker.colorschemes({
+        transform = function(item)
+            if builtin[item.text] then return false end
         end,
     })
 end
@@ -457,6 +475,7 @@ Snacks.toggle.new({
 -- ============================================================
 
 vim.keymap.set("n", "<leader>us", M.set_style, { desc = "Set theme and font" })
+vim.keymap.set("n", "<leader>uC", M.browse_all, { desc = "配色方案" })
 vim.keymap.set("n", "<leader>uS", M.show, { desc = "Show theme and font" })
 vim.keymap.set("n", "<leader>ur", M.random, { desc = "Random theme or font" })
 
