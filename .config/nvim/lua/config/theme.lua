@@ -248,12 +248,29 @@ local function switch_theme(step)
     write_state(theme_file, name)
 end
 
+local function get_builtin_themes()
+    local builtin = {}
+    for _, dir in ipairs(vim.split(vim.o.runtimepath, ",")) do
+        local scan = vim.uv.fs_scandir(dir .. "/colors")
+        if scan then
+            while true do
+                local name_file, typ = vim.uv.fs_scandir_next(scan)
+                if not name_file then break end
+                if typ == "file" then
+                    local name = name_file:match("^(.+)%.v[im]$") or name_file:match("^(.+)%.lua$")
+                    if name then builtin[name] = true end
+                end
+            end
+        end
+    end
+    return builtin
+end
+
 local function select_theme()
-    local theme_set = {}
-    for _, t in ipairs(M.themes) do theme_set[t] = true end
+    local builtin = get_builtin_themes()
     Snacks.picker.colorschemes({
         transform = function(item)
-            if not theme_set[item.text] then return false end
+            if builtin[item.text] then return false end
         end,
         confirm = function(picker, item)
             if not item then return end
@@ -283,21 +300,7 @@ local function select_theme()
 end
 
 function M.browse_all()
-    local builtin = {}
-    for _, dir in ipairs(vim.split(vim.o.runtimepath, ",")) do
-        local colors_dir = dir .. "/colors"
-        local scan = vim.uv.fs_scandir(colors_dir)
-        if scan then
-            while true do
-                local name_file, typ = vim.uv.fs_scandir_next(scan)
-                if not name_file then break end
-                if typ == "file" then
-                    local name = name_file:match("^(.+)%.v[im]$") or name_file:match("^(.+)%.lua$")
-                    if name then builtin[name] = true end
-                end
-            end
-        end
-    end
+    local builtin = get_builtin_themes()
     Snacks.picker.colorschemes({
         transform = function(item)
             if builtin[item.text] then return false end
