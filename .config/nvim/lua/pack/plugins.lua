@@ -13,7 +13,7 @@ local specs = {
     { src = "https://github.com/savq/melange-nvim",        opt = true },
     { src = "https://github.com/glepnir/zephyr-nvim",      opt = true },
     { src = "https://github.com/NLKNguyen/papercolor-theme", opt = true },
-    { src = "https://github.com/kepano/flexoki.nvim",      opt = true },
+    { src = "https://github.com/kepano/flexoki-Neovim",      opt = true },
     { src = "https://github.com/nvim-tree/nvim-web-devicons" },
 
     -- 状态栏

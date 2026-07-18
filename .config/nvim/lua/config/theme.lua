@@ -248,30 +248,27 @@ local function switch_theme(step)
     write_state(theme_file, name)
 end
 
-local function get_builtin_themes()
-    local builtin = {}
-    for _, dir in ipairs(vim.split(vim.o.runtimepath, ",")) do
-        local scan = vim.uv.fs_scandir(dir .. "/colors")
-        if scan then
-            while true do
-                local name_file, typ = vim.uv.fs_scandir_next(scan)
-                if not name_file then break end
-                if typ == "file" then
-                    local name = name_file:match("^(.+)%.v[im]$") or name_file:match("^(.+)%.lua$")
-                    if name then builtin[name] = true end
-                end
-            end
+local function find_colorschemes()
+    local vimruntime = vim.env.VIMRUNTIME
+    local rtp = vim.o.runtimepath
+    local files = vim.fn.globpath(rtp, "colors/*", false, true)
+    local items = {}
+    for _, file in ipairs(files) do
+        local name = vim.fn.fnamemodify(file, ":t:r")
+        local ext = vim.fn.fnamemodify(file, ":e")
+        if (ext == "vim" or ext == "lua") and vimruntime and file:sub(1, #vimruntime) ~= vimruntime then
+            items[#items + 1] = { text = name, file = file }
         end
     end
-    return builtin
+    return items
 end
 
 local function select_theme()
-    local builtin = get_builtin_themes()
-    Snacks.picker.colorschemes({
-        transform = function(item)
-            if builtin[item.text] then return false end
-        end,
+    Snacks.picker.pick({
+        title = "Colorschemes",
+        items = find_colorschemes(),
+        format = "text",
+        preview = "colorscheme",
         confirm = function(picker, item)
             if not item then return end
             local name = item.text
@@ -300,11 +297,11 @@ local function select_theme()
 end
 
 function M.browse_all()
-    local builtin = get_builtin_themes()
-    Snacks.picker.colorschemes({
-        transform = function(item)
-            if builtin[item.text] then return false end
-        end,
+    Snacks.picker.pick({
+        title = "Colorschemes",
+        items = find_colorschemes(),
+        format = "text",
+        preview = "colorscheme",
     })
 end
 
