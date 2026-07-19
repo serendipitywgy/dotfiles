@@ -143,9 +143,6 @@ local function blink_cmp2()
 
         sources = {
             default = { "lazydev", "path", "snippets", "buffer", "lsp" },
-            per_filetype = {
-                codecompanion = { "codecompanion" },
-            },
             providers = {
                 lazydev = { module = "lazydev.integrations.blink", score_offset = 100 },
                 buffer = {

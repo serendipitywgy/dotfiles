@@ -100,9 +100,38 @@ function PackUtils.sync(active_specs, disabled_specs)
 	end
 
 	if #to_delete > 0 then
+		-- 延后执行：vim.pack.add 的 lock_sync 会先给磁盘上的孤儿写空 lock 条目（src=nil），
+		-- 若此时直接 del 会触发 normalize_spec 报错。只删除已有合法 src 的托管插件。
 		vim.schedule(function()
-			vim.notify("🧹 Clean Up Orphaned Plugins: " .. table.concat(to_delete, ", "), vim.log.levels.INFO)
-			vim.pack.del(to_delete)
+			local orphan = {}
+			for _, name in ipairs(to_delete) do
+				orphan[name] = true
+			end
+
+			local ok, info = pcall(vim.pack.get, nil, { info = false })
+			if not ok or type(info) ~= "table" then
+				vim.notify("Pack cleanup skipped: " .. tostring(info), vim.log.levels.WARN)
+				return
+			end
+
+			local safe = {}
+			for _, p in ipairs(info) do
+				local name = p.spec and p.spec.name
+				local src = p.spec and p.spec.src
+				if name and orphan[name] and type(src) == "string" and src ~= "" then
+					table.insert(safe, name)
+				end
+			end
+
+			if #safe == 0 then
+				return
+			end
+
+			vim.notify("🧹 Clean Up Orphaned Plugins: " .. table.concat(safe, ", "), vim.log.levels.INFO)
+			local del_ok, err = pcall(vim.pack.del, safe)
+			if not del_ok then
+				vim.notify("Pack cleanup failed: " .. tostring(err), vim.log.levels.WARN)
+			end
 		end)
 	end
 end
