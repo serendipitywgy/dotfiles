@@ -18,6 +18,9 @@ local function ensure_setup()
                         claude = {
                             env = { TERM = "xterm-kitty" },
                         },
+                        pi = {
+                            env = { TERM = "xterm-kitty" },
+                        },
                     },
                 },
             })
