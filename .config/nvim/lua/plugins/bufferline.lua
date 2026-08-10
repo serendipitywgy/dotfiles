@@ -5,10 +5,12 @@ vim.api.nvim_create_autocmd({ 'BufReadPre', 'BufReadPost' }, {
         require("nvim-web-devicons").setup({})
         require("bufferline").setup({
             options = {
-                -- 缓冲区编号
-                numbers = "ordinal",
+                -- 缓冲区编号（ordinal 上标 + buffer_id 下标）
+                numbers = function(opts)
+                    return string.format("%s·%s", opts.raise(opts.ordinal), opts.lower(opts.id))
+                end,
                 -- 按目录分组排序
-                sort_by = "directory",
+                -- sort_by = "directory",
                 -- 侧边栏偏移
                 offsets = {
                     {
