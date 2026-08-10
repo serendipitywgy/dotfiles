@@ -280,8 +280,8 @@ map("n", "<leader>sS", function() Snacks.picker.lsp_workspace_symbols() end, { d
 -- map("n", "gD", function() Snacks.picker.lsp_declarations() end,    { desc = "跳转到声明" })
 -- lsp.lua已经有gD跳转声明的快捷键, 这里屏蔽
 
-map("n", "gr", function() Snacks.picker.lsp_references() end, { nowait = true, desc = "引用" })
-map("n", "gI", function() Snacks.picker.lsp_implementations() end, { desc = "跳转到实现" })
+map("n", "gr", function() Snacks.picker.lsp_references() end, { nowait = true, desc = "引用" })  -- ⚠️ 覆盖内置 gr(虚拟替换模式)
+map("n", "gI", function() Snacks.picker.lsp_implementations() end, { desc = "跳转到实现" })  -- ⚠️ 覆盖内置 gI(行首插入)
 map("n", "gy", function() Snacks.picker.lsp_type_definitions() end, { desc = "跳转到类型定义" })
 
 -- zen / scratch
@@ -303,6 +303,7 @@ map({ "n", "i", "t" }, "<c-/>", function() Snacks.terminal() end, { desc = "切�
 map({ "n", "i", "t" }, "<c-_>", function() Snacks.terminal() end, { desc = "which_key_ignore" })
 
 -- word references jump
+-- ⚠️ 覆盖内置 [[ / ]] (跳转到上一个/下一个 { 块首/块尾)
 map("n", "]]", function() Snacks.words.jump(vim.v.count1) end, { desc = "下一个引用" })
 map("n", "[[", function() Snacks.words.jump(-vim.v.count1) end, { desc = "上一个引用" })
 map("t", "]]", function() Snacks.words.jump(vim.v.count1) end, { desc = "下一个引用" })

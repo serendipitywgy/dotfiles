@@ -2,6 +2,9 @@ local ok, flash = pcall(require, "flash")
 if not ok then return end
 
 flash.setup({})
+-- ⚠️ 注意:flash 默认开启 char 模式,会接管内置的 f/F/t/T 字符查找
+-- (增强版:高亮所有匹配字符 + 标签跳转)。
+-- 如需还原原生查找:flash.setup({ modes = { char = { enabled = false } } })
 
 vim.keymap.set({ "n", "x", "o" }, "ss", function()
   flash.jump()

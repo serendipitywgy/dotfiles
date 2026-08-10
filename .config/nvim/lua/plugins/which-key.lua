@@ -43,6 +43,12 @@ local presets_desc = {
         ["i{"] = "内部花括号", ["i}"] = "内部花括号",
     },
     windows = {
+        -- ⚠️ 注意:以下 <c-w> 系列当前【实际不可用】—— tmux 的 prefix 设为 C-w
+        -- (~/.tmux.conf: set -g prefix C-w),按键 <c-w> 会被 tmux 拦截,
+        -- nvim 收不到,所以 which-key 的 <c-w> 弹窗也不会触发。
+        -- 替代方案:Ctrl+h/j/k/l(vim-tmux-navigator 切 pane/窗口)、
+        -- <leader>- / <leader>|(分屏,内部命令不受影响)。
+        -- 若日后改回 tmux prefix(如 C-b),此处描述即可生效。
         ["<c-w>"] = { group = "窗口" },
         ["<c-w>+"] = "增加高度", ["<c-w>-"] = "减少高度",
         ["<c-w><"] = "减少宽度", ["<c-w>="] = "等高宽",
@@ -73,6 +79,8 @@ local presets_desc = {
         zz = "居中本行",
     },
     nav = {
+        -- ⚠️ 注意:H/L 实际已被 keymaps.lua 映射为"上一个/下一个缓冲区",
+        -- 以下描述仅在内置命令未被覆盖时成立;M 不受影响。
         H = "窗口顶行", L = "窗口末行", M = "窗口中间行",
         ["[%"] = "上一个未匹配组", ["[("] = "上一个 (",
         ["[<"] = "上一个 <", ["[M"] = "上一个方法尾",
@@ -138,6 +146,7 @@ require("which-key").setup({
 
 -- ── Which-key 快捷键 ───────────────────────────────────────────────────────
 -- 查看当前 buffer 的本地快捷键
+-- ⚠️ 覆盖内置 S(删除并进入插入模式)
 vim.keymap.set({ "n", "x", "o" }, "S", function()
     require("which-key").show({ global = false })
 end, { desc = "缓冲区本地快捷键" })

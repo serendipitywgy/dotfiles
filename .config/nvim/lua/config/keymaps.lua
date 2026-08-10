@@ -6,6 +6,7 @@ local function set_keymaps(mode, keymaps, target, opts)
 end
 
 -- 基础导航增强,目的：在长行自动换行时可以按视觉行而不是实际行移动
+-- ⚠️ 覆盖内置 j/k(物理行移动 → 视觉行移动),仅在长行换行时行为不同
 set_keymaps({ "n", "x" }, { "j" }, "v:count == 0 ? 'gj' : 'j'", { desc = "向下", expr = true, silent = true })
 set_keymaps({ "n", "x" }, { "k" }, "v:count == 0 ? 'gk' : 'k'", { desc = "向上", expr = true, silent = true })
 
@@ -20,6 +21,7 @@ set_keymaps("i", { "kj", "KJ" }, "<Esc>", { silent = true })
 
 
 -- buffer的更换
+-- ⚠️ 覆盖内置 H(窗口顶行)/L(窗口末行);nvim 中 <S-h> == H,<S-l> == L
 set_keymaps("n", { "<S-h>" }, "<cmd>bprevious<cr>", { desc = "上一个缓冲区" })
 set_keymaps("n", { "<S-l>" }, "<cmd>bnext<cr>", { desc = "下一个缓冲区" })
 set_keymaps("n", { "<leader>bD" }, "<cmd>:bd<cr>", { desc = "删除缓冲区和窗口" })

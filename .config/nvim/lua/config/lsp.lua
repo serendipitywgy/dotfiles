@@ -114,6 +114,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
         -- 跳转到定义 (gd)
         -- 使用 snacks picker 显示所有定义位置
+        -- ⚠️ 覆盖内置 gd(C 语言:本地定义跳转;普通模式:LSP 定义)
         vim.keymap.set("n", "gd", function()
             local params = vim.lsp.util.make_position_params(0, "utf-8")
             vim.lsp.buf_request(0, "textDocument/definition", params, function(_, result, _, _)
