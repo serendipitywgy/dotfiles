@@ -34,11 +34,6 @@ vim.api.nvim_create_autocmd("InsertEnter", {
     callback = ensure_setup,
 })
 
-vim.keymap.set("n", "<Tab>", function()
-    if not ensure_setup() then return "<Tab>" end
-    return require("sidekick").nes_jump_or_apply() or "<Tab>"
-end, { expr = true, desc = "NES 编辑建议跳转" })
-
 vim.keymap.set("n", "<leader>aa", function()
     if not ensure_setup() then return end
     require("sidekick.cli").toggle()
