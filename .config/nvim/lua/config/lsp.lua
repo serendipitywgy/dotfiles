@@ -1,12 +1,25 @@
 -- 初始化 Mason
 require("mason").setup()
 
--- 配置 mason-lspconfig：自动安装以下 LSP 服务器
--- 每次启动 nvim 会自动检查并安装未安装的服务器
-require("mason-lspconfig").setup({
-    -- ensure_installed = { "clangd", "pyright", "cmake", "bashls", "jsonls", "lua_ls", "qmlls" },
+-- LSP 服务器统一清单(单一来源,安装/启用共用)
+-- 注意:ensure_installed 只接受 lspconfig 服务器名(如 bashls/jsonls/lua_ls),
+-- mason 内部会自动映射到对应的包名
+local servers = {
+    "clangd",
+    "pyright",
+    "bashls",
+    "jsonls",
+    "lua_ls",
+    "qmlls",
+    "neocmake",
+}
 
-    ensure_installed = { "clangd", "pyright", "bashls", "jsonls", "lua_ls", "qmlls"},
+-- 配置 mason-lspconfig：自动安装以上服务器
+-- automatic_enable = false：只启用下面显式 enable 的服务器
+-- (防止 mason 里装了其他服务器(如 copilot-language-server)被悄悄自动拉起 —— 之前报错的根源)
+require("mason-lspconfig").setup({
+    ensure_installed = servers,
+    automatic_enable = false,
 })
 
 -- Lua LSP 配置 (lua_ls)
@@ -27,16 +40,13 @@ vim.lsp.config('clangd', {
     cmd = {
         'clangd',
         '--background-index',
+        '--background-index-priority=low',
         '--clang-tidy',
-        '--header-insertion=iwyu',
+        '--header-insertion=never',
+        '--pch-storage=memory',
+        '--malloc-trim',
     },
 })
-
--- 启用 LSP 服务器
--- vim.lsp.enable 会根据文件类型自动启动对应的 LSP
-for _, server in ipairs({ "clangd", "pyright", "bashls", "jsonls", "lua_ls", "qmlls"}) do
-    vim.lsp.enable(server)
-end
 
 -- 配置 neocmakelsp (替代 cmake-language-server，无 Python 版本问题)
 vim.lsp.config('neocmake', {
@@ -49,7 +59,8 @@ vim.lsp.config('neocmake', {
     },
 })
 
-vim.lsp.enable('neocmake')
+-- 启用 LSP 服务器(vim.lsp.enable 会根据文件类型自动启动对应的 LSP)
+vim.lsp.enable(servers)
 
 -- 配置 LSP 诊断信息的显示样式
 -- 包括虚拟文本、浮动窗口、严重程度排序和图标
@@ -91,11 +102,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
             end, { buffer = event.buf, desc = 'LSP: 切换诊断显示' })
         end
 
-        -- [Folding] 代码折叠（优先 LSP，回退 Treesitter）
+        -- [Folding] 代码折叠(0.12 内置 vim.lsp.foldexpr，基于 LSP foldingRange)
         if client and client:supports_method 'textDocument/foldingRange' then
-            vim.o.foldmethod = 'expr'
-            vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
             local win = vim.api.nvim_get_current_win()
+            vim.wo[win][0].foldmethod = 'expr'
             vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
         end
 
@@ -204,5 +214,3 @@ vim.api.nvim_create_autocmd("LspAttach", {
         vim.keymap.set("n", "]f", jump_to_current_function_end, { desc = "跳转到当前函数结尾" })
     end,
 })
-
--- vim.cmd([[set completeopt+=menuone,noselect,popup]])

@@ -35,7 +35,7 @@ local specs = {
     { src = "https://github.com/folke/lazydev.nvim" },
     { src = "https://github.com/mason-org/mason.nvim" },
     { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
-    { src = "https://github.com/neovim/nvim-lspconfig" },
+    { src = "https://github.com/neovim/nvim-lspconfig" },  -- 服务器定义注册表(0.12 只内置了 API,定义仍需插件)
 
     -- 补全
     { src = "https://github.com/rafamadriz/friendly-snippets" },
