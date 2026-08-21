@@ -1,0 +1,17 @@
+# yadm whitelist mode: ignore everything at $HOME top level, then re-include
+# known dotfiles. Synced via yadm. To track a NEW top-level dotfile, add a
+# `!/entry` line here first (or use `yadm add -f`).
+/*
+!/.p10k.zsh
+!/.tmux.conf
+!/.zimrc
+!/.zshenv
+!/.zshrc
+
+# drill into .config: only whitelisted subdirectories are scanned
+!/.config
+/.config/*
+!/.config/kitty
+!/.config/nvim
+!/.config/yadm
+!/.config/yazi

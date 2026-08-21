@@ -30,4 +30,8 @@ ask "安装 tmux + TPM"             && bash "$HOME/.config/yadm/bootstrap.d/05-t
 ask "安装 kitty"                  && bash "$HOME/.config/yadm/bootstrap.d/06-kitty.sh"
 
 echo ""
+echo "==> 配置 yadm 补全白名单（core.excludesFile，指向已同步的 .config/yadm/ignore）..."
+yadm git config core.excludesFile '~/.config/yadm/ignore'
+
+echo ""
 echo "所有 bootstrap 脚本执行完成！"
