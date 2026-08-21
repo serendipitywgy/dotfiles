@@ -164,3 +164,6 @@ export PATH="$PATH:$HOME/.local/bin"
 # opencode
 export PATH=$HOME/.opencode/bin:$PATH
 export EDITOR=nvim
+
+# Added by git-ai installer on Sat Aug 15 04:24:30 PM CST 2026
+export PATH="/home/aoi/.git-ai/bin:$PATH"
