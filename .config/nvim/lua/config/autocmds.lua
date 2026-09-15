@@ -162,15 +162,11 @@ vim.api.nvim_create_autocmd("BufEnter", {
     end,
 })
 
--- markdown的懒加载
-
 vim.api.nvim_create_autocmd("FileType", {
     pattern = { "markdown" },
     callback = function()
-        -- 调用 init 运行 setup
-        require("plugins.render-markdown").init()
+        require("plugins.render-markdown").attach()
 
-        -- 可选：针对 0.12 强制刷新渲染
         vim.schedule(function()
             if vim.fn.exists(":RenderMarkdown") == 2 then
                 vim.cmd("RenderMarkdown enable")

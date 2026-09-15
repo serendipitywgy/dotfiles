@@ -1,7 +1,4 @@
--- 懒加载和配置 gitsigns.nvim
-vim.api.nvim_create_autocmd("BufReadPost", {
-    callback = function()
-        require("gitsigns").setup({
+require("gitsigns").setup({
             signcolumn = false,
             numhl = true,
             linehl = false,
@@ -66,8 +63,4 @@ vim.api.nvim_create_autocmd("BufReadPost", {
                     })
                     :map("<leader>gw")
             end,
-        })
-        -- 如需集成 scrollbar，可取消注释
-        -- require("scrollbar.handlers.gitsigns").setup()
-    end,
 })
