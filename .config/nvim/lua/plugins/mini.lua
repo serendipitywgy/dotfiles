@@ -26,6 +26,15 @@ vim.api.nvim_create_autocmd("BufReadPost", {
                 style = "sign",
                 signs = { add = "+", change = "~", delete = "-" },
             },
+            mappings = {
+                apply = "",
+                reset = "",
+                textobject = "",
+                goto_first = "",
+                goto_prev = "",
+                goto_next = "",
+                goto_last = "",
+            },
         })
         vim.keymap.set("n", "<leader>go", function()
             require("mini.diff").toggle_overlay()

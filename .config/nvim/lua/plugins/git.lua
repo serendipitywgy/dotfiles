@@ -5,8 +5,8 @@ vim.api.nvim_create_autocmd("BufReadPost", {
         require("gitsigns").setup({
             signcolumn = false,
             numhl = true,
-            linehl = true,
-            current_line_blame = true,
+            linehl = false,
+            current_line_blame = false,
             attach_to_untracked = true,
             preview_config = { border = "rounded" },
             on_attach = function(bufnr)
@@ -68,10 +68,6 @@ vim.api.nvim_create_autocmd("BufReadPost", {
                     :map("<leader>gw")
             end,
         })
-        -- 禁用 delete/topdelete 的 linehl 高亮
-        vim.api.nvim_set_hl(0, "GitSignsDeleteLn", {})
-        vim.api.nvim_set_hl(0, "GitSignsTopdeleteLn", {})
-        vim.api.nvim_set_hl(0, "GitSignsChangedeleteLn", {})
         -- 如需集成 scrollbar，可取消注释
         -- require("scrollbar.handlers.gitsigns").setup()
     end,
