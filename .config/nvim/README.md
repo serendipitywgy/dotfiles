@@ -20,8 +20,6 @@
     │   ├── debugging.lua     # DAP 调试器配置
     │   ├── utils.lua         # 通用工具函数
     │   ├── icons.lua         # 图标定义
-    │   ├── neovide.lua       # neovide GUI 专属设置（透明度/光标/vfx）
-    │   ├── neovide-theme.lua # neovide 专属主题与字体轮转（持久化）
     │   └── heirline/
     │       ├── statusline.lua
     │       └── components.lua
@@ -411,7 +409,7 @@ init.lua          ← 极简入口，仅做 leader 设置 + 4 个 require
 
 | 插件 | 说明 |
 |------|------|
-| **catppuccin/nvim** 等 | 多套主题，终端与 neovide 各自持久化记录最后选择，启动时自动恢复 |
+| **catppuccin/nvim** 等 | 多套主题，持久化记录最后选择并在启动时自动恢复 |
 | **nvim-web-devicons** | 文件类型图标 |
 | **mini.icons** | 替代/补充 devicons 的图标库 |
 | **heirline.nvim** | 高度可定制状态栏，懒加载于首次读取文件时 |
@@ -520,42 +518,13 @@ qmlls     → QML（Qt）
 
 ## 主题系统
 
-终端 nvim 与 neovide 各自独立，互不影响。
-
-### 终端 nvim（`lua/plugins/theme.lua`）
+主题配置位于 `lua/config/theme.lua`。
 
 - 内置 11 套主题：`catppuccin`、`tokyonight`、`gruvbox`、`kanagawa`、`rose-pine`、`everforest`、`nightfox`、`melange`、`zephyr`、`PaperColor`、`flexoki`
 - 默认主题：`catppuccin`
 - 通过 `<leader>uC`（Snacks Picker）选择主题，过滤掉 vim 内置配色
 - 主题选择持久化到 `$XDG_STATE_HOME/nvim/last_colorscheme`，下次启动自动恢复
 
-### neovide（`lua/config/neovide-theme.lua`）
-
-- 25 款 Nerd Font 字体轮转（英文 Nerd Font + 中文等宽字体组合），字号可在 8–15 之间调整
-- 字体名按 Linux nerd-fonts v3 命名惯例（空格分隔），需提前安装到 `~/.local/share/fonts/`
-
-| 快捷键 | 说明 |
-|--------|------|
-| `<A-f>` | 弹出菜单：切换主题 / 切换字体 / 增减字号 |
-| `<A-F>` | 显示当前主题与字体 |
-
 ### 通用高亮覆盖
 
-终端与 neovide 均生效：切换主题后状态栏透明背景、注释不斜体。透明模式可通过 `<leader>utp` 切换。
-
----
-
-## neovide 集成（`lua/config/neovide.lua`）
-
-仅当 `vim.g.neovide` 为真时加载，终端 nvim 完全跳过。
-
-- 光标动画与粒子特效（railgun 模式）
-- 浮动窗口模糊与圆角
-- 文本 gamma/contrast 微调
-- 启动时全屏并记住窗口大小
-
-| 快捷键 | 模式 | 说明 |
-|--------|------|------|
-| `<F5>` | n/i | 降低透明度 |
-| `<F6>` | n/i | 提高透明度 |
-| `<F11>` | n | 切换全屏 |
+切换主题后状态栏使用透明背景，注释不使用斜体。透明模式可通过 `<leader>utp` 切换。

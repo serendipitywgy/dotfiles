@@ -1,7 +1,6 @@
--- 统一主题引擎：终端与 neovide 共用
--- - 主题：11 款，状态持久化到 last_colorscheme（两端共享）
--- - 透明 toggle：两端共用
--- - 字体：仅 neovide，状态持久化到 last_neovide_font
+-- 统一主题引擎
+-- - 主题：11 款，状态持久化到 last_colorscheme
+-- - 支持透明背景切换
 
 vim.opt.termguicolors = true
 
@@ -50,8 +49,6 @@ M.themes = {
 
 local state_dir = vim.fn.stdpath("state")
 local theme_file = state_dir .. "/last_colorscheme"
-local legacy_neovide_theme_file = state_dir .. "/last_neovide_colorscheme"
-local font_file = state_dir .. "/last_neovide_font"
 
 local function read_state(path, default)
     local ok, line = pcall(function()
@@ -65,20 +62,6 @@ end
 
 local function write_state(path, content)
     pcall(vim.fn.writefile, { content }, path)
-end
-
--- 一次性迁移：旧 neovide 状态文件 → 共享文件
-local function migrate_legacy_state()
-    if vim.fn.filereadable(theme_file) == 1 then
-        return
-    end
-    if vim.fn.filereadable(legacy_neovide_theme_file) == 1 then
-        local legacy = read_state(legacy_neovide_theme_file, "")
-        if #legacy > 0 then
-            write_state(theme_file, legacy)
-            pcall(os.remove, legacy_neovide_theme_file)
-        end
-    end
 end
 
 -- ============================================================
@@ -124,114 +107,6 @@ local function find_idx(list, value)
         if v == value then return i end
     end
     return nil
-end
-
--- ============================================================
--- 字体管理（仅 neovide）
--- ============================================================
-
--- guifontwide 在 neovide 下不生效，中文字体直接拼进 guifont
--- Linux 字体族名用空格分隔（nerd-fonts v3 命名惯例）
-local fonts = {
-    "BlexMono Nerd Font Mono,LXGW WenKai Mono:h12",
-    "CaskaydiaCove Nerd Font Mono,Noto Sans CJK SC:h12",
-    "CodeNewRoman Nerd Font Mono,LXGW WenKai Mono:h13",
-    "CommitMono Nerd Font Mono,Sarasa Fixed SC:h12",
-    "DejaVuSansM Nerd Font Mono,LXGW WenKai Mono:h12",
-    "EnvyCodeR Nerd Font Mono,LXGW WenKai Mono:h12",
-    "FantasqueSansM Nerd Font Mono,LXGW WenKai Mono:h13",
-    "FiraCode Nerd Font Mono,Sarasa Fixed SC:h12",
-    "GeistMono Nerd Font Mono,LXGW WenKai Mono:h12",
-    "Hack Nerd Font Mono,LXGW WenKai Mono:h12",
-    "Hurmit Nerd Font Mono,LXGW WenKai Mono:h12",
-    "IntoneMono Nerd Font Mono,LXGW WenKai Mono:h12",
-    "Iosevka Nerd Font Mono,LXGW WenKai Mono:h13",
-    "JetBrainsMono Nerd Font Mono,Sarasa Fixed SC:h12",
-    "JetBrainsMono Nerd Font Mono:style=Light,Sarasa Fixed SC:h12",
-    "JetBrainsMono Nerd Font Mono:style=Medium,Sarasa Fixed SC:h12",
-    "JetBrainsMono Nerd Font Mono:style=SemiBold,Sarasa Fixed SC:h12",
-    "Maple Mono NF CN:h12",
-    "MesloLGMDZ Nerd Font Mono,Sarasa Fixed SC:h12",
-    "MonaspiceAr Nerd Font Mono,LXGW WenKai Mono:h12",
-    "Monoid Nerd Font Mono,Noto Sans CJK SC:h11",
-    "Mononoki Nerd Font Mono,LXGW WenKai Mono:h13",
-    "RecMonoLinear Nerd Font Mono,LXGW WenKai Mono:h12",
-    "RobotoMono Nerd Font Mono,Sarasa Fixed SC:h12",
-    "SauceCodePro Nerd Font Mono,Sarasa Fixed SC:h12",
-    "UbuntuMono Nerd Font Mono,LXGW WenKai Mono:h13",
-    "VictorMono Nerd Font Mono,LXGW WenKai Mono:h12",
-    "Sarasa Fixed SC,Symbols Nerd Font Mono:h12",
-}
-
-local function strip_size(font_str)
-    return (font_str:gsub(":h%d+$", ""))
-end
-
-local font_idx = 1
-if vim.g.neovide then
-    -- 持久化的字体可能带有修改过的字号，按名称匹配后用持久化值覆盖表项
-    local persisted_font = read_state(font_file, fonts[1])
-    local persisted_name = strip_size(persisted_font)
-    for i, f in ipairs(fonts) do
-        if strip_size(f) == persisted_name then
-            font_idx = i
-            fonts[i] = persisted_font
-            break
-        end
-    end
-end
-
-local function switch_font(step)
-    step = step or 1
-    font_idx = (font_idx + step - 1) % #fonts + 1
-    vim.o.guifont = fonts[font_idx]
-    write_state(font_file, fonts[font_idx])
-end
-
-local function change_font_size(step)
-    step = step or 1
-    local font_str = fonts[font_idx]
-    local size_str = font_str:match("h(%d+)$")
-    if not size_str then
-        vim.notify("Font size not specified: " .. font_str)
-        return
-    end
-    local new_size = math.max(8, math.min(15, tonumber(size_str) + step))
-    font_str = font_str:gsub("h%d+$", "h" .. new_size)
-    fonts[font_idx] = font_str
-    vim.o.guifont = font_str
-    write_state(font_file, font_str)
-    vim.notify(font_str)
-end
-
-local function select_font()
-    local items = {}
-    for i, f in ipairs(fonts) do
-        local label = strip_size(f):gsub(",.*$", "")
-        items[i] = { label = label, idx = i }
-    end
-    vim.ui.select(items, {
-        prompt = "Pick font",
-        format_item = function(item)
-            if item.idx == font_idx then
-                return "> " .. item.label .. "  (current)"
-            end
-            return "  " .. item.label
-        end,
-    }, function(choice)
-        if not choice then return end
-        font_idx = choice.idx
-        vim.o.guifont = fonts[font_idx]
-        write_state(font_file, fonts[font_idx])
-        M.show()
-    end)
-end
-
-local function random_font()
-    font_idx = math.random(#fonts)
-    vim.o.guifont = fonts[font_idx]
-    write_state(font_file, fonts[font_idx])
-    M.show()
 end
 
 -- ============================================================
@@ -282,9 +157,6 @@ local function select_theme()
             picker.preview.state.colorscheme = nil
             vim.schedule(function()
                 pcall(vim.cmd.colorscheme, name)
-                if vim.g.neovide then
-                    vim.o.guifont = fonts[font_idx]
-                end
                 local idx = find_idx(M.themes, name)
                 if idx then
                     theme_idx = idx
@@ -313,109 +185,46 @@ local function random_theme()
 end
 
 function M.show()
-    local info = (vim.g.colors_name or "?")
-    if vim.g.neovide then
-        info = info .. " | " .. string.gsub(vim.o.guifont or "", "_[%w]+", "")
-        local vfx = vim.g.neovide_cursor_vfx_mode
-        if vfx and vfx ~= "" then
-            info = info .. " | VFX: " .. vfx
-        end
-    end
-    vim.notify(info)
+    vim.notify(vim.g.colors_name or "?")
 end
 
 function M.set_style()
     local theme = vim.g.colors_name or ""
-    local options = {
-        { desc = "Theme: " .. theme, action = "theme" },
-    }
-    if vim.g.neovide then
-        local font = string.gsub(vim.o.guifont or "", "_[%w]+", "")
-        options[#options + 1] = { desc = "Font:  " .. font, action = "font" }
-        options[#options + 1] = { desc = "Increase font size", action = "size_plus" }
-        options[#options + 1] = { desc = "Decrease font size", action = "size_minus" }
-    end
-    vim.ui.select(options, {
-        prompt = "Adjust theme and font",
+    vim.ui.select({
+        { desc = "Next theme", action = "next" },
+        { desc = "Previous theme", action = "prev" },
+        { desc = "Pick from list", action = "list" },
+        { desc = "Random theme", action = "random" },
+    }, {
+        prompt = "Theme: " .. theme,
         format_item = function(item) return item.desc end,
     }, function(choice)
         if not choice then return end
-        if choice.action == "size_plus" then
-            change_font_size(1); M.show()
-        elseif choice.action == "size_minus" then
-            change_font_size(-1); M.show()
-        elseif choice.action == "theme" then
-            vim.ui.select({
-                { desc = "Next theme", action = "next" },
-                { desc = "Previous theme", action = "prev" },
-                { desc = "Pick from list", action = "list" },
-                { desc = "Random theme", action = "random" },
-            }, {
-                prompt = "Theme: " .. theme,
-                format_item = function(item) return item.desc end,
-            }, function(sub)
-                if not sub then return end
-                if sub.action == "next" then
-                    switch_theme(1); M.show()
-                elseif sub.action == "prev" then
-                    switch_theme(-1); M.show()
-                elseif sub.action == "list" then
-                    select_theme()
-                elseif sub.action == "random" then
-                    random_theme()
-                end
-            end)
-        elseif choice.action == "font" then
-            vim.ui.select({
-                { desc = "Next font", action = "next" },
-                { desc = "Previous font", action = "prev" },
-                { desc = "Pick from list", action = "list" },
-                { desc = "Random font", action = "random" },
-            }, {
-                prompt = "Font: " .. string.gsub(vim.o.guifont or "", ":h%d+$", ""):gsub(",_[%w]+", ""),
-                format_item = function(item) return item.desc end,
-            }, function(sub)
-                if not sub then return end
-                if sub.action == "next" then
-                    switch_font(1); M.show()
-                elseif sub.action == "prev" then
-                    switch_font(-1); M.show()
-                elseif sub.action == "list" then
-                    select_font()
-                elseif sub.action == "random" then
-                    random_font()
-                end
-            end)
+        if choice.action == "next" then
+            switch_theme(1); M.show()
+        elseif choice.action == "prev" then
+            switch_theme(-1); M.show()
+        elseif choice.action == "list" then
+            select_theme()
+        elseif choice.action == "random" then
+            random_theme()
         end
     end)
 end
 
 function M.random()
-    if vim.g.neovide and math.random(2) == 1 then
-        random_font()
-    else
-        random_theme()
-    end
+    random_theme()
 end
 
 -- ============================================================
 -- 启动恢复 + ColorScheme 持久化
 -- ============================================================
 
-migrate_legacy_state()
-
 local function apply_last()
     local saved = read_state(theme_file, "")
     theme_idx = find_idx(M.themes, saved) or find_idx(M.themes, "catppuccin")
     local name = M.themes[theme_idx]
-    if vim.g.neovide then
-        vim.o.guifont = fonts[font_idx]
-        write_state(font_file, fonts[font_idx])
-        -- 主题加载涉及 packadd + colorscheme，延迟到 UI 就绪后避免阻塞启动
-        vim.schedule(function() M.apply_theme(name) end)
-    else
-        M.apply_theme(name)
-    end
+    M.apply_theme(name)
 end
 
 -- ColorScheme autocmd：同步索引 + 持久化（仅记录 M.themes 内的主题）
@@ -431,7 +240,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     end,
 })
 
--- ColorScheme autocmd：透明状态栏 + 注释不斜体（两端共用）
+-- ColorScheme autocmd：透明状态栏 + 注释不斜体
 vim.api.nvim_create_autocmd("ColorScheme", {
     callback = function()
         vim.api.nvim_set_hl(0, "StatusLine", { bg = "NONE" })
@@ -440,7 +249,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 })
 
 -- ============================================================
--- 透明 toggle（两端共用）
+-- 透明 toggle
 -- ============================================================
 
 vim.g.transparent = false
@@ -479,10 +288,10 @@ Snacks.toggle.new({
 -- keymaps
 -- ============================================================
 
-vim.keymap.set("n", "<leader>us", M.set_style, { desc = "Set theme and font" })
+vim.keymap.set("n", "<leader>us", M.set_style, { desc = "Set theme" })
 vim.keymap.set("n", "<leader>uC", M.browse_all, { desc = "配色方案" })
-vim.keymap.set("n", "<leader>uS", M.show, { desc = "Show theme and font" })
-vim.keymap.set("n", "<leader>ur", M.random, { desc = "Random theme or font" })
+vim.keymap.set("n", "<leader>uS", M.show, { desc = "Show theme" })
+vim.keymap.set("n", "<leader>ur", M.random, { desc = "Random theme" })
 
 -- ============================================================
 -- 启动应用持久化主题
