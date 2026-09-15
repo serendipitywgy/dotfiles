@@ -14,16 +14,6 @@ vim.keymap.set("n", "<leader>rf", function()
         end
     end)
 end, { desc = "文件内重命名" })
--- 在这里可以添加其他自动命令
--- Check if we need to reload the file when it changed
-vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
-    group = augroup("checktime"),
-    callback = function()
-        if vim.o.buftype ~= "nofile" then
-            vim.cmd("checktime")
-        end
-    end,
-})
 -- Highlight on yank
 vim.api.nvim_create_autocmd("TextYankPost", {
     group = augroup("highlight_yank"),
