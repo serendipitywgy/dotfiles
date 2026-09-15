@@ -1,7 +1,6 @@
 -- 懒加载和配置 gitsigns.nvim
 vim.api.nvim_create_autocmd("BufReadPost", {
     callback = function()
-        vim.cmd.packadd("gitsigns.nvim")
         require("gitsigns").setup({
             signcolumn = false,
             numhl = true,

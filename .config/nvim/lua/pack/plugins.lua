@@ -1,19 +1,19 @@
 -- ==============================================================
 -- 插件花名册（集中管理所有插件的下载地址）
 -- ==============================================================
-local specs = {
-    -- 主题（opt 加载，按需 packadd）
-    { src = "https://github.com/catppuccin/nvim",           opt = true },
-    { src = "https://github.com/folke/tokyonight.nvim",    opt = true },
-    { src = "https://github.com/ellisonleao/gruvbox.nvim", opt = true },
-    { src = "https://github.com/rebelot/kanagawa.nvim",    opt = true },
-    { src = "https://github.com/rose-pine/neovim",         opt = true },
-    { src = "https://github.com/sainnhe/everforest",       opt = true },
-    { src = "https://github.com/EdenEast/nightfox.nvim",   opt = true },
-    { src = "https://github.com/savq/melange-nvim",        opt = true },
-    { src = "https://github.com/glepnir/zephyr-nvim",      opt = true },
-    { src = "https://github.com/NLKNguyen/papercolor-theme", opt = true },
-    { src = "https://github.com/kepano/flexoki-Neovim",      opt = true },
+return {
+    -- 主题
+    { src = "https://github.com/catppuccin/nvim" },
+    { src = "https://github.com/folke/tokyonight.nvim" },
+    { src = "https://github.com/ellisonleao/gruvbox.nvim" },
+    { src = "https://github.com/rebelot/kanagawa.nvim" },
+    { src = "https://github.com/rose-pine/neovim" },
+    { src = "https://github.com/sainnhe/everforest" },
+    { src = "https://github.com/EdenEast/nightfox.nvim" },
+    { src = "https://github.com/savq/melange-nvim" },
+    { src = "https://github.com/glepnir/zephyr-nvim" },
+    { src = "https://github.com/NLKNguyen/papercolor-theme" },
+    { src = "https://github.com/kepano/flexoki-Neovim" },
     { src = "https://github.com/nvim-tree/nvim-web-devicons" },
 
     -- 状态栏
@@ -108,14 +108,3 @@ local specs = {
     -- 翻译
     { src = "https://github.com/uga-rosa/translate.nvim" },
 }
-
--- 禁用插件：不会加载，不会下载（新添加时），已在硬盘上不会被删除
-local disabled = {
-    { src = "https://github.com/nvim-mini/mini.icons" },
-}
-
--- 同步清理孤儿插件并注册禁用名单
-PackUtils.sync(specs, disabled)
-
--- 正式下载/更新插件
-vim.pack.add(specs)

@@ -1,6 +1,7 @@
 -- 自动检测并下载 blink.cmp 预编译二进制
 local function ensure_blink_binary()
-    local root = PackUtils.get_root("blink.cmp")
+    local info = vim.pack.get({ "blink.cmp" }, { info = false })[1]
+    local root = info and info.path
     if not root then return end
 
     -- 获取当前 git tag

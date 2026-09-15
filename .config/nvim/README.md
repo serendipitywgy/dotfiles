@@ -1,6 +1,6 @@
 # Neovim 配置文档
 
-> 基于 Neovim 0.12 内置包管理器 `vim.pack` 的现代化 Neovim 配置
+> 基于 Neovim 0.13 内置包管理器 `vim.pack` 的现代化 Neovim 配置
 
 ## 目录结构
 
@@ -10,7 +10,7 @@
 ├── nvim-pack-lock.json       # 插件版本锁文件
 └── lua/
     ├── pack/
-    │   ├── init.lua          # PackUtils 引擎 + 管理命令
+    │   ├── init.lua          # 原生 vim.pack 初始化 + 显式加载插件配置
     │   └── plugins.lua       # 插件花名册（集中管理下载地址）
     ├── config/
     │   ├── options.lua       # vim 选项配置
@@ -18,13 +18,13 @@
     │   ├── autocmds.lua      # 自动命令
     │   ├── lsp.lua           # LSP 配置（Mason + lspconfig）
     │   ├── debugging.lua     # DAP 调试器配置
+    │   ├── theme.lua         # 主题切换与持久化
     │   ├── utils.lua         # 通用工具函数
     │   ├── icons.lua         # 图标定义
     │   └── heirline/
     │       ├── statusline.lua
     │       └── components.lua
     └── plugins/              # 各插件的独立配置文件
-        ├── theme.lua
         ├── snacks.lua
         ├── blink.lua
         ├── treesitter.lua
@@ -52,70 +52,33 @@
 
 ## 插件管理机制
 
-### 核心：`vim.pack`（Neovim 0.12 内置）
+### 核心：`vim.pack`（Neovim 0.13 内置）
 
-本配置**不依赖任何第三方插件管理器**（如 lazy.nvim / packer），完全使用 Neovim 0.12 原生的 `vim.pack` API。
+本配置**不依赖任何第三方插件管理器**（如 lazy.nvim / packer），完全使用 Neovim 0.13 原生的 `vim.pack` API。
 
 #### 基本流程
 
 ```
 init.lua
   └─ require("pack")
-       ├─ 初始化 PackUtils 引擎
-       ├─ require("pack.plugins")   ← 集中注册所有插件 spec，调用 vim.pack.add()
-       ├─ 自动扫描 lua/plugins/*.lua 并逐一 require（加载各插件配置）
+       ├─ require("pack.plugins")   ← 读取集中维护的插件 spec
+       ├─ vim.pack.add(specs, { load = true })
+       ├─ 按固定顺序显式加载 lua/plugins/*.lua
        └─ require("config.lsp")
 ```
 
 #### `pack/plugins.lua` — 插件花名册
 
-所有插件的下载地址统一在此文件声明为 `specs` 列表，再通过 `vim.pack.add(specs)` 一次性下载/同步。
+所有插件的下载地址统一在此文件声明并返回，再由 `pack/init.lua` 一次性下载、同步和激活。
 支持字符串（仅 URL）或 table（含 `src`、`name`、`version` 等字段）两种格式：
 
 ```lua
-local specs = {
+return {
     { src = "https://github.com/folke/snacks.nvim" },
     { src = "https://github.com/saghen/blink.cmp", version = "v1.7.0" },
     "https://github.com/christoomey/vim-tmux-navigator",
 }
-vim.pack.add(specs)
 ```
-
-### `PackUtils` 引擎
-
-`PackUtils` 是封装在 `pack/init.lua` 中的全局工具对象，为插件配置提供统一的加载、构建与防崩保护。
-
-#### 核心 API
-
-| 函数 | 说明 |
-|------|------|
-| `PackUtils.get_name(spec)` | 从 URL 或 table 解析插件名 |
-| `PackUtils.get_root(name)` | 获取插件在磁盘上的根目录 |
-| `PackUtils.sync(active, disabled)` | 自动删除孤儿插件；注册禁用名单 |
-| `PackUtils.load(P, config_fn)` | 全方位防崩加载：`packadd` + 依赖挂载 + `require` + `setup` |
-| `PackUtils.run_build(name, cmd)` | 执行编译/安装命令（支持 shell 命令和 `:VimCmd` 两种形式） |
-| `PackUtils.setup_listener(name, cmd)` | 注册 `PackChanged` 监听，安装/更新后自动触发构建 |
-| `PackUtils.check_health(name, cmd)` | 启动时检查 `.build_done` 标记，缺失则触发构建 |
-
-#### `PackUtils.load` 参数格式
-
-```lua
-PackUtils.load({
-    name = "yazi.nvim",        -- 插件名（或 GitHub URL，自动解析）
-    module = "yazi",           -- require 的模块名
-    deps = { "plenary.nvim" }, -- 依赖列表（可选）
-    build_cmd = "make",        -- 构建命令（可选）
-}, function(plugin)
-    plugin.setup({ ... })
-end)
-```
-
-#### 禁用插件
-
-在 `pack/plugins.lua` 的 `disabled` 列表中添加插件 spec，该插件将：
-- 不被加载（`PackUtils.load` 提前退出）
-- 不被删除（保留在磁盘，避免误删）
-- 新安装时不被下载
 
 ---
 
@@ -124,8 +87,8 @@ end)
 ### 分层结构
 
 ```
-init.lua          ← 极简入口，仅做 leader 设置 + 4 个 require
-  pack/           ← 插件管理层（下载 + 引擎 + 扫描加载）
+init.lua          ← 极简入口，仅做全局设置和模块加载
+  pack/           ← 插件管理层（spec + 原生 vim.pack + 显式配置顺序）
   config/         ← 核心配置层（选项 / 快捷键 / 自动命令 / LSP）
   plugins/        ← 插件配置层（每个插件一个独立文件）
 ```
@@ -144,15 +107,9 @@ init.lua          ← 极简入口，仅做 leader 设置 + 4 个 require
 | `FileType markdown` | render-markdown、image.nvim |
 | 按键触发 | yazi（`tt`）、flash（`ss`） |
 
-### 自动扫描插件配置
+### 显式配置顺序
 
-`pack/init.lua` 在初始化完成后自动扫描 `lua/plugins/` 目录，所有 `.lua` 文件均被 `pcall(require, ...)` 安全加载，**新增插件只需在此目录添加文件即可，无需修改 `init.lua`**。
-
-### 防崩保护
-
-- 所有插件加载均用 `pcall` 包裹
-- `PackUtils.load` 在 `require` 失败时优雅退出并打印 `vim.notify` 警告
-- `PackUtils.is_initialized` 表防止重复初始化
+`pack/init.lua` 明确列出每个 `plugins.*` 模块。新增插件时需要同时添加 spec 和配置模块；加载失败会直接报告，避免功能静默失效。
 
 ---
 

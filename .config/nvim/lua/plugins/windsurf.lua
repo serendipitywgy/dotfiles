@@ -1,6 +1,3 @@
--- 禁用默认按键绑定
-vim.g.codeium_disable_bindings = 1
-
 -- ── Codeium 快捷键 ─────────────────────────────────────────────────────────
 vim.keymap.set("i", "<C-g>", function() return vim.fn['codeium#Accept']() end,           { expr = true, silent = true })
 vim.keymap.set("i", "<C-h>", function() return vim.fn['codeium#AcceptNextWord']() end,   { expr = true, silent = true })

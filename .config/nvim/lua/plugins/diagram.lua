@@ -1,4 +1,3 @@
-vim.cmd.packadd("diagram.nvim")
 local ok, diagram = pcall(require, "diagram")
 if not ok then return end
 

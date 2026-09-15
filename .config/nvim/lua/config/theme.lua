@@ -10,33 +10,6 @@ local M = {}
 -- 主题数据
 -- ============================================================
 
--- colorscheme 名前缀 → vim.pack 的 packadd 名（repo 末段）
-local scheme_to_pack = {
-    catppuccin = "nvim",
-    tokyonight = "tokyonight.nvim",
-    gruvbox = "gruvbox.nvim",
-    kanagawa = "kanagawa.nvim",
-    ["rose-pine"] = "neovim",
-    everforest = "everforest",
-    nightfox = "nightfox.nvim",
-    melange = "melange-nvim",
-    zephyr = "zephyr-nvim",
-    PaperColor = "papercolor-theme",
-    flexoki = "flexoki.nvim",
-}
-
--- 按前缀长度降序排列，确保 "onedark" 优先于 "one" 匹配
-local scheme_prefixes = {}
-for prefix, pack in pairs(scheme_to_pack) do
-    scheme_prefixes[#scheme_prefixes + 1] = { prefix = prefix, pack = pack }
-end
-table.sort(scheme_prefixes, function(a, b)
-    return #a.prefix > #b.prefix
-end)
-
--- 主题 → 其 opt 依赖（确保在 colorscheme 之前已 packadd）
-local scheme_deps = {}
-
 M.themes = {
     "catppuccin", "everforest", "flexoki", "gruvbox",
     "kanagawa", "melange", "nightfox", "PaperColor",
@@ -68,15 +41,6 @@ end
 -- 主题加载原语
 -- ============================================================
 
-local function packadd_for_scheme(name)
-    for _, entry in ipairs(scheme_prefixes) do
-        if name:find(entry.prefix, 1, true) then
-            pcall(vim.cmd.packadd, entry.pack)
-            return
-        end
-    end
-end
-
 local function setup_scheme(name)
     if name:find("catppuccin", 1, true) then
         pcall(function()
@@ -90,11 +54,6 @@ local function setup_scheme(name)
 end
 
 function M.apply_theme(name)
-    local deps = scheme_deps[name] or {}
-    for _, dep in ipairs(deps) do
-        pcall(vim.cmd.packadd, dep)
-    end
-    packadd_for_scheme(name)
     setup_scheme(name)
     local ok, err = pcall(vim.cmd.colorscheme, name)
     if not ok then
@@ -147,11 +106,6 @@ local function select_theme()
         confirm = function(picker, item)
             if not item then return end
             local name = item.text
-            local deps = scheme_deps[name] or {}
-            for _, dep in ipairs(deps) do
-                pcall(vim.cmd.packadd, dep)
-            end
-            packadd_for_scheme(name)
             setup_scheme(name)
             picker:close()
             picker.preview.state.colorscheme = nil
