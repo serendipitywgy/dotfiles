@@ -119,7 +119,7 @@ require("snacks").setup({
                 { icon = " ", key = "r", desc = "最近文件", action = ":lua Snacks.picker.recent()" },
                 { icon = " ", key = "g", desc = "查找文本", action = ":lua Snacks.picker.grep()" },
                 { icon = " ", key = "s", desc = "会话", action = ":AutoSession search" },
-                { icon = "󰒲 ", key = "u", desc = "更新插件", action = ":PackUpdate" },
+                { icon = "󰒲 ", key = "u", desc = "更新插件", action = ":packupdate" },
                 { icon = " ", key = "q", desc = "退出", action = ":qa" },
             },
         },

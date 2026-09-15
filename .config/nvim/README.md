@@ -83,15 +83,6 @@ local specs = {
 vim.pack.add(specs)
 ```
 
-#### 管理命令
-
-| 命令 | 说明 |
-|------|------|
-| `:PackUpdate [name...]` | 更新全部或指定插件（支持 Tab 补全插件名） |
-| `:PackStatus [name...]` | 检查插件状态（offline 模式，不下载） |
-
----
-
 ### `PackUtils` 引擎
 
 `PackUtils` 是封装在 `pack/init.lua` 中的全局工具对象，为插件配置提供统一的加载、构建与防崩保护。
