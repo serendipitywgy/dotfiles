@@ -289,6 +289,33 @@ function PackUtils.load(P, config_fn)
 	PackUtils.is_initialized[P.name] = true
 end
 
+-- Keep parsers aligned with the revisions expected by nvim-treesitter.
+vim.api.nvim_create_autocmd('PackChanged', {
+	group = vim.api.nvim_create_augroup('TreesitterParserUpdate', { clear = true }),
+	callback = function(ev)
+		local data = ev.data
+		if not data or not data.spec or data.spec.name ~= 'nvim-treesitter' then return end
+		if data.kind ~= 'install' and data.kind ~= 'update' then return end
+
+		local load_ok, load_err = pcall(vim.cmd.packadd, 'nvim-treesitter')
+		if not load_ok then
+			vim.notify('Failed to load nvim-treesitter after update: ' .. tostring(load_err), vim.log.levels.ERROR)
+			return
+		end
+
+		local require_ok, treesitter = pcall(require, 'nvim-treesitter')
+		if not require_ok then
+			vim.notify('Failed to update Treesitter parsers: ' .. tostring(treesitter), vim.log.levels.ERROR)
+			return
+		end
+
+		local update_ok, update_err = pcall(treesitter.update, nil, { summary = true })
+		if not update_ok then
+			vim.notify('Failed to start Treesitter parser update: ' .. tostring(update_err), vim.log.levels.ERROR)
+		end
+	end,
+})
+
 -- ==============================================================
 -- 加载插件列表（集中管理 specs + sync + vim.pack.add）
 -- ==============================================================
