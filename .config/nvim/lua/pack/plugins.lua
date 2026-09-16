@@ -22,7 +22,6 @@ return {
 
     -- mini 系列
     { src = "https://github.com/nvim-mini/mini.ai" },
-    { src = "https://github.com/nvim-mini/mini.diff" },
     { src = "https://github.com/nvim-mini/mini.surround" },
 
     -- tmux 导航（条件加载，此处统一下载）

@@ -138,7 +138,6 @@
 | `<leader>ggQ` | 所有 diff 到 quickfix |
 | `<leader>ga` | 行注释 |
 | `<leader>gw` | 逐词高亮 |
-| `<leader>go` | 改动对比 |
 | `ih` | 选中当前 hunk（文本对象） |
 
 ---

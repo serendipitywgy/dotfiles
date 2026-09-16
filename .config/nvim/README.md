@@ -98,7 +98,7 @@ init.lua          ← 极简入口，仅做全局设置和模块加载
 | 触发时机 | 适用插件 |
 |----------|----------|
 | `InsertEnter` | blink.cmp、nvim-autopairs |
-| `BufReadPost` | gitsigns、mini.diff |
+| `BufReadPost` | gitsigns |
 | `BufReadPre` / `BufNewFile` | heirline、bufferline |
 | `LspAttach` | inc-rename |
 | `FileType python/cpp/c` | DAP 调试器 |
@@ -242,7 +242,6 @@ init.lua          ← 极简入口，仅做全局设置和模块加载
 | `<leader>ggq` | n | Diffs 到 quickfix |
 | `<leader>ga` | n | 行注释 |
 | `<leader>gw` | n | 逐词高亮 |
-| `<leader>go` | n | 改动对比 |
 
 ### 调试（DAP）
 
@@ -415,7 +414,6 @@ init.lua          ← 极简入口，仅做全局设置和模块加载
 | 插件 | 说明 |
 |------|------|
 | **gitsigns.nvim** | 行号列 git 状态、blame、hunk 操作，懒加载于首次读取文件 |
-| **mini.diff** | diff overlay 展示，`<leader>go` 切换，懒加载于首次读取文件 |
 
 ### 调试（DAP）
 
