@@ -42,7 +42,6 @@
         ├── cmake.lua
         ├── render-markdown.lua
         ├── auto-session.lua
-        ├── vim-tmux-navigator.lua
         ├── windsurf.lua
         ├── inc-rename.lua
         └── static-scroll.lua

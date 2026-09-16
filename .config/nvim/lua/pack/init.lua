@@ -51,7 +51,6 @@ local modules = {
     "plugins.inc-rename",
     "plugins.translate",
     "plugins.windsurf",
-    "plugins.vim-tmux-navigator",
     "plugins.ime",
 }
 
