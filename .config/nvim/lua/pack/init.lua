@@ -36,7 +36,6 @@ local modules = {
     "plugins.which-key",
     "plugins.trouble",
     "plugins.oil",
-    "plugins.yazi",
     "plugins.mini",
     "plugins.autopairs",
     "plugins.bufferline",

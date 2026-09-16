@@ -66,7 +66,6 @@ return {
 
     -- 文件管理
     { src = "https://github.com/stevearc/oil.nvim" },
-    { src = "https://github.com/mikavilpas/yazi.nvim" },
 
     -- 调试
     { src = "https://github.com/mfussenegger/nvim-dap" },

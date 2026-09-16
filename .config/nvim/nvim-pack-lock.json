@@ -218,10 +218,6 @@
       "rev": "3c0a4f8a7be75113a6e19be13b7cc37210d6e26a",
       "src": "https://github.com/Exafunction/windsurf.vim"
     },
-    "yazi.nvim": {
-      "rev": "82d287b80b504b3da4686d17f59b1bb2c9e47ac9",
-      "src": "https://github.com/mikavilpas/yazi.nvim"
-    },
     "zephyr-nvim": {
       "rev": "7fd86b7164442d3b5ec2c81b2694d040e716b5cf",
       "src": "https://github.com/glepnir/zephyr-nvim"

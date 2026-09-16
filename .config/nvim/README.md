@@ -31,7 +31,6 @@
         ├── heirline.lua
         ├── bufferline.lua
         ├── oil.lua
-        ├── yazi.lua
         ├── git.lua
         ├── debug.lua
         ├── mini.lua
@@ -104,7 +103,7 @@ init.lua          ← 极简入口，仅做全局设置和模块加载
 | `LspAttach` | inc-rename |
 | `FileType python/cpp/c` | DAP 调试器 |
 | `FileType markdown` | render-markdown、image.nvim |
-| 按键触发 | yazi（`tt`）、flash（`ss`） |
+| 按键触发 | flash（`ss`） |
 
 ### 显式配置顺序
 
@@ -166,7 +165,6 @@ init.lua          ← 极简入口，仅做全局设置和模块加载
 | `<leader>q` | n | 退出当前 buffer |
 | `<leader>qq` | n | 保存全部并退出 |
 | `<leader>e` | n | 打开 Oil 文件管理器 |
-| `tt` | n/v | 打开 Yazi 文件管理器 |
 
 ### Snacks Picker（模糊搜索）
 
@@ -387,7 +385,6 @@ init.lua          ← 极简入口，仅做全局设置和模块加载
 | 插件 | 说明 |
 |------|------|
 | **oil.nvim** | 像编辑文本一样编辑目录，替代 netrw，`<leader>e` 打开 |
-| **yazi.nvim** | 集成 yazi 终端文件管理器，`tt` 打开，按需懒加载 |
 
 ### LSP / 补全
 
