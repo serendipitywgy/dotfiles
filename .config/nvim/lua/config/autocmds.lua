@@ -18,7 +18,7 @@ end, { desc = "文件内重命名" })
 vim.api.nvim_create_autocmd("TextYankPost", {
     group = augroup("highlight_yank"),
     callback = function()
-        (vim.hl or vim.highlight).on_yank()
+        vim.hl.hl_op()
     end,
 })
 -- resize splits if window got resized
