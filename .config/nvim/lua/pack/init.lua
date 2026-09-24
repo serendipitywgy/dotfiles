@@ -31,6 +31,14 @@ local lazy_plugins = {
     ["image.nvim"] = true,
     ["diagram.nvim"] = true,
     ["render-markdown.nvim"] = true,
+    ["plenary.nvim"] = true,
+    ["overseer.nvim"] = true,
+    ["cmake-tools.nvim"] = true,
+    ["nvim-nio"] = true,
+    ["nvim-dap"] = true,
+    ["nvim-dap-ui"] = true,
+    ["nvim-dap-virtual-text"] = true,
+    ["nvim-dap-python"] = true,
 }
 
 -- Keep media plugins installed and locked, but leave them outside runtimepath
