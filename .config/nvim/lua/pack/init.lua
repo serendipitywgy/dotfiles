@@ -50,7 +50,6 @@ local modules = {
     "plugins.inc-rename",
     "plugins.translate",
     "plugins.windsurf",
-    "plugins.ime",
 }
 
 for _, module in ipairs(modules) do
