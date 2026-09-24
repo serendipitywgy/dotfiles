@@ -208,32 +208,43 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 
 vim.g.transparent = false
 
+local transparent_groups = {
+    "Normal", "NormalFloat", "LineNr", "Folded", "SignColumn", "NonText", "EndOfBuffer",
+    "StatusLine", "StatusLineNC", "TabLine", "TabLineFill", "TabLineSel",
+    "BufferLine.Background", "BufferLineFill", "BufferLineBuffer",
+    "BufferLineBufferVisible", "BufferLineBufferSelected",
+    "BufferLineClose", "BufferLineCloseVisible",
+    "BufferLineCloseSelected", "BufferLineDuplicate",
+    "BufferLineDuplicateSelected", "BufferLineModified",
+    "BufferLineModifiedVisible", "BufferLineModifiedSelected",
+    "BufferLineSeparator", "BufferLineSeparatorVisible",
+    "BufferLineSeparatorSelected", "BufferLineGroupHighlight",
+    "BufferLineGroupSeparator", "BufferLineGroupSeparatorSelected",
+}
+
+local function apply_transparency()
+    for _, group in ipairs(transparent_groups) do
+        vim.cmd.highlight({ group, "ctermbg=NONE", "guibg=NONE", bang = true })
+    end
+end
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+    callback = function()
+        if vim.g.transparent then
+            apply_transparency()
+        end
+    end,
+})
+
 Snacks.toggle.new({
     name = "Transparent Mode",
     get = function() return vim.g.transparent end,
     set = function(state)
         vim.g.transparent = state
-        local groups = { "Normal", "NormalFloat", "LineNr", "Folded", "SignColumn", "NonText", "EndOfBuffer" }
-        local status_groups = { "StatusLine", "StatusLineNC", "TabLine", "TabLineFill", "TabLineSel" }
-        local bufferline_groups = {
-            "BufferLine.Background", "BufferLineFill", "BufferLineBuffer",
-            "BufferLineBufferVisible", "BufferLineBufferSelected",
-            "BufferLineClose", "BufferLineCloseVisible",
-            "BufferLineCloseSelected", "BufferLineDuplicate",
-            "BufferLineDuplicateSelected", "BufferLineModified",
-            "BufferLineModifiedVisible", "BufferLineModifiedSelected",
-            "BufferLineSeparator", "BufferLineSeparatorVisible",
-            "BufferLineSeparatorSelected", "BufferLineGroupHighlight",
-            "BufferLineGroupSeparator", "BufferLineGroupSeparatorSelected",
-        }
         if state then
-            for _, grp in ipairs(groups) do vim.cmd(("hi! %s ctermbg=NONE guibg=NONE"):format(grp)) end
-            for _, grp in ipairs(status_groups) do vim.cmd(("hi! %s ctermbg=NONE guibg=NONE"):format(grp)) end
-            for _, grp in ipairs(bufferline_groups) do vim.cmd(("hi! %s ctermbg=NONE guibg=NONE"):format(grp)) end
+            apply_transparency()
         else
-            for _, grp in ipairs(groups) do vim.cmd(("hi! default %s ctermbg=NONE guibg=NONE"):format(grp)) end
-            for _, grp in ipairs(status_groups) do vim.cmd(("hi! default %s ctermbg=NONE guibg=NONE"):format(grp)) end
-            for _, grp in ipairs(bufferline_groups) do vim.cmd(("hi! default %s ctermbg=NONE guibg=NONE"):format(grp)) end
+            M.apply_theme(vim.g.colors_name or M.themes[theme_idx])
         end
     end,
 }):map("<leader>ut", { desc = "Toggle transparent mode" })

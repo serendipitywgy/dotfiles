@@ -123,7 +123,7 @@ local function cmake_run()
 end
 
 local function cmake_debug()
-    vim.cmd("CMakeQuickRun")
+    vim.cmd("CMakeDebug")
 end
 
 local function cmake_open_output()

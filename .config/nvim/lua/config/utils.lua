@@ -88,9 +88,9 @@ M.open_grep_results = function(items)
         end
         local filepath = Snacks.picker.util.path(item)
         local lnum = item.pos and item.pos[1] or 1
-        local col = item.pos and (item.pos[2] + 1) or 1
-        -- open file in a new tab, keeping result tab intact
-        vim.cmd.edit(filepath)
+        local col = item.pos and item.pos[2] or 0
+        -- Open the match while keeping the result buffer available.
+        vim.api.nvim_cmd({ cmd = "edit", args = { filepath } }, {})
         vim.api.nvim_win_set_cursor(0, { lnum, col })
     end, { buffer = buf, desc = "跳转到结果" })
 
