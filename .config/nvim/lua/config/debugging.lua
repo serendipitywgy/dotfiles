@@ -1,304 +1,127 @@
-local dap = require("dap")
+local M = {}
 
--- NOTE: configure adapters
-dap.adapters.codelldb = {
-    type = "executable",
-    -- command = "codelldb", -- or if not in $PATH: "/absolute/path/to/codelldb"
-    command = vim.fn.expand("~/.local/bin/codelldb"), -- 这里是软链接到了vscode插件目录下的codelldb,这个只能vscode插件能用"
-}
-dap.adapters.cppdbg = {
-    id = "cppdbg",
-    type = "executable",
-    command = "OpenDebugAD7", -- or if not in $PATH: "/absolute/path/to/OpenDebugAD7"
-    options = { detached = false },
-}
-dap.adapters.gdb = {
-    type = "executable",
-    command = "gdb",
-    args = { "--interpreter=dap", "--eval-command", "set print pretty on" },
-}
+local initialized = false
 
-dap.adapters.cudagdb = {
-    type = "executable",
-    command = "cuda-gdb",
-}
+function M.setup()
+    if initialized then return end
 
--- NOTE: filetype configurations
-dap.configurations.cuda = {
-    {
-        name = "Launch (cuda-gdb)",
-        type = "cudagdb",
-        request = "launch",
-        program = function()
-            return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-        end,
-        cwd = "${workspaceFolder}",
-        stopOnEntry = false,
-    },
-    {
-        name = "Launch (gdb)",
-        type = "cppdbg",
-        MIMode = "gdb",
-        request = "launch",
-        miDebuggerPath = "/usr/bin/gdb",
-        program = function()
-            return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-        end,
-        cwd = "${workspaceFolder}",
-        setupCommands = {
-            {
-                description = "Enable pretty-printing for gdb",
-                ignoreFailures = true,
-                text = "-enable-pretty-printing",
-            },
-        },
-        stopAtBeginningOfMainSubprogram = false,
-    },
-}
-dap.configurations.cpp = dap.configurations.cpp or {}
+    local dap = require("dap")
+    local dapui = require("dapui")
+    local codelldb = vim.fn.exepath("codelldb")
+    if codelldb == "" then codelldb = vim.fn.expand("~/.local/bin/codelldb") end
 
-vim.list_extend(dap.configurations.cpp, {
-    {
-        name = "Launch (codelldb)",
-        type = "codelldb",
-        request = "launch",
-        program = function()
-            return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-        end,
-        cwd = "${workspaceFolder}",
-        stopOnEntry = false,
-    },
-    {
-        name = "Launch (gdb)",
-        type = "gdb",
-        MIMode = "gdb",
-        request = "launch",
-        miDebuggerPath = "/usr/bin/gdb",
-        program = function()
-            return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-        end,
-        cwd = "${workspaceFolder}",
-        setupCommands = {
-            {
-                description = "Enable pretty-printing for gdb",
-                ignoreFailures = true,
-                text = "-enable-pretty-printing",
-            },
-        },
-        stopAtBeginningOfMainSubprogram = false,
-    },
-    {
-        name = "Select and attach to process",
-        type = "cppdbg",
-        request = "attach",
-        program = function()
-            return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-        end,
-        pid = function()
-            local name = vim.fn.input("Executable name (filter): ")
-            return require("dap.utils").pick_process({ filter = name })
-        end,
-        cwd = "${workspaceFolder}",
-    },
-})
+    dap.adapters.codelldb = {
+        type = "executable",
+        command = codelldb,
+    }
+    dap.adapters.gdb = {
+        type = "executable",
+        command = "gdb",
+        args = { "--interpreter=dap", "--eval-command", "set print pretty on" },
+    }
 
-dap.configurations.python = dap.configurations.python or {}
-vim.list_extend(dap.configurations.python, {
-    {
-        type = "python",
-        request = "launch",
-        name = "file:args (cwd)",
-        program = "${file}",
-        args = function()
-            local args_string = vim.fn.input("Arguments: ")
-            local utils = require("dap.utils")
-            if utils.splitstr and vim.fn.has("nvim-0.10") == 1 then
-                return utils.splitstr(args_string)
-            end
-            return vim.split(args_string, " +")
-        end,
-        console = "integratedTerminal",
-        cwd = vim.fn.getcwd(),
-    },
-    {
-        MIMode = "gdb",
-        args = {
-            "${workspaceFolder}/Gaudi/Gaudi/scripts/gaudirun.py",
-            "${file}",
-        },
-        cwd = "${fileDirname}",
-        externalConsole = false,
-        miDebuggerPath = "${workspaceFolder}/Moore/gdb",
-        name = "GDB: gaudirun.py (Moore)",
-        program = function()
-            local result = vim.system({ "utils/run-env", "Gaudi", "which", "python3" }, { text = true }):wait()
-            return vim.trim(result.stdout)
-        end,
-        request = "launch",
-        setupCommands = {
-            {
-                description = "Enable pretty-printing for gdb",
-                ignoreFailures = true,
-                text = "-enable-pretty-printing",
-            },
-        },
-        type = "cppdbg",
-        preLaunchTask = "make fast/Rec",
-    },
-    {
-        MIMode = "gdb",
-        args = {
-            "${workspaceFolder}/Gaudi/Gaudi/scripts/gaudirun.py",
-            "${file}",
-        },
-        cwd = "${fileDirname}",
-        externalConsole = false,
-        -- miDebuggerPath = '${workspaceFolder}/${input:lhcbProject}/gdb',
-        miDebuggerPath = function()
-            local project = vim.fn.input("Project name: ", "Moore")
-            return "${workspaceFolder}/" .. project .. "/gdb"
-        end,
-        name = "GDB: gaudirun.py",
-        program = function()
-            local result = vim.system({ "utils/run-env", "Gaudi", "which", "python3" }, { text = true }):wait()
-            return vim.trim(result.stdout)
-        end,
-        request = "launch",
-        setupCommands = {
-            {
-                description = "Enable pretty-printing for gdb",
-                ignoreFailures = true,
-                text = "-enable-pretty-printing",
-            },
-        },
-        type = "cppdbg",
-    },
-    {
-        MIMode = "gdb",
-        args = {
-            "qmtexec",
-            "${file}",
-        },
-        cwd = "${fileDirname}",
-        externalConsole = false,
-        miDebuggerPath = "${workspaceFolder}/Gaudi/gdb",
-        name = "GDB: qmtexec",
-        program = function()
-            local project = vim.fn.input("Project name: ", "Moore")
-            return "${workspaceFolder}/" .. project .. "/run"
-        end,
-        request = "launch",
-        setupCommands = {
-            {
-                description = "Enable pretty-printing for gdb",
-                ignoreFailures = true,
-                text = "-enable-pretty-printing",
-            },
-        },
-        type = "cppdbg",
-    },
-    {
-        MIMode = "gdb",
-        miDebuggerPath = "${workspaceFolder}/Gaudi/Gaudi/gdb",
-        name = "GDB: attach",
-        processId = "${command:pickProcess}",
-        program = "/cvmfs/lhcb.cern.ch/lib/lcg/releases/Python/3.9.12-9a1bc/x86_64-el9-gcc13-opt/bin/python",
-        request = "attach",
-        setupCommands = {
-            {
-                description = "Enable pretty-printing for gdb",
-                ignoreFailures = true,
-                text = "-enable-pretty-printing",
-            },
-        },
-        type = "cppdbg",
-    },
-})
-dap.configurations.qmt = dap.configurations.python
+    local function executable()
+        return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+    end
 
-require("nvim-dap-virtual-text").setup()
-
-local custom_utils = require 'config.utils'
--- UI responsiveness
-local dapui = require 'dapui'
-dap.listeners.before.attach.dapui_config = function()
-    dapui.open({ reset = true })
-    custom_utils.reset_overseerlist_width()
-end
-dap.listeners.before.launch.dapui_config = function()
-    dapui.open({ reset = true })
-    custom_utils.reset_overseerlist_width()
-end
-dap.listeners.before.event_terminated.dapui_config = function()
-    dapui.close()
-end
-dap.listeners.before.event_exited.dapui_config = function()
-    dapui.close()
-end
-
--- customize UI layout
-dapui.setup {
-    expand_lines = false,
-    layouts = {
+    dap.configurations.cpp = {
         {
-            position = 'left',
-            size = 0.2,
-            elements = {
-                { id = 'stacks',      size = 0.2 },
-                { id = 'scopes',      size = 0.5 },
-                { id = 'breakpoints', size = 0.15 },
-                { id = 'watches',     size = 0.15 },
-            },
+            name = "Launch (CodeLLDB)",
+            type = "codelldb",
+            request = "launch",
+            program = executable,
+            cwd = "${workspaceFolder}",
+            stopOnEntry = false,
         },
         {
-            position = 'bottom',
-            size = 0.2,
-            elements = {
-                { id = 'repl',    size = 0.3 },
-                { id = 'console', size = 0.7 },
+            name = "Launch (GDB DAP)",
+            type = "gdb",
+            request = "launch",
+            program = executable,
+            cwd = "${workspaceFolder}",
+            stopAtBeginningOfMainSubprogram = false,
+        },
+        {
+            name = "Attach (CodeLLDB)",
+            type = "codelldb",
+            request = "attach",
+            pid = require("dap.utils").pick_process,
+            cwd = "${workspaceFolder}",
+        },
+    }
+    dap.configurations.c = dap.configurations.cpp
+
+    require("dap-python").setup("uv", { include_configs = false })
+    dap.configurations.python = {
+        {
+            name = "Launch current file",
+            type = "python",
+            request = "launch",
+            program = "${file}",
+            console = "integratedTerminal",
+            cwd = function() return vim.fn.getcwd() end,
+            args = function()
+                local input = vim.fn.input("Arguments: ")
+                if input == "" then return {} end
+                return require("dap.utils").splitstr(input)
+            end,
+        },
+    }
+
+    require("nvim-dap-virtual-text").setup()
+    dapui.setup({
+        expand_lines = false,
+        layouts = {
+            {
+                position = "left",
+                size = 0.2,
+                elements = {
+                    { id = "stacks", size = 0.2 },
+                    { id = "scopes", size = 0.5 },
+                    { id = "breakpoints", size = 0.15 },
+                    { id = "watches", size = 0.15 },
+                },
+            },
+            {
+                position = "bottom",
+                size = 0.2,
+                elements = {
+                    { id = "repl", size = 0.3 },
+                    { id = "console", size = 0.7 },
+                },
             },
         },
-    },
-}
+    })
 
--- Custom breakpoint icons
-vim.fn.sign_define('DapBreakpoint', { text = '', texthl = 'DapBreakpoint', linehl = '', numhl = 'DapBreakpoint' })
-vim.fn.sign_define(
-    'DapBreakpointCondition',
-    { text = '', texthl = 'DapBreakpointCondition', linehl = 'DapBreakpointCondition', numhl = 'DapBreakpointCondition' }
-)
-vim.fn.sign_define('DapStopped', { text = '', texthl = 'DapStopped', linehl = 'DapStopped', numhl = 'DapStopped' })
+    local function open_ui()
+        if package.loaded.overseer then require("overseer").close() end
+        dapui.open({ reset = true })
+    end
+    dap.listeners.before.attach.dapui_config = open_ui
+    dap.listeners.before.launch.dapui_config = open_ui
+    dap.listeners.before.event_terminated.dapui_config = function() dapui.close() end
+    dap.listeners.before.event_exited.dapui_config = function() dapui.close() end
 
--- keymaps
-vim.keymap.set('n', '<leader>du', function()
-    dapui.toggle({ reset = true })
-    custom_utils.reset_overseerlist_width()
-end, { desc = 'DAP: 切换界面' })
-vim.keymap.set('n', '<F1>', function()
-    dapui.toggle({ reset = true })
-    custom_utils.reset_overseerlist_width()
-end, { desc = 'DAP: 切换界面' })
-vim.keymap.set('n', '<leader>ds', dap.continue, { desc = '开始/继续' })
-vim.keymap.set('n', '<F2>', dap.continue, { desc = '开始/继续' })
-vim.keymap.set('n', '<leader>di', dap.step_into, { desc = '步入' })
-vim.keymap.set('n', '<F3>', dap.step_into, { desc = '步入' })
-vim.keymap.set('n', '<leader>do', dap.step_over, { desc = '步过' })
-vim.keymap.set('n', '<F4>', dap.step_over, { desc = '步过' })
-vim.keymap.set('n', '<leader>dO', dap.step_out, { desc = '步出' })
-vim.keymap.set('n', '<F5>', dap.step_out, { desc = '步出' })
-vim.keymap.set('n', '<leader>dq', dap.close, { desc = 'DAP: 关闭会话' })
-vim.keymap.set('n', '<leader>dr', dap.restart_frame, { desc = 'DAP: 重启帧' })
-vim.keymap.set('n', '<F6>', dap.restart, { desc = 'DAP: 重新开始' })
-vim.keymap.set('n', '<leader>dQ', dap.terminate, { desc = '终止会话' })
-vim.keymap.set('n', '<F7>', dap.terminate, { desc = '终止会话' })
+    vim.fn.sign_define("DapBreakpoint", {
+        text = "",
+        texthl = "DapBreakpoint",
+        linehl = "",
+        numhl = "DapBreakpoint",
+    })
+    vim.fn.sign_define("DapBreakpointCondition", {
+        text = "",
+        texthl = "DapBreakpointCondition",
+        linehl = "DapBreakpointCondition",
+        numhl = "DapBreakpointCondition",
+    })
+    vim.fn.sign_define("DapStopped", {
+        text = "",
+        texthl = "DapStopped",
+        linehl = "DapStopped",
+        numhl = "DapStopped",
+    })
 
-vim.keymap.set('n', '<leader>dc', dap.run_to_cursor, { desc = 'DAP: 运行到光标' })
-vim.keymap.set('n', '<leader>dR', dap.repl.toggle, { desc = 'DAP: 切换 REPL' })
-vim.keymap.set('n', '<leader>dh', require('dap.ui.widgets').hover, { desc = 'DAP: 悬停查看' })
+    initialized = true
+end
 
-vim.keymap.set('n', '<leader>db', dap.toggle_breakpoint, { desc = 'DAP: 断点' })
-vim.keymap.set('n', '<leader>dB', function()
-    local input = vim.fn.input 'Condition for breakpoint:'
-    dap.set_breakpoint(input)
-end, { desc = 'DAP: 条件断点' })
-vim.keymap.set('n', '<leader>dD', dap.clear_breakpoints, { desc = 'DAP: 清除断点' })
+return M
