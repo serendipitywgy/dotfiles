@@ -143,30 +143,15 @@ vim.api.nvim_create_autocmd("LspAttach", {
         -- [Keymaps] LSP 相关快捷键
         -- 格式化代码 (keymap中已经实现)
 
-        -- 跳转到定义 (gd)
-        -- 使用 snacks picker 显示所有定义位置
-        -- ⚠️ 覆盖内置 gd(C 语言:本地定义跳转;普通模式:LSP 定义)
-        vim.keymap.set("n", "gd", function()
-            Snacks.picker.lsp_definitions()
-        end, { buf = event.buf, desc = "LSP: 跳转到定义" })
+        vim.keymap.set("n", "gd", vim.lsp.buf.definition, {
+            buf = event.buf,
+            desc = "LSP: 跳转到定义",
+        })
 
-        -- 带有智能分屏的跳转到定义 (gD)
-        -- 根据窗口大小自动选择横向或纵向分屏
-        vim.keymap.set("n", "gD", function()
-            local win = vim.api.nvim_get_current_window()
-            local width = vim.api.nvim_win_get_width(win)
-            local height = vim.api.nvim_win_get_height(win)
-
-            -- Mimic tmux formula: 8 * width - 20 * height
-            local value = 8 * width - 20 * height
-            if value < 0 then
-                vim.cmd("split")  -- vertical space is more: horizontal split
-            else
-                vim.cmd("vsplit") -- horizontal space is more: vertical split
-            end
-
-            vim.lsp.buf.definition()
-        end, { buffer = event.buf, desc = "LSP: 跳转到定义 (分屏)" })
+        vim.keymap.set("n", "gD", vim.lsp.buf.declaration, {
+            buf = event.buf,
+            desc = "LSP: 跳转到声明",
+        })
 
         -- [hover] K 悬停文档（markdown 保留 diagram 预览）
         if vim.bo[event.buf].filetype ~= "markdown" then

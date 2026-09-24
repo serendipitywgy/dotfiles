@@ -274,12 +274,6 @@ map("n", "<leader>su", function() Snacks.picker.undo() end, { desc = "撤销历�
 map("n", "<leader>ss", function() Snacks.picker.lsp_symbols() end, { desc = "LSP 符号" })
 map("n", "<leader>sS", function() Snacks.picker.lsp_workspace_symbols() end, { desc = "LSP 工作区符号" })
 
--- LSP 跳转（通过 Snacks picker）
--- map("n", "gd", function() Snacks.picker.lsp_definitions() end,     { desc = "跳转到定义" })
--- lsp.lua已经有gd跳转定义的快捷键, 这里屏蔽
--- map("n", "gD", function() Snacks.picker.lsp_declarations() end,    { desc = "跳转到声明" })
--- lsp.lua已经有gD跳转声明的快捷键, 这里屏蔽
-
 map("n", "gr", function() Snacks.picker.lsp_references() end, { nowait = true, desc = "引用" })  -- ⚠️ 覆盖内置 gr(虚拟替换模式)
 map("n", "gI", function() Snacks.picker.lsp_implementations() end, { desc = "跳转到实现" })  -- ⚠️ 覆盖内置 gI(行首插入)
 map("n", "gy", function() Snacks.picker.lsp_type_definitions() end, { desc = "跳转到类型定义" })
