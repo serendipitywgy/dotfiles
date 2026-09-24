@@ -1,5 +1,6 @@
 -- 等插件加载完再执行
-vim.api.nvim_create_autocmd({ 'BufReadPre', 'BufReadPost' }, {
+vim.api.nvim_create_autocmd({ 'VimEnter', 'BufReadPre', 'BufReadPost', 'BufNewFile' }, {
+    group = vim.api.nvim_create_augroup("SetupBufferline", { clear = true }),
     once     = true,
     callback = function()
         require("nvim-web-devicons").setup({})
@@ -53,6 +54,7 @@ vim.api.nvim_create_autocmd({ 'BufReadPre', 'BufReadPost' }, {
 
 -- 切换 colorscheme 时清图标缓存，使 BufferLine* 图标色跟随 hl 链接更新
 vim.api.nvim_create_autocmd("ColorScheme", {
+    group = vim.api.nvim_create_augroup("BufferlineColors", { clear = true }),
     callback = function()
         pcall(require("bufferline.highlights").reset_icon_hl_cache)
     end,

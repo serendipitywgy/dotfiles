@@ -1,11 +1,12 @@
 -- mini.ai / mini.surround 首次进入 buffer 时才需要
-vim.api.nvim_create_autocmd("BufReadPost", {
+vim.api.nvim_create_autocmd({ "VimEnter", "BufReadPost", "BufNewFile" }, {
+    group = vim.api.nvim_create_augroup("SetupMini", { clear = true }),
     once = true,
     callback = function()
         require("mini.ai").setup({
             mappings = {
                 goto_left = "[",
-                got_right = "]",
+                goto_right = "]",
             },
         })
         require("mini.surround").setup({

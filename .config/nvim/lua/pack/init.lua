@@ -6,15 +6,23 @@ vim.api.nvim_create_autocmd("PackChanged", {
         if not data or not data.spec or data.spec.name ~= "nvim-treesitter" then return end
         if data.kind ~= "install" and data.kind ~= "update" then return end
 
-        local ok, treesitter = pcall(require, "nvim-treesitter")
-        if not ok then
-            vim.notify("Failed to update Treesitter parsers: " .. tostring(treesitter), vim.log.levels.ERROR)
+        if not data.active then
+            vim.cmd.packadd(data.spec.name)
+        end
+
+        local config_ok, config = pcall(require, "plugins.treesitter")
+        local treesitter_ok, treesitter = pcall(require, "nvim-treesitter")
+        if not config_ok or not treesitter_ok then
+            local err = not config_ok and config or treesitter
+            vim.notify("Failed to load Treesitter after " .. data.kind .. ": " .. tostring(err), vim.log.levels.ERROR)
             return
         end
 
-        local update_ok, update_err = pcall(treesitter.update, nil, { summary = true })
-        if not update_ok then
-            vim.notify("Failed to start Treesitter parser update: " .. tostring(update_err), vim.log.levels.ERROR)
+        local action = data.kind == "install" and treesitter.install or treesitter.update
+        local languages = data.kind == "install" and config.parsers or nil
+        local action_ok, action_err = pcall(action, languages, { summary = true })
+        if not action_ok then
+            vim.notify("Failed to start Treesitter parser " .. data.kind .. ": " .. tostring(action_err), vim.log.levels.ERROR)
         end
     end,
 })
