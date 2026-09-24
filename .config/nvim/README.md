@@ -212,7 +212,9 @@ init.lua          ← 极简入口，仅做全局设置和模块加载
 | `<leader>rf` | n | 全文件重命名（无需 LSP） |
 | `<leader>yn` | n | 增量预览重命名（inc-rename） |
 | `<leader>lf` | n/v | LSP 格式化（支持范围选择） |
-| `<leader>sd` | n | 显示诊断浮窗 |
+| `<leader>sd` | n | 工作目录诊断列表 |
+| `<leader>sD` | n | 当前 buffer 的诊断列表 |
+| `<leader>xd` | n | 当前行诊断浮窗 |
 | `<leader>cd` | n | 切换诊断显示开关 |
 | `<leader>th` | n | 切换 Inlay Hints |
 | `[f` / `]f` | n | 跳转到当前函数开始/结束 |

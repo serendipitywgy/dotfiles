@@ -131,6 +131,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
             vim.diagnostic.enable(not vim.diagnostic.is_enabled(filter), filter)
         end, { buf = event.buf, desc = 'LSP: 切换诊断显示' })
 
+        vim.keymap.set('n', '<leader>xd', function()
+            vim.diagnostic.open_float({ source = true, scope = 'line' })
+        end, { buf = event.buf, desc = 'LSP: 当前行诊断浮窗' })
+
         -- [Folding] 代码折叠(0.12 内置 vim.lsp.foldexpr，基于 LSP foldingRange)
         if client:supports_method('textDocument/foldingRange', event.buf) then
             configure_lsp_folds(event.buf)

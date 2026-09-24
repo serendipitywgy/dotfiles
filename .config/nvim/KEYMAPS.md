@@ -100,8 +100,9 @@
 | `]f` | 跳转到当前函数结尾 |
 | `<leader>ss` | LSP 符号列表 |
 | `<leader>sS` | LSP 工作区符号 |
-| `<leader>sd` | 显示诊断浮窗 |
+| `<leader>sd` | 工作目录诊断列表 |
 | `<leader>sD` | 当前 buffer 的诊断列表 |
+| `<leader>xd` | 当前行诊断浮窗 |
 | `<leader>cd` | 切换诊断显示开/关 |
 | `<leader>th` | 切换 Inlay Hints 开/关 |
 | `]]` / `[[` | 跳转到下/上一个引用 |
