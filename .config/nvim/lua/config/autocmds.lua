@@ -161,16 +161,3 @@ vim.api.nvim_create_autocmd("BufEnter", {
         vim.opt_local.formatoptions:remove({ "r", "o" })
     end,
 })
-
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "markdown" },
-    callback = function()
-        require("plugins.render-markdown").attach()
-
-        vim.schedule(function()
-            if vim.fn.exists(":RenderMarkdown") == 2 then
-                vim.cmd("RenderMarkdown enable")
-            end
-        end)
-    end,
-})

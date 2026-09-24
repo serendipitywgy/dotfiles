@@ -27,9 +27,21 @@ vim.api.nvim_create_autocmd("PackChanged", {
     end,
 })
 
--- Activate every declared plugin before loading its configuration. This also
--- sources Vimscript plugin entry points such as Windsurf and tmux-navigator.
-vim.pack.add(require("pack.plugins"), { load = true })
+local lazy_plugins = {
+    ["image.nvim"] = true,
+    ["diagram.nvim"] = true,
+    ["render-markdown.nvim"] = true,
+}
+
+-- Keep media plugins installed and locked, but leave them outside runtimepath
+-- until their shared FileType loader activates them.
+vim.pack.add(require("pack.plugins"), {
+    load = function(plugin)
+        if not lazy_plugins[plugin.spec.name] then
+            vim.cmd.packadd(plugin.spec.name)
+        end
+    end,
+})
 
 local modules = {
     "plugins.snacks",
@@ -54,7 +66,6 @@ local modules = {
     "plugins.cmake",
     "plugins.debug",
     "plugins.render-markdown",
-    "plugins.diagram",
     "plugins.inc-rename",
     "plugins.translate",
     "plugins.windsurf",

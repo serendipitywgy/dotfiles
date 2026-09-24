@@ -102,7 +102,7 @@ init.lua          ← 极简入口，仅做全局设置和模块加载
 | `BufReadPre` / `BufNewFile` | heirline、bufferline |
 | `LspAttach` | inc-rename |
 | `FileType python/cpp/c` | DAP 调试器 |
-| `FileType markdown` | render-markdown、image.nvim |
+| `FileType markdown/vimwiki` | render-markdown、image.nvim、diagram.nvim |
 | 按键触发 | flash（`ss`） |
 
 ### 显式配置顺序
