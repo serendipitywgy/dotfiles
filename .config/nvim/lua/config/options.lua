@@ -27,6 +27,7 @@ local config = {
         undofile = true,       --启用了 Neovim 的持久化撤销历史功能
         virtualedit = "block", -- 允许虚拟编辑, 允许在不可见的字符上进行操作
         scrolloff = 8,         -- 光标距屏幕顶/底至少保留8行
+        updatetime = 2000,     -- 停留2秒后触发 CursorHold（当前行诊断等）
         inccommand = "split",  -- :s 替换实时预览
 
 
