@@ -79,10 +79,42 @@ vim.diagnostic.config {
     },
 }
 
+local function configure_lsp_folds(bufnr)
+    if not vim.api.nvim_buf_is_valid(bufnr) then return end
+
+    local has_lsp_folds = next(vim.lsp.get_clients({
+        bufnr = bufnr,
+        method = "textDocument/foldingRange",
+    })) ~= nil
+
+    for _, win in ipairs(vim.fn.win_findbuf(bufnr)) do
+        vim.wo[win].foldmethod = "expr"
+        vim.wo[win].foldexpr = has_lsp_folds and vim.lsp.foldexpr or vim.treesitter.foldexpr
+    end
+end
+
+local lsp_group = vim.api.nvim_create_augroup("SetupLSP", { clear = true })
+
+vim.api.nvim_create_autocmd("BufWinEnter", {
+    group = lsp_group,
+    callback = function(event)
+        configure_lsp_folds(event.buf)
+    end,
+})
+
+vim.api.nvim_create_autocmd("LspDetach", {
+    group = lsp_group,
+    callback = function(event)
+        vim.schedule(function()
+            configure_lsp_folds(event.buf)
+        end)
+    end,
+})
+
 -- LSP Attach 自动配置
 -- 当 LSP 客户端附加到缓冲区时自动执行以下配置
 vim.api.nvim_create_autocmd("LspAttach", {
-    group = vim.api.nvim_create_augroup("SetupLSP", {}),
+    group = lsp_group,
     callback = function(event)
         local client = assert(vim.lsp.get_client_by_id(event.data.client_id))
 
@@ -94,19 +126,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end
 
         -- [Diagnostics Toggle] 切换诊断显示
-        do
-            local diag_enabled = true
-            vim.keymap.set('n', '<leader>cd', function()
-                diag_enabled = not diag_enabled
-                vim.diagnostic.enable(diag_enabled)
-            end, { buffer = event.buf, desc = 'LSP: 切换诊断显示' })
-        end
+        vim.keymap.set('n', '<leader>cd', function()
+            local filter = { bufnr = event.buf }
+            vim.diagnostic.enable(not vim.diagnostic.is_enabled(filter), filter)
+        end, { buf = event.buf, desc = 'LSP: 切换诊断显示' })
 
         -- [Folding] 代码折叠(0.12 内置 vim.lsp.foldexpr，基于 LSP foldingRange)
-        if client and client:supports_method 'textDocument/foldingRange' then
-            local win = vim.api.nvim_get_current_win()
-            vim.wo[win][0].foldmethod = 'expr'
-            vim.wo[win][0].foldexpr = 'v:lua.vim.lsp.foldexpr()'
+        if client:supports_method('textDocument/foldingRange', event.buf) then
+            configure_lsp_folds(event.buf)
         end
 
         -- [Keymaps] LSP 相关快捷键
@@ -116,15 +143,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
         -- 使用 snacks picker 显示所有定义位置
         -- ⚠️ 覆盖内置 gd(C 语言:本地定义跳转;普通模式:LSP 定义)
         vim.keymap.set("n", "gd", function()
-            local params = vim.lsp.util.make_position_params(0, "utf-8")
-            vim.lsp.buf_request(0, "textDocument/definition", params, function(_, result, _, _)
-                if not result or vim.tbl_isempty(result) then
-                    vim.notify("No definition found", vim.log.levels.INFO)
-                else
-                    require("snacks").picker.lsp_definitions()
-                end
-            end)
-        end, { buffer = event.buf, desc = "LSP: 跳转到定义" })
+            Snacks.picker.lsp_definitions()
+        end, { buf = event.buf, desc = "LSP: 跳转到定义" })
 
         -- 带有智能分屏的跳转到定义 (gD)
         -- 根据窗口大小自动选择横向或纵向分屏
@@ -152,11 +172,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
         -- [code-action] LSP 代码操作
         vim.keymap.set({"n", "v"}, "<leader>ca", vim.lsp.buf.code_action, { buffer = event.buf, desc = "LSP: code action" })
 
-        -- [f] 跳转到当前函数的开始位置
-        local function jump_to_current_function_start()
-            local params = { textDocument = vim.lsp.util.make_text_document_params() }
-            local pos = vim.api.nvim_win_get_cursor(0)
+        local function jump_to_current_function(use_end)
+            local bufnr = event.buf
+            local win = vim.api.nvim_get_current_win()
+            local params = { textDocument = vim.lsp.util.make_text_document_params(bufnr) }
+            local pos = vim.api.nvim_win_get_cursor(win)
             local line = pos[1] - 1
+            local jumped = false
 
             local function find_symbol(symbols)
                 for _, s in ipairs(symbols) do
@@ -171,47 +193,28 @@ vim.api.nvim_create_autocmd("LspAttach", {
                 end
             end
 
-            vim.lsp.buf_request(0, "textDocument/documentSymbol", params, function(_, result)
-                if not result then return end
+            vim.lsp.buf_request(bufnr, "textDocument/documentSymbol", params, function(_, result)
+                if jumped or not result then return end
                 local sym = find_symbol(result)
-                if sym and sym.range then
-                    vim.schedule(function()
-                        vim.api.nvim_win_set_cursor(0, { sym.range.start.line + 1, 0 })
-                    end)
-                end
-            end)
-        end
-        vim.keymap.set("n", "[f", jump_to_current_function_start, { desc = "跳转到当前函数开头" })
+                local range = sym and (sym.range or (sym.location and sym.location.range))
+                if not range then return end
 
-        -- ]f] 跳转到当前函数的结束位置
-        local function jump_to_current_function_end()
-            local params = { textDocument = vim.lsp.util.make_text_document_params() }
-            local pos = vim.api.nvim_win_get_cursor(0)
-            local line = pos[1] - 1
-
-            local function find_symbol(symbols)
-                for _, s in ipairs(symbols) do
-                    local range = s.range or (s.location and s.location.range)
-                    if range and line >= range.start.line and line <= range["end"].line then
-                        if s.children then
-                            local child = find_symbol(s.children)
-                            if child then return child end
-                        end
-                        return s
+                jumped = true
+                vim.schedule(function()
+                    if vim.api.nvim_win_is_valid(win) and vim.api.nvim_win_get_buf(win) == bufnr then
+                        local target = use_end and range["end"] or range.start
+                        vim.api.nvim_win_set_cursor(win, { target.line + 1, 0 })
                     end
-                end
-            end
-
-            vim.lsp.buf_request(0, "textDocument/documentSymbol", params, function(_, result)
-                if not result then return end
-                local sym = find_symbol(result)
-                if sym and sym.range then
-                    vim.schedule(function()
-                        vim.api.nvim_win_set_cursor(0, { sym.range["end"].line + 1, 0 })
-                    end)
-                end
+                end)
             end)
         end
-        vim.keymap.set("n", "]f", jump_to_current_function_end, { desc = "跳转到当前函数结尾" })
+
+        vim.keymap.set("n", "[f", function()
+            jump_to_current_function(false)
+        end, { buf = event.buf, desc = "跳转到当前函数开头" })
+
+        vim.keymap.set("n", "]f", function()
+            jump_to_current_function(true)
+        end, { buf = event.buf, desc = "跳转到当前函数结尾" })
     end,
 })
