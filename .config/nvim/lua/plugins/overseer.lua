@@ -14,6 +14,13 @@ function M.ensure()
             default = {
                 "on_exit_set_status",
                 "on_complete_notify",
+                {
+                    "unique",
+                    soft = true,
+                    compare = function(previous, current)
+                        return previous.name == current.name and previous.cwd == current.cwd
+                    end,
+                },
             },
             default_vscode = {
                 "default",
