@@ -4,8 +4,10 @@ vim.api.nvim_create_autocmd({ 'VimEnter', 'BufReadPre', 'BufReadPost', 'BufNewFi
     once     = true,
     callback = function()
         require("nvim-web-devicons").setup({})
-        require("bufferline").setup({
+        local bufferline = require("bufferline")
+        bufferline.setup({
             options = {
+                style_preset = bufferline.style_preset.minimal,
                 -- 缓冲区编号（ordinal 上标 + buffer_id 下标）
                 numbers = function(opts)
                     return string.format("%s·%s", opts.raise(opts.ordinal), opts.lower(opts.id))
