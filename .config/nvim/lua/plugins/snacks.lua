@@ -160,7 +160,16 @@ require("snacks").setup({
         -- layout = "telescope",
         sources = {
             explorer = { layout = "sidebar" },
-            grep = { exclude = { "node_modules/*", "dist/*", "build/*", ".git/*", "__pycache__/*", "*.min.*", "*.map" } },
+            grep = {
+                exclude = { "node_modules/*", "dist/*", "build/*", ".git/*", "__pycache__/*", "*.min.*", "*.map" },
+                win = {
+                    input = {
+                        keys = {
+                            ["<a-t>"] = { "edit_grep_filetypes", mode = { "n", "i" }, desc = "设置文件类型" },
+                        },
+                    },
+                },
+            },
         },
         win = {
             input = {
@@ -173,6 +182,33 @@ require("snacks").setup({
             },
         },
         actions = {
+            edit_grep_filetypes = function(picker)
+                local current = type(picker.opts.ft) == "table" and table.concat(picker.opts.ft, ",")
+                    or picker.opts.ft or ""
+                picker._grep_title = picker._grep_title or picker.title
+                Snacks.input.input({
+                    prompt = "文件类型（逗号分隔，留空搜索全部）",
+                    default = current,
+                }, function(value)
+                    if value == nil then
+                        return
+                    end
+
+                    local filetypes, seen = {}, {}
+                    for filetype in value:gmatch("[^,%s]+") do
+                        if not seen[filetype] then
+                            seen[filetype] = true
+                            filetypes[#filetypes + 1] = filetype
+                        end
+                    end
+
+                    picker.opts.ft = #filetypes > 0 and filetypes or nil
+                    picker.title = #filetypes > 0
+                        and (picker._grep_title .. " [" .. table.concat(filetypes, ",") .. "]")
+                        or picker._grep_title
+                    picker:refresh()
+                end)
+            end,
             open_results_in_buffer = function(picker)
                 picker:close()
                 local items = picker:selected()
