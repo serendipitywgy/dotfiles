@@ -8,10 +8,8 @@ vim.api.nvim_create_autocmd({ 'VimEnter', 'BufReadPre', 'BufReadPost', 'BufNewFi
         bufferline.setup({
             options = {
                 style_preset = bufferline.style_preset.minimal,
-                -- 缓冲区编号（ordinal 上标 + buffer_id 下标）
-                numbers = function(opts)
-                    return string.format("%s·%s", opts.raise(opts.ordinal), opts.lower(opts.id))
-                end,
+                -- 只显示缓冲区顺序编号
+                numbers = "ordinal",
                 -- 按目录分组排序
                 -- sort_by = "directory",
                 -- 侧边栏偏移
