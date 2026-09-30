@@ -1,6 +1,6 @@
 local M = { name = "CMake" }
 
-local conan_build_type = "Debug"
+local conan_build_types = {}
 
 local function root(path, markers)
     return vim.fs.root(path, markers)
@@ -13,17 +13,15 @@ local function is_ancestor(parent, child)
 end
 
 function M.detect(ctx)
-    local cmake_root = root(ctx.path, { "CMakeLists.txt", "CMakePresets.json", "CMakeUserPresets.json" })
+    local conan_root = root(ctx.path, { "conanfile.py", "conanfile.txt" })
+    local boundary = conan_root or root(ctx.path, { "CMakePresets.json", "CMakeUserPresets.json" })
+        or root(ctx.path, { ".git" })
+    local cmake_root = boundary and vim.uv.fs_stat(boundary .. "/CMakeLists.txt") and boundary
+        or root(ctx.path, { "CMakeLists.txt", "CMakePresets.json", "CMakeUserPresets.json" })
     if not cmake_root then return nil end
 
-    local conan_root = root(ctx.path, { "conanfile.py", "conanfile.txt" })
     if conan_root and not is_ancestor(conan_root, cmake_root) then conan_root = nil end
     return { root = cmake_root, conan_root = conan_root }
-end
-
-local function preset_file_exists(project_root)
-    return vim.uv.fs_stat(project_root .. "/CMakePresets.json") ~= nil
-        or vim.uv.fs_stat(project_root .. "/cmake-presets.json") ~= nil
 end
 
 local function conan_presets_valid(ctx)
@@ -36,8 +34,18 @@ local function conan_presets_valid(ctx)
 
     local ok, data = pcall(vim.json.decode, table.concat(lines, "\n"))
     if not ok or type(data) ~= "table" or type(data.include) ~= "table" then return false end
+    local build_type = conan_build_types[ctx.root]
     for _, include in ipairs(data.include) do
-        if vim.uv.fs_stat(ctx.conan_root .. "/" .. include) then return true end
+        local included = ctx.conan_root .. "/" .. include
+        if vim.uv.fs_stat(included) then
+            if not build_type then return true end
+            local decoded, presets = pcall(vim.json.decode, table.concat(vim.fn.readfile(included), "\n"))
+            if decoded and type(presets) == "table" then
+                for _, preset in ipairs(presets.configurePresets or {}) do
+                    if (preset.cacheVariables or {}).CMAKE_BUILD_TYPE == build_type then return true end
+                end
+            end
+        end
     end
     return false
 end
@@ -56,11 +64,12 @@ local function conan_install(ctx, on_success)
         return
     end
 
-    local profile = conan_build_type == "Debug" and "debug" or "default"
+    local build_type = conan_build_types[ctx.root] or "Debug"
+    local profile = build_type == "Debug" and "debug" or "default"
     local task = overseer.new_task({
-        name = "Conan install (" .. conan_build_type .. ")",
+        name = "Conan install (" .. build_type .. ")",
         cmd = { "conan" },
-        args = { "install", ".", "-pr:h=" .. profile, "-pr:b=" .. profile },
+        args = { "install", ".", "-pr:h=" .. profile, "-pr:b=" .. profile, "-s:h", "build_type=" .. build_type },
         cwd = ctx.conan_root,
         components = { "default" },
     })
@@ -74,8 +83,22 @@ end
 local function run_cmake(ctx, command, needs_dap)
     local function run()
         if needs_dap then require("plugins.debug").ensure() end
-        if not require("plugins.cmake").ensure(ctx.root) then return end
-        vim.cmd(command)
+        local plugin = require("plugins.cmake")
+        local cmake = plugin.ensure(ctx.root)
+        if not cmake then return end
+        local function generate()
+            plugin.prepare_preset(cmake)
+            if ctx.conan_root then conan_build_types[ctx.root] = cmake.get_build_type() end
+            -- 每次重新配置，修复旧缓存，并在失败时阻止后续编译/运行。
+            cmake.generate({ bang = false, fargs = {} }, function(result)
+                if result:is_ok() and command ~= "CMakeGenerate" then vim.cmd(command) end
+            end)
+        end
+        if cmake.has_cmake_preset() and not cmake.get_build_preset() and not cmake.get_configure_preset() then
+            plugin.select(cmake, generate)
+        else
+            generate()
+        end
     end
 
     if ctx.conan_root and not conan_presets_valid(ctx) then
@@ -91,8 +114,12 @@ function M.debug(ctx) run_cmake(ctx, "CMakeDebug", true) end
 
 function M.configure(ctx)
     if ctx.conan_root then
+        if conan_presets_valid(ctx) then
+            local cmake = require("plugins.cmake").ensure(ctx.root)
+            if cmake then conan_build_types[ctx.root] = cmake.get_build_type() end
+        end
         conan_install(ctx, function()
-            if require("plugins.cmake").ensure(ctx.root) then vim.cmd("CMakeGenerate") end
+            run_cmake(ctx, "CMakeGenerate", false)
         end)
     else
         run_cmake(ctx, "CMakeGenerate", false)
@@ -103,20 +130,22 @@ function M.select(ctx)
     if ctx.conan_root and not conan_presets_valid(ctx) then
         vim.ui.select({ "Debug", "Release" }, { prompt = "选择 Conan 构建类型" }, function(choice)
             if not choice then return end
-            conan_build_type = choice
+            conan_build_types[ctx.root] = choice
             conan_install(ctx, function()
-                if require("plugins.cmake").ensure(ctx.root) then vim.cmd("CMakeSelectBuildPreset") end
+                local plugin = require("plugins.cmake")
+                local cmake = plugin.ensure(ctx.root)
+                if cmake then plugin.select(cmake) end
             end)
         end)
         return
     end
 
-    if not require("plugins.cmake").ensure(ctx.root) then return end
-    if preset_file_exists(ctx.root) or vim.uv.fs_stat(ctx.root .. "/CMakeUserPresets.json") then
-        vim.cmd("CMakeSelectBuildPreset")
-    else
-        vim.cmd("CMakeSelectBuildType")
-    end
+    local plugin = require("plugins.cmake")
+    local cmake = plugin.ensure(ctx.root)
+    if not cmake then return end
+    plugin.select(cmake, function()
+        if ctx.conan_root then conan_build_types[ctx.root] = cmake.get_build_type() end
+    end)
 end
 
 return M

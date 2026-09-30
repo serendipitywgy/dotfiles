@@ -11,13 +11,11 @@ end
 function M.ensure(root)
     root = normalize(root)
     if initialized then
-        if project_root ~= root then
-            vim.notify(
-                "cmake-tools 已绑定到 " .. project_root .. "，请为另一个项目启动新的 Neovim 实例",
-                vim.log.levels.ERROR
-            )
-            return nil
+        -- cmake-tools 的 DirChanged 会保存旧项目并恢复新项目的会话。
+        if normalize(vim.uv.cwd()) ~= root then
+            vim.api.nvim_set_current_dir(root)
         end
+        project_root = root
         return require("cmake-tools")
     end
 
@@ -89,6 +87,49 @@ end
 
 function M.root()
     return project_root
+end
+
+-- preset 决定构建类型，旧会话中的命令行覆盖不能凌驾于它之上。
+function M.prepare_preset(cmake)
+    if not cmake.has_cmake_preset() then return end
+    local options = cmake.get_generate_options()
+    local keys = vim.tbl_keys(options)
+    table.sort(keys)
+    local filtered = {}
+    local skip = false
+    for _, key in ipairs(keys) do
+        local option = options[key]
+        if skip then
+            skip = false
+        elseif option == "-D" and type(options[key + 1]) == "string"
+            and options[key + 1]:match("^CMAKE_BUILD_TYPE[:=]") then
+            skip = true
+        elseif not option:match("^%-DCMAKE_BUILD_TYPE[:=]") then
+            filtered[#filtered + 1] = option
+        end
+    end
+    for key in pairs(options) do options[key] = nil end
+    vim.list_extend(options, filtered)
+end
+
+function M.select(cmake, on_success)
+    if not cmake.has_cmake_preset() then
+        return cmake.select_build_type(function(result)
+            if result:is_ok() and on_success then on_success() end
+        end)
+    end
+
+    M.prepare_preset(cmake)
+    local presets = require("cmake-tools.presets"):parse(project_root)
+    local callback = function(result)
+        if result:is_ok() and on_success then on_success() end
+    end
+    -- build preset 自带 configurePreset，插件会一次同步两者。
+    if #presets:get_build_preset_names({ include_disabled = true }) > 0 then
+        cmake.select_build_preset(callback)
+    else
+        cmake.select_configure_preset(callback)
+    end
 end
 
 return M
