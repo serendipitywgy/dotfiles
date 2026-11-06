@@ -1,0 +1,211 @@
+// Zed keymap
+//
+// For information on binding keys, see the Zed
+// documentation: https://zed.dev/docs/key-bindings
+//
+// To see the default key bindings run `zed: open default keymap`
+// from the command palette.
+[
+  {
+    "context": "Workspace",
+    "bindings": {
+      // "shift shift": "file_finder::Toggle"
+    },
+  },
+  {
+    "context": "Editor && mode == full && vim_mode == insert",
+    "bindings": {
+      "k j": "vim::NormalBefore",
+      "shift-k shift-j": "vim::NormalBefore",
+      "ctrl-/": "terminal_panel::Toggle",
+      "ctrl-_": "terminal_panel::Toggle"
+    },
+  },
+  {
+    "context": "Editor && mode == full && vim_mode == insert && showing_completions",
+    "bindings": {
+      "ctrl-1": ["editor::ConfirmCompletion", { "item_ix": 0 }],
+      "ctrl-2": ["editor::ConfirmCompletion", { "item_ix": 1 }],
+      "ctrl-3": ["editor::ConfirmCompletion", { "item_ix": 2 }],
+      "ctrl-4": ["editor::ConfirmCompletion", { "item_ix": 3 }],
+      "ctrl-5": ["editor::ConfirmCompletion", { "item_ix": 4 }],
+      "ctrl-6": ["editor::ConfirmCompletion", { "item_ix": 5 }],
+      "ctrl-7": ["editor::ConfirmCompletion", { "item_ix": 6 }],
+      "ctrl-8": ["editor::ConfirmCompletion", { "item_ix": 7 }],
+      "ctrl-9": ["editor::ConfirmCompletion", { "item_ix": 8 }],
+      "ctrl-0": ["editor::ConfirmCompletion", { "item_ix": 9 }]
+    }
+  },
+  {
+    "context": "Editor && mode == full && (vim_mode == normal || vim_mode == visual) && !menu",
+    "bindings": {
+      // Space is a leader only, not Vim's single-key cursor motion.
+      "space": null,
+      "alt-/": "which_key::ShowPendingBindings",
+      // Keep the chosen label jump; this is not a full Flash replacement.
+      "s s": "vim::HelixJumpToWord",
+      "alt-j": "editor::MoveLineDown",
+      "alt-k": "editor::MoveLineUp",
+      "j": ["vim::Down", { "display_lines": true }],
+      "k": ["vim::Up", { "display_lines": true }],
+      "space c a": "editor::ToggleCodeActions",
+      "space c h": "editor::SwitchSourceHeader",
+      "space s w": ["pane::DeploySearch", { "regex": false }],
+      "ctrl-/": "terminal_panel::Toggle",
+      "ctrl-_": "terminal_panel::Toggle"
+    },
+  },
+  {
+    "context": "Editor && mode == full && (vim_mode == normal || vim_mode == visual) && VimCount && !menu",
+    "bindings": {
+      "j": "vim::Down",
+      "k": "vim::Up"
+    }
+  },
+  {
+    "context": "Editor && mode == full && vim_mode == normal && !menu",
+    "bindings": {
+      // Leader is Space, matching the Neovim configuration.
+      "shift-h": "pane::ActivatePreviousItem",
+      "shift-l": "pane::ActivateNextItem",
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "space w": "workspace::Save",
+      "space q": "pane::CloseActiveItem",
+      "space q q": ["workspace::CloseAllItemsAndPanes", { "save_intent": "save_all" }],
+      "space b d": "pane::CloseActiveItem",
+      "space b shift-d": "pane::CloseActiveItem",
+      "space b shift-o": "pane::CloseOtherItems",
+      "space b p": "tab_switcher::OpenInActivePane",
+      "space ,": "tab_switcher::OpenInActivePane",
+      "space f b": "tab_switcher::OpenInActivePane",
+      "space space": "file_finder::Toggle",
+      "space f f": "file_finder::Toggle",
+      "space f r": "file_finder::Toggle",
+      "space f p": "projects::OpenRecent",
+      "space w r": "projects::OpenRecent",
+      "space e": "project_panel::ToggleFocus",
+      "-": "project_panel::ToggleFocus",
+      "space /": "pane::DeploySearch",
+      "space s g": "pane::DeploySearch",
+      "space s b": "buffer_search::Deploy",
+      "space :": "command_palette::Toggle",
+      "space s c": "command_palette::Toggle",
+      "space s shift-c": "command_palette::Toggle",
+      "space s k": "zed::OpenKeymapFile",
+      "space s shift-r": "workspace::ReopenLastPicker",
+      "space s s": "outline::Toggle",
+      "space s shift-s": "project_symbols::Toggle",
+      "space x s": "outline_panel::ToggleFocus",
+      "space x x": "diagnostics::Deploy",
+      "space s d": "diagnostics::Deploy",
+      "space x d": "editor::Hover",
+      "space r n": "editor::Rename",
+      "space c f": "editor::Format",
+      "space t h": "editor::ToggleInlayHints",
+      "g r": "editor::FindAllReferences",
+      "] ]": "vim::GoToNextReference",
+      "[ [": "vim::GoToPreviousReference",
+      "space -": "pane::SplitDown",
+      "space |": "pane::SplitRight",
+      "space w d": "pane::CloseActiveItem",
+      "ctrl-up": "vim::ResizePaneUp",
+      "ctrl-down": "vim::ResizePaneDown",
+      "ctrl-left": "vim::ResizePaneLeft",
+      "ctrl-right": "vim::ResizePaneRight",
+      "space shift-z": "workspace::ToggleZoom",
+      "space .": "workspace::NewFile",
+      "space u s": "theme_selector::Toggle",
+      "space u shift-c": "theme_selector::Toggle",
+      "space g b": "git::Branch",
+      "space g s": "git_panel::ToggleFocus",
+      "space g d": "git::Diff",
+      "space g g p": "editor::ToggleSelectedDiffHunks",
+      "space g g shift-p": "editor::ToggleSelectedDiffHunks",
+      "space g g s": "git::ToggleStaged",
+      "space g g shift-s": "git::StageFile",
+      // Only projects with matching task tags support these build shortcuts.
+      "space c b": ["task::Spawn", { "task_tag": "build" }],
+      "space c g": ["task::Spawn", { "task_tag": "configure" }],
+      "space c r": ["task::Spawn", { "task_tag": "run" }],
+      "space c shift-d": "debugger::Start",
+      "space c o": "terminal_panel::Toggle",
+      "space o o": "task::Spawn",
+      "space o r": "task::Rerun",
+      "space d u": "debug_panel::ToggleFocus",
+      "space d s": "debugger::Start",
+      "space d i": "debugger::StepInto",
+      "space d o": "debugger::StepOver",
+      "space d shift-o": "debugger::StepOut",
+      "space d shift-q": "debugger::Stop",
+      "space d c": "debugger::RunToCursor",
+      "space d shift-r": "debugger::FocusConsole",
+      "space d b": "editor::ToggleBreakpoint",
+      "space d shift-d": "debugger::ClearAllBreakpoints",
+      "f1": "debug_panel::ToggleFocus",
+      "f2": "debugger::Start",
+      "f3": "debugger::StepInto",
+      "f4": "debugger::StepOver",
+      "f5": "debugger::StepOut",
+      "f6": "debugger::Restart",
+      "f7": "debugger::Stop"
+    }
+  },
+  {
+    "context": "Editor && mode == full && vim_mode == visual && !menu",
+    "bindings": {
+      "space c f": "editor::FormatSelections",
+      "s a": "vim::PushAddSurrounds"
+    }
+  },
+  {
+    "context": "Editor && mode == full && vim_mode == normal && !menu",
+    "bindings": {
+      "s a": ["vim::PushAddSurrounds", {}],
+      "s d": "vim::PushDeleteSurrounds",
+      "s r": ["vim::PushChangeSurrounds", {}]
+    }
+  },
+  {
+    "context": "Workspace && debugger_stopped > Editor && mode == full && vim_mode == normal && !menu",
+    "bindings": {
+      "space d s": "debugger::Continue",
+      "f2": "debugger::Continue"
+    }
+  },
+  {
+    "context": "DebugPanel",
+    "bindings": {
+      "f1": "debug_panel::ToggleFocus",
+      "f2": "debugger::Start",
+      "f3": "debugger::StepInto",
+      "f4": "debugger::StepOver",
+      "f5": "debugger::StepOut",
+      "f6": "debugger::Restart",
+      "f7": "debugger::Stop"
+    }
+  },
+  {
+    "context": "Workspace && debugger_stopped > DebugPanel",
+    "bindings": {
+      "f2": "debugger::Continue"
+    }
+  },
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "ctrl-h": "workspace::ActivatePaneLeft",
+      "ctrl-l": "workspace::ActivatePaneRight",
+      "space e": "project_panel::ToggleFocus",
+      "-": "project_panel::ToggleFocus",
+      "l": "project_panel::OpenPermanent"
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "ctrl-/": "terminal_panel::Toggle",
+      "ctrl-_": "terminal_panel::Toggle"
+    }
+  }
+]
